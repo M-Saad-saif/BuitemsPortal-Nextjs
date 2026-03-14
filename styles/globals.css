@@ -18,6 +18,10 @@
   padding: 0;
 }
 
+html{
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background-color: #f8fafc;
@@ -87,7 +91,7 @@ body {
   isolation: isolate;
   background: linear-gradient(135deg, #1a3c6e 0%, #1e4d8c 40%, #2563eb 100%);
   overflow: hidden;
-  height: 100vh;
+  height: 90vh;
 }
 
 .hero-bg::before {

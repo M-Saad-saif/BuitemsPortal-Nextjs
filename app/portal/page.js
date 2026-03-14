@@ -74,21 +74,7 @@ function ProfileHeader({ user, onEditClick, onPicChange }) {
     setUploading(false);
   };
 
-   if (!user || !token) {
-    return (
-      <>
-        <title>BUITEMS - Portal</title>;
-        <div className="session-expired">
-          <div className="expired-icon">🎓</div>
-          <h2>Session Expired or User Not Found</h2>
-          <p>Please login again to access the portal</p>
-          <button className="login-btn" onClick={() => navigate("/login")}>
-            Go to Login
-          </button>
-        </div>
-      </>
-    );
-  }
+
 
   return (
     <div className="card mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-5">

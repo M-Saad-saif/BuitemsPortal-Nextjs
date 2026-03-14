@@ -5,13 +5,15 @@ import { useAuth } from "@/lib/AuthContext";
 import ToolsCard from "@/components/layout/ToolsCard";
 import Image from "next/image";
 
+import { FaArrowDown } from "react-icons/fa";
+
 export default function HomePage() {
   const { user } = useAuth();
 
   return (
     <>
       {/* ================= Hero section-=================*/}
-      <section className="hero-bg text-white py-20 px-4">
+      <section className="hero-bg text-white py-10 px-4">
         <div className="max-w-4xl mx-auto text-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <Image
@@ -68,19 +70,21 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        <div className=" font-bold justify-self-center text-center  mt-[-20px]">
+          <Link
+            href="#toolcards"
+            className="flex flex-col items-center font-bold justify-self-center text-center mt-[-20px]"
+          >
+            <p>Scroll</p>
+            <FaArrowDown className="mt-1 animate-bounce text-xl" />
+          </Link>
+        </div>
       </section>
 
       {/* ================ tool cards ================= */}
-      <div className="pt-16 ">
-
-      <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
-        Everything You Need
-      </h2>
-      <p className="text-center text-gray-500 mb-10">
-        Academic tools designed specifically for BUITEMS students
-      </p>
-      </div>
-      <ToolsCard />
+    
+      <ToolsCard id="toolcars"/>
 
       {/* ========================== AI Banner ==========================*/}
       <section className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-12 px-4">

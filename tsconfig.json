@@ -2,6 +2,7 @@
   "compilerOptions": {
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
+    "checkJs": false,
     "skipLibCheck": true,
     "strict": false,
     "noEmit": true,
@@ -15,6 +16,6 @@
     "plugins": [{ "name": "next" }],
     "paths": { "@/*": ["./*"] }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.js", "**/*.jsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
