@@ -84,7 +84,7 @@ export default function HomePage() {
 
       {/* ================ tool cards ================= */}
     
-      <ToolsCard id="toolcars"/>
+      <ToolsCard/>
 
       {/* ========================== AI Banner ==========================*/}
       <section className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-12 px-4">

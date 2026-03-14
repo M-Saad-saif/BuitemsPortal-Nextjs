@@ -1,7 +1,4 @@
 "use client";
-// app/gpa-calculator/page.js — Converted from src/components/GPAcal.js
-// Full 4.0-scale GPA calculator with dynamic subject rows
-
 import { useState, useCallback } from "react";
 
 // BUITEMS grading scale (4.0 system)
