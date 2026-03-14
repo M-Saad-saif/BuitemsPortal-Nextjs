@@ -9,9 +9,9 @@ module.exports = {
     extend: {
       colors: {
         brand: {
-          primary: "#1a3c6e",   // BUITEMS navy blue
-          secondary: "#2563eb", // bright blue
-          accent: "#f59e0b",    // gold/amber accent
+          primary: "#1a3c6e",   
+          secondary: "#2563eb", 
+          accent: "#f59e0b",    
           dark: "#0f172a",
           light: "#f0f4ff",
         },

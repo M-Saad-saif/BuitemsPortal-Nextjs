@@ -37,9 +37,68 @@ body {
   padding: 1.5rem;
 }
 
+.credentialBTNs {
+  gap: 9px;
+  display: flex;
+  flex-direction: column;
+}
+
+.credential-card {
+  margin-bottom: 7%;
+  display: flex;
+  /* flex-direction: column; */
+  text-align: center;
+  background: #f5f6f8;
+  padding: 15px 48px;
+  border-radius: 9px;
+  gap: 42px;
+  /* animation: fadeInDown 1s ease;   */
+  animation: fading 1s ease;
+}
+.credentialBTN {
+  font-size: 17px;
+  padding: 0.5em 2em;
+  border: transparent;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+  background: #0081ff;
+  color: white;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.credentialBTN:hover {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(90deg, rgba(30, 144, 255, 1) 0%, rgba(0, 212, 255, 1) 100%);
+}
+
+.credentialBTN:active {
+  transform: translate(0em, 0.2em);
+}
+.Credential-divider {
+  width: 2px;
+  height: 100px;
+  background-color: #083262;
+  border-radius: 1px;
+}
+
 /* Hero gradient */
 .hero-bg {
+  position: relative;
+  isolation: isolate;
   background: linear-gradient(135deg, #1a3c6e 0%, #1e4d8c 40%, #2563eb 100%);
+  overflow: hidden;
+  height: 100vh;
+}
+
+.hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/images/backgrond-for-laptop.png");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.3;
+  z-index: -1;
 }
 
 /* Grade colors */
