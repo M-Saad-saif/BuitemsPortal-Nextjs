@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-primary: #1a3c6e;
+  --brand-secondary: #2563eb;
+  --brand-accent: #f59e0b;
+  --bg-light: #f0f4ff;
+  --text-dark: #0f172a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+/* Navbar gradient matching original */
+.navbar-bg {
+  background: linear-gradient(135deg, #1a3c6e 0%, #1e4d8c 100%);
+}
+
+/* Card style */
+.card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+/* Hero gradient */
+.hero-bg {
+  background: linear-gradient(135deg, #1a3c6e 0%, #1e4d8c 40%, #2563eb 100%);
+}
+
+/* Grade colors */
+.grade-a {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.grade-b {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.grade-c {
+  color: #d97706;
+  font-weight: 600;
+}
+
+.grade-d {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.grade-f {
+  color: #7f1d1d;
+  font-weight: 600;
+}
+
+/* Tab active */
+.tab-active {
+  background: linear-gradient(135deg, #1a3c6e, #2563eb);
+  color: white;
+}
+
+/* Print styles for front page */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease forwards;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
