@@ -6,6 +6,8 @@ import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+import { IoMdLogIn } from "react-icons/io";
+
 export default function LoginPage() {
   const { login } = useAuth();
   const router = useRouter();
@@ -39,50 +41,59 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 mt-[-2rem]">
-      <div className="flex bg-white rounded-2xl overflow-hidden w-full max-w-2xl mx-auto shadow-[0_10px_25px_rgba(0,0,0,0.32)] animate-[fading_1s_ease]">
-        {/* Left side - Image/Branding */}
-        <div className="flex-1 bg-gradient-to-br from-[#1546c2] to-[#005eff38] p-8 flex flex-col justify-center items-center text-white text-center">
+      <div className="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden w-full max-w-2xl mx-auto shadow-[0_10px_25px_rgba(0,0,0,0.32)] animate-[fading_1s_ease]">
+        {/* Left side - Image/Branding - On top for mobile, left for desktop */}
+        <div className="w-full md:flex-1 bg-gradient-to-br from-[#1546c2] to-[#005eff38] p-8 flex flex-col justify-center items-center text-white text-center">
           <Image
             src="/images/buitems-logo.png"
             alt="BUITEMS Logo"
-            width={150}
-            height={100}
+            width={160}
+            height={160}
+            className="w-32 md:w-40"
           />
-          <h2 className="text-4xl  mb-2">Welcome Back!</h2>
+          <h2 className="text-2xl font-bold mb-2">Welcome Back!</h2>
           <p className="text-sm opacity-90">
             Login to access your BUITEMS Portal
           </p>
         </div>
 
-        {/* Right side - Login Form */}
-        <div className="flex-1 p-8">
-          <h2 className="text-3xl text-gray-800 mb-6 flex items-center gap-2">
-            Login <span className="text-[#3169f4]">🔐</span>
+        {/* Right side - Login Form - At bottom for mobile, right for desktop */}
+        <div className="w-full md:flex-1 p-8">
+          <h2 className="text-3xl mb-6 flex items-center gap-2 justify-center font-bold text-[#1546c2]">
+            Login <IoMdLogIn />
           </h2>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email */}
-            <input
-              type="email"
-              name="email"
-              placeholder="Email *"
-              value={form.email}
-              onChange={handleChange}
-              required
-              className="w-full p-4 my-2 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base placeholder:text-gray-400"
-            />
+            <div className="relative w-full my-1">
+              <input
+                type="email"
+                name="email"
+                placeholder=" "
+                value={form.email}
+                onChange={handleChange}
+                required
+                className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
+              />
+              <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
+                Email <span className="text-red-500">*</span>
+              </span>
+            </div>
 
             {/* Password with show/hide */}
-            <div className="relative w-full">
+            <div className="relative w-full my-1">
               <input
                 type={showPass ? "text" : "password"}
                 name="password"
-                placeholder="Password *"
+                placeholder=" "
                 value={form.password}
                 onChange={handleChange}
                 required
-                className="w-full p-4 my-2 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base placeholder:text-gray-400 pr-20"
+                className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
               />
+              <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
+                Password <span className="text-red-500">*</span>
+              </span>
               <button
                 type="button"
                 onClick={() => setShowPass(!showPass)}

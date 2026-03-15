@@ -70,7 +70,7 @@ const features = [
 
 const ToolsCard = () => {
   return (
-      <section className="py-8 px-4 bg-gradient-to-b from-white to-blue-50">
+      <section className="bg-blue-100 py-8 px-4 ">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-10">

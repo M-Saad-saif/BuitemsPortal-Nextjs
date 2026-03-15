@@ -87,7 +87,7 @@ export default function HomePage() {
       <ToolsCard/>
 
       {/* ========================== AI Banner ==========================*/}
-      <section className="bg-gradient-to-r from-indigo-600 to-blue-600 text-white py-12 px-4">
+      <section className="bg-gradient-to-r bg-blue-700 text-white py-12 px-4">
         <div className="max-w-3xl mx-auto text-center">
           <span className="text-3xl">🤖</span>
           <h2 className="text-2xl font-bold mt-3 mb-3">AI Study Assistant</h2>
