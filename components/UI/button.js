@@ -1,12 +1,12 @@
 import React from "react";
 import './buttons.css'
 
-const button = ({href}) => {
+const button = ({href, className=""}) => {
   return (
     <div>
-      <button class="cssbuttons-io-button">
+      <button className={`cssbuttons-io-button ${className}`}>
         {href}
-        <div class="icon">
+        <div className="icon">
           <svg
             height="24"
             width="24"

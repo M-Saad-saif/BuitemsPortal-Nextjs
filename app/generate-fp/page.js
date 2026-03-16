@@ -45,7 +45,7 @@ const FIELDS_T3 = [
 
 const FIELDS_T4 = [
   { key: "assignmentNo", label: "", top: 28.8, left: 72, width: 20 },
-  { key: "name", label: "Name", top: 45.5, left: 37, width: 47 },
+  { key: "name", label: "Name", top: 46.5, left: 37, width: 47 },
   { key: "cms", label: "CMS", top: 50.5, left: 35, width: 47 },
   { key: "course", label: "Course", top: 54, left: 39, width: 47 },
   { key: "instructor", label: "Instructor", top: 57.5, left: 45, width: 47 },
@@ -264,7 +264,7 @@ function GenerateFPContent() {
       base.push({
         key: "instructor",
         label: "Instructor / Teacher",
-        ph: "Dr. Ahmed Khan",
+        ph: "Enter Name",
       });
     }
     base.push(
@@ -276,7 +276,7 @@ function GenerateFPContent() {
       base.push({
         key: "submitTo",
         label: "Submit To (Teacher)",
-        ph: "Dr. Ahmed Khan",
+        ph: "Enter Name",
       });
     }
     base.push({ key: "date", label: "Submission Date", ph: "" });
@@ -395,7 +395,7 @@ function GenerateFPContent() {
         <div className="flex items-center justify-between mb-3">
           <h2 className="font-bold text-gray-800">
             Live Preview
-            <span className="ml-2 text-xs font-normal text-gray-400">
+            <span className="ml-2 text-xs font-normal text-gray-800">
               Click any blank line to type directly on the page
             </span>
           </h2>
@@ -436,7 +436,7 @@ function GenerateFPContent() {
           </div>
         </div>
 
-        <p className="text-center text-xs text-gray-400 mt-3">
+        <p className="text-center text-xs text-gray-800 mt-3">
           💡 In the print dialog → <strong>Save as PDF</strong> → Margins:{" "}
           <strong>None</strong> → Scale: <strong>100%</strong>
         </p>
