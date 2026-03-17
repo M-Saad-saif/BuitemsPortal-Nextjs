@@ -174,7 +174,7 @@ export default function TimetablePage() {
 
             <button
               onClick={() => setView("list")}
-              className={`px-4 py-2 rounded-lg text-sm font-medium bg-blue-200 transition-colors ${view === "list" ? " text-black bh-blue-300" : "border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium bg-blue-200 transition-colors ${view === "list" ? " text-black" : "border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
             >
               List View
             </button>
@@ -282,11 +282,9 @@ export default function TimetablePage() {
                         <td
                           key={day}
                           className="px-2 py-2 border-l border-gray-100"
-                          onClick={() => openEdit(day, slot)}
                         >
-                          <div
-                            role="button"
-                            tabIndex={0}
+                          <button
+                            onClick={() => openEdit(day, slot)}
                             className={`w-full min-h-[48px] px-2 py-1.5 rounded-lg text-left transition-all hover:shadow-sm hover:scale-[1.02] ${
                               cell?.subject
                                 ? `border ${getSubjectColor(cell.subject)}`
@@ -315,7 +313,7 @@ export default function TimetablePage() {
                                 + add
                               </span>
                             )}
-                          </div>
+                          </button>
                         </td>
                       );
                     })}

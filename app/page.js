@@ -19,7 +19,7 @@ export default function HomePage() {
           <Image
             src="/images/buitems-logo.png"
             alt="BUITEMS Logo"
-            className=" mx-auto mb-6 rounded-xl bg-white object-contain shadow-xl"
+            className=" mx-auto mb-6 rounded-xl bg-[#f5f6f8] object-contain shadow-xl"
             height={100}
             width={100}
           />

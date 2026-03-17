@@ -1,6 +1,7 @@
 "use client";
 
 import ToolHeader from "@/components/layout/ToolHeader";
+import Link from "next/link";
 import { useState, useCallback } from "react";
 
 const emptySemester = (n) => ({
@@ -269,9 +270,9 @@ export default function CGPACalculatorPage() {
         <div className="mt-6 bg-blue-50 border border-blue-100 rounded-xl p-4">
           <p className="text-sm text-blue-700">
             💡 <strong>Tip:</strong> Save your semester records in the{" "}
-            <a href="/portal" className="underline font-medium">
+            <Link href="/portal" className="underline font-medium">
               Student Portal
-            </a>{" "}
+            </Link>
             to automatically track your CGPA across semesters.
           </p>
         </div>

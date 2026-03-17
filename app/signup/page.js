@@ -87,7 +87,8 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-blue-100">
       <div className="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden w-full max-w-4xl mx-auto shadow-[0_10px_25px_rgba(0,0,0,0.32)] animate-[fading_1s_ease]">
         {/* Left side - Image/Branding - On top for mobile, left for desktop */}
         <div className="w-full md:flex-1 bg-gradient-to-br from-[#1546c2] to-[#005eff38] p-8 flex flex-col justify-center items-center text-white text-center">
