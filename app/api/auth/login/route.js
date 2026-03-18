@@ -1,6 +1,3 @@
-// app/api/auth/login/route.js
-// Replaces: POST /api/auth/login in backend/routes/userauth.js
-
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
@@ -16,7 +13,7 @@ export async function POST(request) {
     if (!email || !password) {
       return NextResponse.json(
         { success: false, error: "Email and password are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -25,7 +22,7 @@ export async function POST(request) {
     if (!user) {
       return NextResponse.json(
         { success: false, error: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
@@ -34,19 +31,17 @@ export async function POST(request) {
     if (!isMatch) {
       return NextResponse.json(
         { success: false, error: "Invalid credentials" },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
-    // Return token (same as original Express route)
     const authToken = signToken(user._id.toString());
     return NextResponse.json({ success: true, authToken });
-
   } catch (error) {
     console.error("login error:", error);
     return NextResponse.json(
       { success: false, error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import toast from "react-hot-toast";
@@ -39,15 +39,31 @@ const TABS = [
 export default function PortalPage() {
   const { user, loading, refreshUser } = useAuth();
   const router = useRouter();
+
   const [activeTab, setActiveTab] = useState("profile");
   const [showAdd, setShowAdd] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [localUser, setLocalUser] = useState(null);
+  const [profilePicVersion, setProfilePicVersion] = useState(0);
+
+  const initialised = useRef(false);
 
   useEffect(() => {
     if (!loading && !user) router.push("/login");
-    if (user) setLocalUser(user);
-  }, [user, loading, router]);
+  }, [loading, user, router]);
+
+  useEffect(() => {
+    if (user && !initialised.current) {
+      setLocalUser(user);
+      setProfilePicVersion(Date.now());
+      initialised.current = true;
+    }
+  }, [user]);
+
+  const handlePicChange = (freshUrl) => {
+    setLocalUser((prev) => (prev ? { ...prev, profilePic: freshUrl } : prev));
+    setProfilePicVersion(Date.now());
+  };
 
   const handleSave = (updatedUser) => {
     setLocalUser(updatedUser);
@@ -69,7 +85,9 @@ export default function PortalPage() {
       toast.success("Semester deleted");
       setLocalUser(data.user);
       refreshUser();
-    } else toast.error(data.error || "Delete failed");
+    } else {
+      toast.error(data.error || "Delete failed");
+    }
   };
 
   if (loading || !localUser) {
@@ -77,7 +95,7 @@ export default function PortalPage() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <Spinner width="160" className="justify-self-center" />
-          <p className="text-gray-500">Loading your portal…</p>
+          <p className="text-gray-500 mt-3">Loading your portal…</p>
         </div>
       </div>
     );
@@ -88,25 +106,24 @@ export default function PortalPage() {
       <div className="max-w-6xl mx-auto px-4 py-8">
         <ProfileHeader
           user={localUser}
+          profilePicVersion={profilePicVersion}
           onEditClick={() => setShowEdit(true)}
-          onPicChange={(url) =>
-            setLocalUser((p) => ({ ...p, profilePic: url }))
-          }
+          onPicChange={handlePicChange}
         />
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6">
+        <div className="flex flex-wrap gap-2 mb-6 ">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all border-2 border-[#2449809b] w-[calc(50%-4px)] sm:w-[24%] ${
+              className={`flex items-center  p-2 justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all border-2 border-[#244980b8] w-[calc(50%-4px)] sm:w-[24%] ${
                 activeTab === tab.id
                   ? "tab-active shadow-md"
                   : "border border-gray-200 text-gray-600 hover:bg-gray-50"
               }`}
             >
-              {<tab.icon size={18} color={tab.color} />}
+              <tab.icon size={18} color={tab.color} />
               {tab.label}
             </button>
           ))}
@@ -126,7 +143,6 @@ export default function PortalPage() {
           {activeTab === "ai" && <AIChatTab />}
         </div>
 
-        {/* Dialogs */}
         {showAdd && (
           <AddSemesterDialog
             onClose={() => setShowAdd(false)}

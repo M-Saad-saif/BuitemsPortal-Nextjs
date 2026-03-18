@@ -1,5 +1,3 @@
-// app/api/auth/createuser/route.js
-
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { connectDB } from "@/lib/db";
@@ -51,7 +49,6 @@ export async function POST(request) {
       program: program || "",
     });
 
-    // Return JWT token (same response structure as original)
     const authToken = signToken(user._id.toString());
     return NextResponse.json({ success: true, authToken }, { status: 201 });
   } catch (error) {

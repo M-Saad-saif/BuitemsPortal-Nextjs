@@ -1,7 +1,3 @@
-// app/api/ai-chat/route.js
-// AI study assistant endpoint — proxies to Claude / OpenAI
-// Replace ANTHROPIC_API_KEY or OPENAI_API_KEY in .env.local
-
 import { NextResponse } from "next/server";
 
 const SYSTEM_PROMPT = `You are a helpful AI study assistant for BUITEMS (Balochistan University of Information Technology, Engineering & Management Sciences) students. 
@@ -38,7 +34,8 @@ export async function POST(request) {
         }),
       });
       const data = await res.json();
-      const reply = data.content?.[0]?.text || "I couldn't process that. Try again.";
+      const reply =
+        data.content?.[0]?.text || "I couldn't process that. Try again.";
       return NextResponse.json({ reply });
     }
 
@@ -55,7 +52,7 @@ export async function POST(request) {
           max_tokens: 500,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },
-            { role: "user",   content: message },
+            { role: "user", content: message },
           ],
         }),
       });
@@ -69,9 +66,10 @@ export async function POST(request) {
       reply:
         "AI assistant is not configured. Please add ANTHROPIC_API_KEY or OPENAI_API_KEY to your .env.local file to enable the AI assistant.",
     });
-
   } catch (error) {
     console.error("ai-chat error:", error);
-    return NextResponse.json({ reply: "AI service unavailable. Please try again later." });
+    return NextResponse.json({
+      reply: "AI service unavailable. Please try again later.",
+    });
   }
 }
