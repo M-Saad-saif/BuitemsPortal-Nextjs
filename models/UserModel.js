@@ -1,16 +1,15 @@
-// models/UserModel.js — Mongoose user schema (same as original backend/models/UserModel.js)
 import mongoose from "mongoose";
 
 const SemesterSchema = new mongoose.Schema({
-  semesterName: { type: String, required: true },   // e.g. "Semester 1"
-  creditHours:  { type: Number, required: true },
-  gradePoints:  { type: Number, required: true },   // total quality points (GPA * credits)
-  gpa:          { type: Number, required: true },
+  semesterName: { type: String, required: true },
+  creditHours: { type: Number, required: true },
+  gradePoints: { type: Number, required: true },
+  gpa: { type: Number, required: true },
   subjects: [
     {
-      name:        { type: String },
+      name: { type: String },
       creditHours: { type: Number },
-      grade:       { type: String },  // A, B+, B, C+, C, D, F
+      grade: { type: String },
     },
   ],
 });
@@ -49,7 +48,7 @@ const UserSchema = new mongoose.Schema(
     },
     program: {
       type: String,
-      default: "",    // BS, BE, MS, etc.
+      default: "",
     },
     phone: {
       type: String,
@@ -57,11 +56,11 @@ const UserSchema = new mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "",   // Cloudinary URL
+      default: "",
     },
     profilePicPublicId: {
       type: String,
-      default: "",   // Cloudinary public_id for deletion
+      default: "",
     },
     semesters: [SemesterSchema],
     cgpa: {
@@ -73,22 +72,24 @@ const UserSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-// Recalculate CGPA before saving
 UserSchema.pre("save", function (next) {
   if (this.semesters && this.semesters.length > 0) {
     const totalPoints = this.semesters.reduce(
-      (sum, s) => sum + s.gradePoints, 0
+      (sum, s) => sum + s.gradePoints,
+      0,
     );
     const totalCredits = this.semesters.reduce(
-      (sum, s) => sum + s.creditHours, 0
+      (sum, s) => sum + s.creditHours,
+      0,
     );
     this.totalCreditHours = totalCredits;
-    this.cgpa = totalCredits > 0
-      ? Math.round((totalPoints / totalCredits) * 100) / 100
-      : 0;
+    this.cgpa =
+      totalCredits > 0
+        ? Math.round((totalPoints / totalCredits) * 100) / 100
+        : 0;
   }
   next();
 });
