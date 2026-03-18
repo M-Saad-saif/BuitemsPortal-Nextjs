@@ -85,7 +85,7 @@ export default function PortalPage() {
 
   return (
     <section className="bg-blue-100">
-      <div className="max-w-5xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8">
         <ProfileHeader
           user={localUser}
           onEditClick={() => setShowEdit(true)}
@@ -95,18 +95,19 @@ export default function PortalPage() {
         />
 
         {/* Tabs */}
-        <div className="flex overflow-x-auto gap-1 mb-6 pb-1 justify-center">
+        <div className="flex flex-wrap gap-2 mb-6">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all border-2 border-[#2449809b]  ${
+              className={`flex items-center justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all border-2 border-[#2449809b] w-[calc(50%-4px)] sm:w-[24%] ${
                 activeTab === tab.id
-                  ? "tab-active shadow-md "
-                  : "border border-gray-200 text-gray-600 hover:bg-gray-50 "
+                  ? "tab-active shadow-md"
+                  : "border border-gray-200 text-gray-600 hover:bg-gray-50"
               }`}
             >
-              {<tab.icon size={20} color={tab.color} />} {tab.label}
+              {<tab.icon size={18} color={tab.color} />}
+              {tab.label}
             </button>
           ))}
         </div>

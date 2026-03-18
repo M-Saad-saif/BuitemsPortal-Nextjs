@@ -6,6 +6,12 @@ import { GRADE_POINTS, GRADE_COLOR, gpaColor } from "@/lib/constants/grades";
 export default function SemesterRecordsTab({ user, onAdd, onDelete }) {
   const [expanded, setExpanded] = useState(null);
 
+  function capitalizeFirstLetter(string) {
+    if (!string) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+
   if (!user.semesters || user.semesters.length === 0) {
     return (
       <div className="card text-center py-12">
@@ -26,6 +32,7 @@ export default function SemesterRecordsTab({ user, onAdd, onDelete }) {
     );
   }
 
+  
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between mb-4">
@@ -45,8 +52,8 @@ export default function SemesterRecordsTab({ user, onAdd, onDelete }) {
           >
             <div>
               <span className="font-semibold text-gray-800">
-                {sem.semesterName}
-              </span>
+                {capitalizeFirstLetter(sem.semesterName)}
+              </span> 
               <span className="ml-3 text-xs text-gray-400">
                 {sem.creditHours} credits
               </span>
@@ -74,7 +81,7 @@ export default function SemesterRecordsTab({ user, onAdd, onDelete }) {
                 <tbody className="divide-y divide-gray-50">
                   {sem.subjects.map((s, i) => (
                     <tr key={i}>
-                      <td className="py-2 text-gray-700">{s.name}</td>
+                      <td className="py-2 text-gray-700">{s.name.toUpperCase()}</td>
                       <td className="py-2 text-center text-gray-500">
                         {s.creditHours}
                       </td>

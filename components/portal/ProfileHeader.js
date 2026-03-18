@@ -32,6 +32,11 @@ export default function ProfileHeader({ user, onEditClick, onPicChange }) {
     setUploading(false);
   };
 
+  function capitalizeFirstLetter(string) {
+    if (!string) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   return (
     <div className="card mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-5">
       {/* Avatar */}
@@ -44,8 +49,8 @@ export default function ProfileHeader({ user, onEditClick, onPicChange }) {
               className="w-full h-full object-cover"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-3xl font-bold text-blue-300 navbar-bg text-white">
-              {user.name?.charAt(0)?.toUpperCase()}
+            <div className="w-full h-full flex items-center justify-center text-3xl font-bold navbar-bg text-white">
+              {capitalizeFirstLetter(user.name)}
             </div>
           )}
         </div>
@@ -68,7 +73,9 @@ export default function ProfileHeader({ user, onEditClick, onPicChange }) {
 
       {/* Info */}
       <div className="flex-1 text-center sm:text-left">
-        <h2 className="text-xl font-bold text-gray-800">{user.name}</h2>
+        <h2 className="text-xl font-bold text-gray-800">
+          {capitalizeFirstLetter(user.name)}
+        </h2>
         <p className="text-gray-500 text-sm">{user.email}</p>
         <div className="flex flex-wrap justify-center sm:justify-start gap-2 mt-2">
           {user.rollNo && (

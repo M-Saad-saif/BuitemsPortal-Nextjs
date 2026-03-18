@@ -1,8 +1,14 @@
 "use client";
 
 export default function ProfileTab({ user }) {
+
+  function capitalizeFirstLetter(string) {
+    if (!string) return "";
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   const fields = [
-    { label: "Full Name", value: user.name },
+    { label: "Full Name", value: capitalizeFirstLetter(user.name)},
     { label: "Email", value: user.email },
     { label: "Roll Number", value: user.rollNo || "Not set" },
     { label: "Department", value: user.department || "Not set" },
