@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Spinner from "@/components/UI/Spinner";
+import toast from "react-hot-toast";
 
 import { IoMdLogIn } from "react-icons/io";
 
@@ -26,12 +28,26 @@ export default function LoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
 
+    if (!form.email.trim()) {
+      toast.error("Email is required");
+      return;
+    }
+    if (!form.password.trim()) {
+      toast.error("Password is required");
+      return;
+    }
+    setLoading(true);
+
     try {
-      await login(form.email, form.password);
+      const result = await login(form.email, form.password);
       router.push("/portal");
+      if (result.success) {
+        toast.success("login successfully");
+      } else {
+        toast.error("user not found");
+      }
     } catch (err) {
       setError(err.message || "Invalid email or password");
     } finally {
@@ -62,7 +78,7 @@ export default function LoginPage() {
             Login <IoMdLogIn />
           </h2>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} noValidate className="space-y-4">
             {/* Email */}
             <div className="relative w-full my-1">
               <input
@@ -71,7 +87,6 @@ export default function LoginPage() {
                 placeholder=" "
                 value={form.email}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
               />
               <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
@@ -87,7 +102,6 @@ export default function LoginPage() {
                 placeholder=" "
                 value={form.password}
                 onChange={handleChange}
-                required
                 className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
               />
               <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
@@ -110,17 +124,12 @@ export default function LoginPage() {
               </div>
             )}
 
-            {/* Loading Spinner */}
             {loading && (
-              <div className="text-center my-4">
-                <div className="flex justify-center">
-                  <div className="w-12 h-12 border-4 border-blue-200 border-t-[#3169f4] rounded-full animate-spin"></div>
-                </div>
-                <h6 className="mt-2 text-gray-600 text-sm">Logging in...</h6>
+              <div className="text-center justify-self-center ">
+                <Spinner width="160" className="mb-[-15px] " />
               </div>
             )}
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={loading}

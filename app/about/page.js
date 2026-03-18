@@ -1,7 +1,8 @@
 import ToolHeader from "@/components/layout/ToolHeader";
 import Image from "next/image";
 import Link from "next/link";
-import "./about.css";
+import AboutTechCard from "@/components/UI/AboutTechCard";
+import Button from "@/components/UI/button";
 
 import { LuCodeXml } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
@@ -56,57 +57,6 @@ const TECH_STACK = [
   },
 ];
 
-const About_Cards = [
-  {
-    id: "1",
-    icon: "https://cdn-icons-png.flaticon.com/512/10464/10464776.png",
-    title: "Secure Student Portal",
-    desc: "JWT authentication, profile management, and personal academic records storage.",
-  },
-  {
-    id: "2",
-    icon: "https://cdn-icons-png.flaticon.com/512/2374/2374370.png",
-    title: "GPA Calculator",
-    desc: "Calculate semester GPA .",
-  },
-  {
-    id: "3",
-    icon: "https://cdn-icons-png.flaticon.com/512/9084/9084248.png",
-    title: "CGPA Calculator",
-    desc: "Track cumulative GPA across multiple semesters.",
-  },
-  {
-    id: "4",
-    icon: "https://cdn-icons-png.flaticon.com/512/15838/15838894.png",
-    title: "Aggregate Calculator",
-    desc: "Calculate admission aggregate using Matric + FSc + Entry Test formula.",
-  },
-  {
-    id: "5",
-    icon: "https://cdn-icons-png.flaticon.com/512/888/888034.png",
-    title: "Front Page Generator",
-    desc: "4 professional assignment front page templates with instant PDF export.",
-  },
-  {
-    id: "6",
-    icon: "https://cdn-icons-png.flaticon.com/512/3269/3269691.png",
-    title: "Timetable",
-    desc: "Interactive weekly class schedule that you can customise.",
-  },
-  {
-    id: "7",
-    icon: "https://cdn-icons-png.flaticon.com/512/2231/2231492.png",
-    title: "Faculties & Departments",
-    desc: "Complete listing of all BUITEMS faculties, departments, and programs.",
-  },
-  {
-    id: "8",
-    icon: "https://cdn-icons-png.flaticon.com/512/17632/17632037.png",
-    title: "AI Study Assistant",
-    desc: "Integrated AI chatbot to answer academic queries.",
-  },
-];
-
 export default function AboutPage() {
   return (
     <section className="bg-blue-100">
@@ -134,75 +84,14 @@ export default function AboutPage() {
             GOAL
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            To simplify the academic life of students by providing free,
-            fast, and reliable tools in one place — eliminating the need to use
+            To simplify the academic life of students by providing free, fast,
+            and reliable tools in one place — eliminating the need to use
             multiple websites or apps for common tasks like calculating GPA,
             generating assignment cover pages, or tracking semester records.
           </p>
         </div>
 
-        <section className="">
-          {/* Single container for all features */}
-          <div className="About-container mt-[6rem]">
-            <header className="header-design">
-              <div className="footer-wave"></div>
-            </header>
-            <div className="pset">
-              <div className="container">
-                {/* This row will contain all feature cards */}
-                <div className="row listar-feature-items ">
-                  {About_Cards.map((item) => (
-                    <div
-                      key={item.id}
-                      className="col-xs-12 col-sm-6 col-md-3 listar-feature-item-wrapper listar-feature-with-image listar-height-changed"
-                      data-aos="fade-zoom-in"
-                      data-aos-group="features"
-                      data-line-height="25.2px"
-                    >
-                      <div className="listar-feature-item listar-feature-has-link">
-                        <div className="listar-feature-item-inner">
-                          <div className="listar-feature-right-border"></div>
-
-                          <div className="listar-feature-block-content-wrapper">
-                            <div className="listar-feature-icon-wrapper">
-                              <div className="listar-feature-icon-inner">
-                                <div>
-                                  <img
-                                    alt="Businesses"
-                                    className="listar-image-icon"
-                                    src={item.icon}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div
-                              className="listar-feature-content-wrapper"
-                              style={{ paddingTop: "0px" }}
-                            >
-                              <div className="listar-feature-item-title listar-feature-counter-added items-center">
-                                <span>
-                                  <span>{item.id}</span>
-                                  <p className="text-[14px] font-bold">
-                                    {item.title}
-                                  </p>
-                                </span>
-                              </div>
-
-                              <div className="listar-feature-item-excerpt text-[14px]">
-                                {item.desc}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="listar-feature-fix-bottom-padding listar-fix-feature-arrow-button-height"></div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <AboutTechCard />
 
         {/* Tech Stack */}
         <div className="mb-10">
@@ -266,10 +155,9 @@ export default function AboutPage() {
                   href="https://saadsaif.vercel.app"
                   target="_blank"
                   rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 navbar-bg text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+                  className="inline-flex items-center gap-2 px-4 py-2 navbar-bg text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
                 >
-                  
-              <LuCodeXml size={25}/> Portfolio
+                  <LuCodeXml size={25} /> Portfolio
                 </a>
 
                 <a
@@ -287,16 +175,18 @@ export default function AboutPage() {
 
         {/* Contribute */}
         <div className="card bg-amber-50 border border-amber-200 text-center">
-          <h2 className="font-bold text-gray-800 mb-2 flex items-center gap-2 justify-center"><GiStarFormation size={25} color="#fbbf24" /> Open Source</h2>
+          <h2 className="font-bold text-gray-800 mb-2 flex items-center gap-2 justify-center">
+            <GiStarFormation size={25} color="#fbbf24" /> Open Source
+          </h2>
           <p className="text-gray-600 text-sm mb-4">
             This project is open source. Found a bug or have a feature idea?
             Contributions are welcome on GitHub!
           </p>
-          <Link
-            href="/portal"
-            className="inline-block px-6 py-2.5 navbar-bg text-white font-semibold rounded-lg hover:opacity-90 transition-opacity text-sm"
-          >
-            Get Started — It&apos;s Free
+          <Link href="/portal">
+            <Button
+              href="Get Started — It's Free"
+              className="justify-self-center"
+            />
           </Link>
         </div>
       </div>

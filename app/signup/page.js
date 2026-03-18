@@ -6,45 +6,52 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import Spinner from "@/components/UI/Spinner";
 
 import { IoMdPersonAdd } from "react-icons/io";
 
 const DEPARTMENTS = [
-  "Computer Engineering",
-  "Electronic Engineering",
-  "Electrical Engineering",
-  "Software Engineering",
-  "Telecommunication Engineering",
+  // Computing & IT
   "Computer Science",
+  "Software Engineering",
   "Information Technology",
-  "Chemistry",
-  "Maths",
-  "Physics",
-  "Civil Engineering",
-  "Petroleum and gas Engineering",
+  "Computer Engineering",
+  // Core Engineering
+  "Electrical Engineering",
+  "Electronic Engineering",
+  "Telecommunication Engineering",
   "Mechanical Engineering",
-  "Textile Engineering",
+  "Civil Engineering",
   "Chemical Engineering",
+  "Petroleum and Gas Engineering",
   "Mining Engineering",
   "Geological Engineering",
-  "Architecture",
-  "Biotechnology",
+  "Textile Engineering",
+  // Sciences
+  "Physics",
+  "Chemistry",
+  "Mathematics",
   "Environmental Science",
+  "Biotechnology",
   "Microbiology",
-  "Management Sciences",
-  "Economic",
-  "Public Administration",
-  "Department of Law",
-  "Education",
-  "English",
+  // Architecture & Design
+  "Architecture",
   "Fine Arts",
+  // Business & Social Sciences
+  "Management Sciences",
+  "Economics",
+  "Public Administration",
   "International Relations",
   "Mass Communication",
   "Psychology",
   "Sociology",
+  // Humanities & Law
+  "Department of Law",
+  "Education",
+  "English",
 ];
 
-const PROGRAMS = ["BS", "BE", "MS", "ME", "MBA", "PhD", "BBA", "BArch"];
+const PROGRAMS = ["BS", "MS", "PhD", "BBA"];
 
 export default function SignupPage() {
   const { signup } = useAuth();
@@ -87,7 +94,6 @@ export default function SignupPage() {
   };
 
   return (
-
     <div className="min-h-screen flex items-center justify-center px-4 py-8 bg-blue-100">
       <div className="flex flex-col md:flex-row bg-white rounded-2xl overflow-hidden w-full max-w-4xl mx-auto shadow-[0_10px_25px_rgba(0,0,0,0.32)] animate-[fading_1s_ease]">
         {/* Left side - Image/Branding - On top for mobile, left for desktop */}
@@ -237,13 +243,8 @@ export default function SignupPage() {
             />
 
             {loading && (
-              <div className="text-center my-2">
-                <div className="flex justify-center">
-                  <div className="w-10 h-10 border-4 border-blue-200 border-t-[#3169f4] rounded-full animate-spin"></div>
-                </div>
-                <h6 className="mt-1 text-gray-600 text-sm">
-                  Creating your account...
-                </h6>
+              <div className="text-center justify-self-center">
+                <Spinner width="160" className="mb-[-15px]" />
               </div>
             )}
 
