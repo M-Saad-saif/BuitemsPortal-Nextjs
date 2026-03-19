@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -5,15 +6,8 @@ const nextConfig = {
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
   },
-
-  async redirects() {
-    return [
-      {
-        source: "/",
-        destination: "https://buitems-portal.vercel.app",
-        permanent: true,
-      },
-    ];
+  api: {
+    bodyParser: false,
   },
 };
 
