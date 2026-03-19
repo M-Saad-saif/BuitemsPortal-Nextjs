@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { FaRobot } from "react-icons/fa6";
 
 export default function AIChatTab() {
   const [msgs, setMsgs] = useState([
@@ -53,7 +54,7 @@ export default function AIChatTab() {
   return (
     <div className="card flex flex-col h-[500px]">
       <div className="flex items-center gap-2 pb-3 border-b mb-3">
-        <span className="text-xl">🤖</span>
+        <span className="text-xl"><FaRobot /></span>
         <h3 className="font-semibold text-gray-800">AI Study Assistant</h3>
         <span className="ml-auto text-xs text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
           ● Online

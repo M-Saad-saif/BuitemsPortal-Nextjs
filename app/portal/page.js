@@ -117,7 +117,7 @@ export default function PortalPage() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center  p-2 justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all border-2 border-[#244980b8] w-[calc(50%-4px)] sm:w-[24%] ${
+              className={`flex items-center border border-blue-800 border-dotted p-2 justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all w-[calc(50%-4px)] sm:w-[24%] ${
                 activeTab === tab.id
                   ? "tab-active shadow-md"
                   : "border border-gray-200 text-gray-600 hover:bg-gray-50"
