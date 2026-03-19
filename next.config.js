@@ -6,9 +6,7 @@ const nextConfig = {
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
   },
-  api: {
-    bodyParser: false,
-  },
+
 };
 
 module.exports = nextConfig;
