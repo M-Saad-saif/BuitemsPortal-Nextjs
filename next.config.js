@@ -6,8 +6,15 @@ const nextConfig = {
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
   },
-  api: {
-    bodyParser: false,
+
+  async redirects() {
+    return [
+      {
+        source: "https://buitems-portal-nextjs.vercel.app",       // replace with your previous link
+        destination: "https://buitems-portal.vercel.app",  // replace with your new link
+        permanent: true,           // 301 redirect
+      },
+    ];
   },
 };
 
