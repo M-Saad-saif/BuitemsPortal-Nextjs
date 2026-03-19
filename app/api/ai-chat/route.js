@@ -24,7 +24,6 @@ export async function POST(request) {
       });
     }
 
-    // Check if GROQ API key is configured
     if (!process.env.GROQ_API_KEY) {
       return NextResponse.json({
         success: false,
@@ -44,7 +43,7 @@ export async function POST(request) {
           content: message,
         },
       ],
-      model: "llama-3.3-70b-versatile", // or use "mixtral-8x7b-32768" for faster responses
+      model: "llama-3.3-70b-versatile",
       temperature: 0.7,
       max_tokens: 500,
     });
