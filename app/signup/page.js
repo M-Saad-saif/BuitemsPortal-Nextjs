@@ -16,6 +16,7 @@ const DEPARTMENTS = [
   "Software Engineering",
   "Information Technology",
   "Computer Engineering",
+  "Data Science",
   // Core Engineering
   "Electrical Engineering",
   "Electronic Engineering",
@@ -168,6 +169,7 @@ export default function SignupPage() {
               >
                 {showPass ? "Hide" : "Show"}
               </button>
+              <p className="text-[10px] text-center">Remember the password</p>
             </div>
 
             <div className="relative w-full">
