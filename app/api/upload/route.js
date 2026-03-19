@@ -4,6 +4,8 @@ import User from "@/models/UserModel";
 import cloudinary from "@/lib/cloudinary";
 import { getTokenFromRequest, verifyToken } from "@/lib/jwt";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request) {
   try {
     await connectDB();
@@ -14,6 +16,7 @@ export async function POST(request) {
         { success: false, error: "Unauthorized" },
         { status: 401 },
       );
+
     const decoded = verifyToken(token);
     if (!decoded)
       return NextResponse.json(
@@ -31,12 +34,10 @@ export async function POST(request) {
       );
     }
 
-    // Convert file to buffer then base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
     const base64 = `data:${file.type};base64,${buffer.toString("base64")}`;
 
-    // Find user and delete old pic if exists
     const user = await User.findById(decoded.user.id);
     if (!user)
       return NextResponse.json(
@@ -48,7 +49,6 @@ export async function POST(request) {
       await cloudinary.uploader.destroy(user.profilePicPublicId);
     }
 
-    // Upload to cloudinary
     const result = await cloudinary.uploader.upload(base64, {
       folder: "buitems_profiles",
       transformation: [
@@ -69,5 +69,3 @@ export async function POST(request) {
     );
   }
 }
-
-export const config = { api: { bodyParser: false } };
