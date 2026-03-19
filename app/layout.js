@@ -42,10 +42,10 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://buitems-portal.vercel.app/",
+    url: "https://buitems-portal.vercel.app",
     title: "BUITEMS Student Portal · Academic Tools and Student Portal",
     description:
-      "Complete academic toolkit for BUITEMS students: GPA/CGPA calculators, interactive timetable, front page generator with 4 templates, AI study assistant, and profile management. Built with Next.js.",
+      "Complete academic toolkit for BUITEMS students: GPA/CGPA calculators, interactive timetable, front page generator, AI study assistant, and profile management. Built with Next.js.",
     siteName: "BUITEMS Student Portal",
     images: [
       {
