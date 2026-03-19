@@ -7,7 +7,7 @@ import { Toaster } from "react-hot-toast";
 export const metadata = {
   metadataBase: new URL("https://buitems-portal.vercel.app"),
   icons: {
-    icon: "/favicon.ico",
+    icon: "/images/buitemIcon.ico",
   },
   title: {
     default:
