@@ -37,7 +37,7 @@ const TABS = [
 ];
 
 export default function PortalPage() {
-  const { user, loading, refreshUser } = useAuth();
+  const { user, loading, refreshUser, isLoggingOut } = useAuth();
   const router = useRouter();
 
   const [activeTab, setActiveTab] = useState("profile");
@@ -49,8 +49,8 @@ export default function PortalPage() {
   const initialised = useRef(false);
 
   useEffect(() => {
-    if (!loading && !user) router.push("/login");
-  }, [loading, user, router]);
+    if (!loading && !user && !isLoggingOut) router.push("/login");
+  }, [loading, user, isLoggingOut, router]);
 
   useEffect(() => {
     if (user && !initialised.current) {
@@ -112,15 +112,15 @@ export default function PortalPage() {
         />
 
         {/* Tabs */}
-        <div className="flex flex-wrap gap-2 mb-6 ">
+        <div className="flex flex-wrap gap-2 mb-6">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center border border-blue-800 border-dotted p-2 justify-center gap-2 px-2 py-2.5 rounded-xl text-xs sm:text-sm font-medium transition-all w-[calc(50%-4px)] sm:w-[24%] ${
+              className={`flex items-center justify-center gap-2 px-2 py-2.5 rounded-[10px] text-xs sm:text-sm font-medium transition-all w-[calc(50%-4px)] sm:w-[24%] border border-blue-600 border-dotted ${
                 activeTab === tab.id
                   ? "tab-active shadow-md"
-                  : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+                  : "text-gray-600 hover:bg-gray-50"
               }`}
             >
               <tab.icon size={18} color={tab.color} />

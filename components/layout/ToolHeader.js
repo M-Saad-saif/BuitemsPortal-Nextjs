@@ -5,7 +5,7 @@ const ToolHeader = ({heading, desc, className=""}) => {
     <div>
        <div className="text-center mb-8">
         <h1 className={`text-3xl font-bold text-gray-800 ${className}`}>{heading}</h1>
-        <p className="text-gray-500 mt-2 px-32">{desc}</p>
+        <p className="text-gray-500 mt-2 px-2">{desc}</p>
 
       </div>
     </div>

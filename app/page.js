@@ -76,7 +76,7 @@ export default function HomePage() {
             href="#toolcards"
             className="flex flex-col items-center font-bold justify-self-center text-center mt-[-20px]"
           >
-            <p>Scroll</p>
+            <p>Scroll for tools</p>
             <FaArrowDown className="mt-1 animate-bounce text-xl" />
           </Link>
         </div>

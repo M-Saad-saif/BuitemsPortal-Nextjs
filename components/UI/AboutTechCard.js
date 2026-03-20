@@ -54,18 +54,18 @@ const About_Cards = [
 
 const AboutTechCard = () => {
   return (
-    <section className="">
+    <section className="about-tech-section">
       <div className="About-container mt-[6rem]">
         <header className="header-design">
           <div className="footer-wave"></div>
         </header>
         <div className="pset">
           <div className="container">
-            <div className="row listar-feature-items ">
+            <div className="row listar-feature-items">
               {About_Cards.map((item) => (
                 <div
                   key={item.id}
-                  className="col-xs-12 col-sm-6 col-md-3 listar-feature-item-wrapper listar-feature-with-image listar-height-changed"
+                  className="col-xs-12 col-sm-6 col-md-4 col-lg-3 listar-feature-item-wrapper listar-feature-with-image listar-height-changed"
                   data-aos="fade-zoom-in"
                   data-aos-group="features"
                   data-line-height="25.2px"
@@ -79,7 +79,7 @@ const AboutTechCard = () => {
                           <div className="listar-feature-icon-inner">
                             <div>
                               <img
-                                alt="Businesses"
+                                alt={item.title}
                                 className="listar-image-icon"
                                 src={item.icon}
                               />
@@ -93,13 +93,13 @@ const AboutTechCard = () => {
                           <div className="listar-feature-item-title listar-feature-counter-added items-center">
                             <span>
                               <span>{item.id}</span>
-                              <p className="text-[14px] font-bold">
+                              <p className="feature-title-text">
                                 {item.title}
                               </p>
                             </span>
                           </div>
 
-                          <div className="listar-feature-item-excerpt text-[14px]">
+                          <div className="listar-feature-item-excerpt">
                             {item.desc}
                           </div>
                         </div>

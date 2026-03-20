@@ -1,10 +1,46 @@
+/* Base styles remain the same */
 .listar-feature-item-wrapper {
-    margin-bottom: 120px;
-    padding-left: 27px;
-    padding-right: 27px;
-    flex: 0 0 33.3333%;
-    max-width: 33.3333%;
+    margin-bottom: 80px;
+    padding-left: 15px;
+    padding-right: 15px;
     box-sizing: border-box;
+}
+
+/* Desktop: 4 columns */
+@media (min-width: 992px) {
+    .listar-feature-item-wrapper {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 768px) and (max-width: 991px) {
+    .listar-feature-item-wrapper {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* Mobile: 2 columns (changed from 1 column) */
+@media (max-width: 767px) {
+    .listar-feature-item-wrapper {
+        flex: 0 0 50%;
+        max-width: 50%;
+        margin-bottom: 60px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* For very small phones (below 480px), you might want to keep 2 columns or switch to 1 */
+@media (max-width: 480px) {
+    .listar-feature-item-wrapper {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
 }
 
 .listar-feature-item {
@@ -40,6 +76,16 @@
     z-index: 10;
 }
 
+/* Adjust icon sizes for mobile */
+@media (max-width: 767px) {
+    .listar-feature-with-image .listar-feature-item a:before {
+        width: 100px;
+        height: 100px;
+        margin-left: -50px;
+        top: -50px;
+    }
+}
+
 .listar-feature-item a:after {
     content: "";
     position: absolute;
@@ -55,30 +101,30 @@
         -5px -5px 10px rgba(255, 255, 255, 0.5);
 }
 
-
 @keyframes ripple {
     0% {
         box-shadow: 0 0 0 0 rgba(163, 177, 198, 0.3), 0 0 0 1em rgba(163, 177, 198, 0.3), 0 0 0 3em rgba(163, 177, 198, 0.03), 0 0 0 5em rgba(163, 177, 198, 0.01);
     }
-
     100% {
         box-shadow: 0 0 0 1em rgba(163, 177, 198, 0.3), 0 0 0 3em rgba(163, 177, 198, 0.03), 0 0 0 5em rgba(163, 177, 198, 0.03), 0 0 0 8em rgba(163, 177, 198, 0.01);
     }
 }
 
-
-
 .listar-feature-item .listar-feature-item-inner {
-    /* padding: 50px 30px; */
     border-radius: 6px;
     z-index: 5;
     position: relative;
     height: 100%;
-}
-
-.listar-feature-item .listar-feature-item-inner {
     padding-top: 60px;
     padding-bottom: 60px;
+}
+
+/* Adjust inner padding for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item .listar-feature-item-inner {
+        padding-top: 40px;
+        padding-bottom: 40px;
+    }
 }
 
 .listar-feature-item .listar-feature-item-inner:before {
@@ -147,19 +193,18 @@
     flex-wrap: wrap;
     justify-content: center;
     animation: fadepset 1s ease;
+    margin: 0 -15px;
 }
 
-@media (max-width: 900px) {
-    .listar-feature-item-wrapper {
-        flex: 0 0 50%;
-        max-width: 50%;
+/* Adjust container padding for mobile */
+@media (max-width: 767px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
     }
-}
-
-@media (max-width: 640px) {
-    .listar-feature-item-wrapper {
-        flex: 0 0 100%;
-        max-width: 100%;
+    
+    .listar-feature-items {
+        margin: 0 -8px;
     }
 }
 
@@ -167,12 +212,10 @@
     from {
         opacity: 0;
     }
-
     to {
         opacity: 1;
     }
 }
-
 
 .listar-feature-right-border:before,
 .listar-hovering-features .listar-feature-item a:hover~.listar-feature-item-inner .listar-feature-right-border:before {
@@ -200,6 +243,14 @@
     margin: -30px;
     padding: 30px;
     height: calc(100% + 100px);
+}
+
+/* Adjust block content wrapper for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item .listar-feature-block-content-wrapper {
+        margin: -20px;
+        padding: 20px;
+    }
 }
 
 .listar-features-design-2 .listar-feature-item-wrapper {
@@ -237,6 +288,18 @@
     margin-top: -74px;
 }
 
+/* Adjust icon wrapper for mobile */
+@media (max-width: 767px) {
+    .listar-feature-icon-wrapper {
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        margin-left: -50px;
+        top: -50px;
+        margin-top: -50px;
+    }
+}
+
 .listar-feature-icon-inner {
     width: 120px;
     height: 120px;
@@ -247,6 +310,15 @@
     vertical-align: middle;
     box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.14);
     background: #fff;
+}
+
+/* Adjust inner icon for mobile */
+@media (max-width: 767px) {
+    .listar-feature-icon-inner {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+    }
 }
 
 .listar-feature-icon-inner div {
@@ -263,6 +335,15 @@
     text-align: left;
 }
 
+/* Adjust inner div for mobile */
+@media (max-width: 767px) {
+    .listar-feature-icon-inner div {
+        width: 80px;
+        height: 80px;
+        line-height: 80px;
+    }
+}
+
 .listar-feature-icon-inner img {
     position: relative;
     margin: 0 auto;
@@ -276,6 +357,13 @@
     -o-transform: translate(-50%);
     transform: translate(-50%);
     height: 55px;
+}
+
+/* Adjust icon size for mobile */
+@media (max-width: 767px) {
+    .listar-feature-icon-inner img {
+        height: 40px;
+    }
 }
 
 .listar-feature-item img,
@@ -298,11 +386,25 @@
     margin-top: -15.5px;
 }
 
+/* Adjust content wrapper margin for mobile */
+@media (max-width: 767px) {
+    .listar-feature-content-wrapper {
+        margin-top: -20px;
+    }
+}
+
 .listar-feature-item .listar-feature-item-title {
     padding-top: 0;
-    margin: 0 0 30px;
+    margin: 0 0 20px;
     text-align: center;
     line-height: 1.5;
+}
+
+/* Adjust title margin for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item .listar-feature-item-title {
+        margin: 0 0 12px;
+    }
 }
 
 .listar-feature-item .listar-feature-item-title.listar-feature-counter-added>span {
@@ -313,26 +415,47 @@
 .listar-feature-item .listar-feature-item-title>span {
     box-shadow: 15px 20px 30px rgba(80, 80, 80, 0.12),
         5px 0px 40px rgba(80, 80, 80, 0.1);
-    padding: 10px 20px;
+    padding: 8px 15px;
     display: inline-block;
     position: relative;
     background-color: #fff;
 }
 
+/* Adjust title span padding for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item .listar-feature-item-title>span {
+        padding: 6px 12px;
+    }
+}
+
 .listar-feature-item .listar-feature-item-title>span span {
     box-shadow: 15px 15px 30px rgba(80, 80, 80, 0.2),
         5px 0px 80px rgba(80, 80, 80, 0.15);
-    padding: 10px 0;
+    padding: 8px 0;
     display: inline-block;
-    width: 50px;
-    height: 50px;
-    line-height: 30px;
+    width: 40px;
+    height: 40px;
+    line-height: 24px;
     white-space: nowrap;
     position: absolute;
-    top: -3px;
-    left: -40px;
+    top: -2px;
+    left: -35px;
     border-radius: 50px;
     background-color: #fff;
+    font-size: 12px;
+}
+
+/* Adjust number badge for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item .listar-feature-item-title>span span {
+        width: 32px;
+        height: 32px;
+        line-height: 18px;
+        left: -30px;
+        top: -1px;
+        font-size: 11px;
+        padding: 7px 0;
+    }
 }
 
 .listar-feature-item .listar-feature-item-title span {
@@ -343,27 +466,44 @@
     text-shadow: none;
     border-radius: 50px;
     color: #252525;
-    font-size: 18px;
+}
+
+.feature-title-text {
+    font-size: 13px;
+    font-weight: bold;
+    margin: 0;
+}
+
+/* Adjust title text for mobile */
+@media (max-width: 767px) {
+    .feature-title-text {
+        font-size: 11px;
+    }
 }
 
 .listar-feature-item-excerpt {
-    padding: 0 20px;
-}
-
-.listar-feature-item-excerpt {
+    padding: 0 12px;
     color: #252525;
     position: relative;
     top: 0;
     width: 100%;
     margin: 0 auto;
     text-align: center;
+    font-size: 13px;
+}
+
+/* Adjust excerpt padding and font for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item-excerpt {
+        padding: 0 8px;
+        font-size: 11px;
+        line-height: 1.4;
+    }
 }
 
 .pset {
     padding-top: 8px;
-
 }
-
 
 .listar-map-button-text span {
     position: relative;
@@ -439,34 +579,37 @@
     color: #555;
     line-height: 52px;
 }
-/* For very large screens, maintain 4 items */
-@media (min-width: 1200px) {
-    .listar-feature-item-wrapper {
-        flex: 0 0 25%;  
-        max-width: 25%;
+
+/* Adjust arrow button for mobile */
+@media (max-width: 767px) {
+    .listar-feature-item.listar-feature-has-link .listar-feature-item-inner:after {
+        width: 35px;
+        height: 35px;
+        margin-left: -17.5px;
+        bottom: -25px;
+        background-size: 35%;
+        line-height: 35px;
     }
 }
 
-/* For desktop/laptop */
-@media (min-width: 992px) and (max-width: 1199px) {
+/* Ensure proper spacing on very large screens */
+@media (min-width: 1400px) {
     .listar-feature-item-wrapper {
-        flex: 0 0 25%;  
-        max-width: 100%;
+        margin-bottom: 100px;
+    }
+    
+    .container {
+        max-width: 1320px;
+        margin: 0 auto;
     }
 }
 
-/* For tablets */
-@media (max-width: 991px) {
-    .listar-feature-item-wrapper {
-        flex: 0 0 50%;  
-        max-width: 50%;
-    }
+/* Add hover effects for better interaction */
+.listar-feature-item:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
 }
 
-/* For mobile */
-@media (max-width: 640px) {
-    .listar-feature-item-wrapper {
-        flex: 0 0 100%; 
-        max-width: 100%;
-    }
+.listar-feature-item {
+    transition: transform 0.3s ease;
 }

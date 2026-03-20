@@ -70,59 +70,56 @@ const features = [
 
 const ToolsCard = () => {
   return (
-      <section className="bg-blue-100 py-8 px-4 ">
-        <div className="max-w-6xl mx-auto">
-          {/* Section Header */}
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Our Features
-            </h2>
-            <div className="w-20 h-1 bg-[#1546c2] mx-auto rounded-full"></div>
-            <p className="text-gray-600 mt-3">
-              Everything you need in one place
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map(({ href, icon: Icon, title, desc, color }) => (
-              <Link
-                key={href}
-                href={href}
-                className="group relative bg-white rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden justify-items-center"
-              >
-                {/* Background Gradient Effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#1546c2]/0 to-[#1546c2]/0 group-hover:from-[#1546c2]/5 group-hover:to-[#005eff]/5 transition-all duration-300"></div>
-
-                {/* Decorative Line */}
-                <div className="absolute top-0 left-0 w-0 h-1 bg-gradient-to-r from-[#1546c2] to-[#005eff] group-hover:w-full transition-all duration-300"></div>
-
-                {/* Icon Container */}
-                <div className="relative mb-5">
-                  <div
-                    className={`w-16 h-16 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}
-                  >
-                    <Icon className="text-white" size={28} />
-                  </div>
-                  {/* Glow Effect */}
-                  <div
-                    className={`absolute -inset-1 bg-gradient-to-br ${color} rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300`}
-                  ></div>
-                </div>
-
-                {/* Content */}
-                <h3 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-[#1546c2] transition-colors text-center">
-                  {title}
-                </h3>
-                <p className="text-sm text-gray-500 leading-relaxed mb-4 text-justify">
-                  {desc}
-                </p>
-                <Button href={href}/>
-                
-              </Link>
-            ))}
-          </div>
+    <section className="bg-blue-100 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Section Header */}
+        <div className="text-center mb-10">
+          <h2 className="text-3xl font-bold text-gray-800 mb-2">
+            Our Features
+          </h2>
+          <div className="w-20 h-1 bg-[#1546c2] mx-auto rounded-full"></div>
+          <p className="text-gray-600 mt-3">Everything you need in one place</p>
         </div>
-      </section>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-6">
+          {features.map(({ href, icon: Icon, title, desc, color }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group relative bg-white rounded-2xl p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden justify-items-center"
+            >
+              {/* Background Gradient Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#1546c2]/0 to-[#1546c2]/0 group-hover:from-[#1546c2]/5 group-hover:to-[#005eff]/5 transition-all duration-300"></div>
+
+              {/* Decorative Line */}
+              <div className="absolute top-0 left-0 w-0 h-1 bg-gradient-to-r from-[#1546c2] to-[#005eff] group-hover:w-full transition-all duration-300"></div>
+
+              {/* Icon Container */}
+              <div className="relative mb-3 sm:mb-5">
+                <div
+                  className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}
+                >
+                  <Icon className="text-white" size={24} />
+                </div>
+                {/* Glow Effect */}
+                <div
+                  className={`absolute -inset-1 bg-gradient-to-br ${color} rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300`}
+                ></div>
+              </div>
+
+              {/* Content */}
+              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-2 group-hover:text-[#1546c2] transition-colors text-center">
+                {title}
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 text-justify line-clamp-3 sm:line-clamp-none">
+                {desc}
+              </p>
+              <Button href={href} />
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 };
 

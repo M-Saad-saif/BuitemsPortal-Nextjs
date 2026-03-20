@@ -82,6 +82,41 @@ body {
   border-radius: 1px;
 }
 
+@media (max-width: 600px){
+
+  .credential-card {
+    margin-bottom: 7%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 16px;
+    gap: 16px;
+  }
+
+  .credentialBTNs {
+    gap: 0;
+  }
+
+  .credentialBTNs p {
+    font-size: 20px;
+    font-weight: 700;
+    color: #083262;
+    margin-bottom: 5px;
+  }
+
+  .credentialBTN {
+    font-size: 15px;
+    gap: 0;
+    margin-top: 15px;
+  }
+
+  .Credential-divider {
+    width: 100%;
+    height: 2px;
+    background-color: #083262;
+    border-radius: 1px;
+  }
+}
+
 /* Hero gradient */
 .hero-bg {
   position: relative;

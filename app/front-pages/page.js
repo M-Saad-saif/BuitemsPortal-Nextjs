@@ -50,17 +50,17 @@ export default function FrontPagesPage() {
             instantly. Fill in your details and download as PDF.s"
         />
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 ">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
           {TEMPLATES.map((t) => (
             <div
               key={t.id}
-              className="card p-0 overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border-blue-200 border-1"
+              className="card p-0 overflow-hidden group hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border-blue-200 border"
             >
-              <div className="relative h-48 w-[73%] justify-self-center bg-gray-100 border-b overflow-hidden">
+              <div className="relative h-40 sm:h-48 w-[73%] justify-self-center bg-gray-100 border-b overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center text-gray-400">
                   {/* Placeholder when image missing */}
                   <div className="text-center">
-                    <div className="text-4xl mb-2">📄</div>
+                    <div className="text-3xl sm:text-4xl mb-2">📄</div>
                     <span className="text-xs text-gray-400">
                       Template {t.id}
                     </span>
@@ -75,11 +75,11 @@ export default function FrontPagesPage() {
                 />
               </div>
 
-              <div className="p-4 ">
-                <h3 className="font-semibold text-gray-800 mb-1 text-center">
+              <div className="p-3 sm:p-4">
+                <h3 className="font-semibold text-gray-800 mb-1 text-center text-sm sm:text-base">
                   {t.name}
                 </h3>
-                <p className="text-xs text-gray-500 mb-4 leading-relaxed">
+                <p className="text-xs text-gray-500 mb-4 leading-relaxed line-clamp-2 sm:line-clamp-none">
                   {t.description}
                 </p>
                 <Link
@@ -124,8 +124,10 @@ export default function FrontPagesPage() {
                 <div className="w-12 h-12 rounded-full navbar-bg text-white flex items-center justify-center text-xl font-bold shadow-md">
                   {step}
                 </div>
-                
-                <div className="text-2xl text-[#00479f]"><Icon aria-hidden="true" focusable="false" /></div>
+
+                <div className="text-2xl text-[#00479f]">
+                  <Icon aria-hidden="true" focusable="false" />
+                </div>
                 <h3 className="font-medium text-gray-700">{title}</h3>
                 <p className="text-sm text-gray-500">{desc}</p>
               </div>
