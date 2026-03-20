@@ -13,9 +13,19 @@ export default function AIChatTab() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const endRef = useRef(null);
+  const messagesContainerRef = useRef(null);
+  const isInitialLoadRef = useRef(true);
 
+  // Only scroll to bottom when new messages are added, not on initial mount
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (isInitialLoadRef.current) {
+      isInitialLoadRef.current = false;
+      return;
+    }
+    messagesContainerRef.current?.scrollTo({
+      top: messagesContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
   }, [msgs]);
 
   const send = async () => {
@@ -61,7 +71,10 @@ export default function AIChatTab() {
         </span>
       </div>
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+      <div 
+        ref={messagesContainerRef}
+        className="flex-1 overflow-y-auto space-y-3 pr-1"
+      >
         {msgs.map((m, i) => (
           <div
             key={i}
