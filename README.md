@@ -1,11 +1,8 @@
 # BUITEMS Student Portal — Next.js
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green)](https://www.mongodb.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)](https://tailwindcss.com/)
-
-> A comprehensive student portal for BUITEMS — unified Next.js 14 App Router conversion with full authentication, academic calculators, AI assistant, and interactive tools.
 
 ## ✨ Live Demo
 
