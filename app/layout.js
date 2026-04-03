@@ -43,9 +43,9 @@ export const metadata = {
     type: "website",
     locale: "en_US",
     url: "https://buitems-portal.vercel.app",
-    title: "BUITEMS Student Portal · Academic Tools and Student Portal",
+    title: "BUITEMS Student Portal · Academic Tools, AI Assistant",
     description:
-      "Complete academic toolkit for BUITEMS students: GPA/CGPA calculators, interactive timetable, front page generator, AI study assistant, and profile management. Built with Next.js.",
+      "Complete academic toolkit: GPA/CGPA calculators, interactive timetable, front page generator, AI Integrated, and profile management.",
     siteName: "BUITEMS Student Portal",
     images: [
       {
@@ -68,11 +68,7 @@ export const metadata = {
       "max-snippet": -1,
     },
   },
-
-  verification: {
-    google: "your-google-verification-code",
-  },
-
+  
   category: "education",
 };
 
