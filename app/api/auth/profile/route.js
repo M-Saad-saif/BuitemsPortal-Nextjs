@@ -102,6 +102,7 @@ export async function PUT(request) {
           { status: 400 },
         );
       }
+
       const isMatch = await bcrypt.compare(currentPassword, user.password);
       if (!isMatch) {
         return NextResponse.json(
