@@ -65,50 +65,54 @@
 ---
 
 ## 📁 Project Structure
-buitems-nextjs/
-├── app/ # Next.js App Router
-│ ├── layout.js # Root layout (Navbar, Footer, AuthProvider)
-│ ├── page.js # Home page
-│ ├── login/page.js # Login
-│ ├── signup/page.js # Sign Up
-│ ├── portal/page.js # Student Portal (tabs: profile, semesters, analysis, AI)
-│ ├── gpa-calculator/page.js # GPA Calculator
-│ ├── cgpa-calculator/page.js # CGPA Calculator
-│ ├── aggregate-calculator/page.js # Aggregate Calculator
-│ ├── front-pages/page.js # Template selector
-│ ├── generate-fp/page.js # Front page generator + PDF
-│ ├── timetable/page.js # Interactive timetable
-│ ├── fac-and-dept/page.js # Faculties & Departments
-│ ├── about/page.js # About page
-│ └── api/ # API Routes (replaces Express backend)
-│ ├── auth/
-│ │ ├── createuser/route.js # POST /api/auth/createuser
-│ │ ├── login/route.js # POST /api/auth/login
-│ │ ├── profile/route.js # GET + PUT /api/auth/profile
-│ │ ├── add-semester/route.js
-│ │ └── delete-semester/route.js
-│ ├── upload/route.js # POST (Cloudinary image upload)
-│ └── ai-chat/route.js # POST (AI assistant proxy)
-├── components/
-│ └── layout/
-│ ├── Navbar.js # Responsive navigation
-│ └── Footer.js # Site footer
-├── lib/ # Core utilities
-│ ├── AuthContext.js # Global auth state (login/signup/logout)
-│ ├── db.js # MongoDB connection with caching
-│ ├── jwt.js # JWT sign/verify helpers
-│ └── cloudinary.js # Cloudinary configuration
-├── models/
-│ └── UserModel.js # Mongoose user schema
-├── styles/
-│ └── globals.css # Global styles & Tailwind imports
-├── public/ # Static assets
-├── .env.local.example # Environment variables template
-├── next.config.js # Next.js configuration
-├── tailwind.config.js # Tailwind theme (BUITEMS colors)
-└── vercel.json # Vercel deployment settings
 
-text
+```
+BuitemsPortal-Nextjs/
+├── app/
+│   ├── about/
+│   ├── aggregate-calculator/
+│   ├── api/
+│   │   ├── ai-chat/
+│   │   │   └── route.js
+│   │   ├── auth/
+│   │   │   ├── add-semester/
+│   │   │   ├── createuser/
+│   │   │   ├── delete-semester/
+│   │   │   ├── login/
+│   │   │   └── profile/
+│   │   └── upload/
+│   ├── cgpa-calculator/
+│   ├── fac-and-dept/
+│   ├── front-pages/
+│   ├── generate-fp/
+│   ├── gpa-calculator/
+│   ├── login/
+│   ├── timetable/
+│   ├── portal/
+│   ├── signup/
+│   ├── not-found.js
+│   ├── layout.js
+│   ├── page.js
+│   ├── sitemap.js
+│   └── robots.js
+├── components/
+│   ├── UI/
+│   ├── layout/
+│   └── portal/
+├── lib/
+│   ├── AuthContext.js
+│   ├── cloudinary.js
+│   ├── constants/
+│   │   └── grades.js
+│   ├── db.js
+│   └── jwt.js
+├── models/
+│   └── UserModel.js
+├── public/
+├── styles/
+├── tailwind.config.js
+└── tsconfig.json
+```
 
 ---
 
