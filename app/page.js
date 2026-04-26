@@ -31,7 +31,6 @@ export default function HomePage() {
             assignment front pages, and a secure student portal with AI Chat-Bot
             integration.
           </p>
-
           <div className="flex flex-wrap justify-center gap-4">
             <div className="buttons">
               <div className="credential-card">
@@ -83,8 +82,8 @@ export default function HomePage() {
       </section>
 
       {/* ================ tool cards ================= */}
-    
-      <ToolsCard/>
+
+      <ToolsCard />
 
       {/* ========================== AI Banner ==========================*/}
       <section className="bg-gradient-to-r bg-blue-700 text-white py-12 px-4">

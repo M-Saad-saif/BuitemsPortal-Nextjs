@@ -96,7 +96,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-white/10 text-center text-sm text-blue-300">
-          © {year} BUITEMS Portal
+          © {year} BUITEMS Portal built by M.Saad Saif
         </div>
       </div>
     </footer>

@@ -134,7 +134,8 @@ export default function AboutPage() {
                 Muhammad Saad Saif
               </h3>
               <p className="text-blue-600 font-medium text-sm mb-3">
-                Computer Science Student | BUITEMS · Full Stack Developer
+                Computer Science Student | BUITEMS · Full Stack Developer | 4th
+                Semester
               </p>
               <p className="text-gray-600 leading-relaxed text-sm mb-4">
                 Built this platform to solve real problems faced by students.
@@ -159,15 +160,6 @@ export default function AboutPage() {
                 >
                   <LuCodeXml size={25} /> Portfolio
                 </a>
-
-                <a
-                  href="https://github.com/M-Saad-saif/BuitemsPortal-Nextjs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 border border-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 transition-colors"
-                >
-                  View Source Code
-                </a>
               </div>
             </div>
           </div>
@@ -182,12 +174,24 @@ export default function AboutPage() {
             This project is open source. Found a bug or have a feature idea?
             Contributions are welcome on GitHub!
           </p>
-          <Link href="/portal">
-            <Button
-              href="Get Started — It's Free"
-              className="justify-self-center"
-            />
-          </Link>
+
+          <div className="flex justify-center gap-2">
+            <Link href="/portal">
+              <Button
+                href="Get Started - It's Free"
+                className="justify-self-center"
+              />
+            </Link>
+            <Link
+              href="https://github.com/M-Saad-saif/BuitemsPortal-Nextjs"
+              target="_blank"
+            >
+              <Button
+                href="Source Code - Contribution"
+                className="justify-self-center"
+              />
+            </Link>
+          </div>
         </div>
       </div>
     </section>
