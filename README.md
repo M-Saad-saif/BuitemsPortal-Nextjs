@@ -293,8 +293,4 @@ Cloudinary — For image hosting
 
 Vercel — For seamless deployment platform
 
-📞 Contact
-Saad Saif
-https://img.shields.io/badge/GitHub-M--Saad--saif-181717?logo=github
-
 Project Link: https://github.com/M-Saad-saif/BuitemsPortal-Nextjs
