@@ -38,6 +38,13 @@ const TEMPLATES = [
       "Minimalist academic cover featuring blue side-wave patterns and simple borders.",
     preview: "/images/ass-pg-4.png",
   },
+  {
+    id: "5",
+    name: "BLocks Design",
+    description:
+      "Minimalist academic cover featuring blue and orange blocks.",
+    preview: "/images/ass-pg-5.png",
+  },
 ];
 
 export default function FrontPagesPage() {

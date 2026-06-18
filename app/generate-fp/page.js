@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { IoPrint } from "react-icons/io5";
-import { FaDownload, } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 import Link from "next/link";
 
 const FIELDS_T1 = [
@@ -55,18 +55,39 @@ const FIELDS_T4 = [
   { key: "date", label: "Date", top: 72.5, left: 35, width: 47 },
 ];
 
-const FIELD_MAP = { 1: FIELDS_T1, 2: FIELDS_T2, 3: FIELDS_T3, 4: FIELDS_T4 };
+const FIELDS_T5 = [
+  { key: "assignmentNo", label: "", top: 19, left: 53, width: 20 },
+  { key: "name", label: "Name", top: 31.5, left: 20, width: 47 },
+  { key: "cms", label: "CMS", top: 35.5, left: 20, width: 47 },
+  { key: "course", label: "Course", top: 39.8, left: 21, width: 47 },
+  { key: "instructor", label: "Instructor", top: 44.3, left: 28, width: 47 },
+  { key: "topic", label: "Topic", top: 48.5, left: 20, width: 47 },
+  { key: "department", label: "Department", top: 53, left: 29, width: 47 },
+  { key: "semester", label: "Semester", top: 57.3, left: 25, width: 47 },
+  { key: "date", label: "Date", top: 61.5, left: 18, width: 47 },
+];
+
+const FIELD_MAP = {
+  1: FIELDS_T1,
+  2: FIELDS_T2,
+  3: FIELDS_T3,
+  4: FIELDS_T4,
+  5: FIELDS_T5,
+};
 const IMAGE_MAP = {
   1: "/images/ass-pg-1.png",
   2: "/images/ass-pg-2.png",
   3: "/images/ass-pg-3.png",
   4: "/images/ass-pg-4.png",
+  5: "/images/ass-pg-5.png",
 };
+
 const TEMPLATE_NAMES = {
   1: "Classic Orange & Navy",
   2: "Navy Border & Swooshes",
   3: "Teal Wave",
   4: "Blue Wave Lines",
+  5: "Blue & Orange Blocks",
 };
 
 const defaultForm = () => ({
@@ -125,7 +146,6 @@ function A4Page({ templateId, form, onChange, forPrint = false }) {
         };
 
         if (forPrint) {
-          // Plain span — no border, no input chrome
           return (
             <div key={key} style={style}>
               <span style={{ display: "block" }}>{form[key] || ""}</span>
@@ -260,7 +280,7 @@ function GenerateFPContent() {
       { key: "cms", label: "CMS ID", ph: "CMS-12345" },
       { key: "course", label: "Course Name", ph: "DSA" },
     ];
-    if (templateId === 3 || templateId === 4) {
+    if (templateId === 3 || templateId === 4 || templateId === 5) {
       base.push({
         key: "instructor",
         label: "Instructor / Teacher",
@@ -286,162 +306,165 @@ function GenerateFPContent() {
   const inputCls =
     "w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition bg-white";
 
-  const PREVIEW_WIDTH = 560; 
+  const PREVIEW_WIDTH = 560;
   const scale = PREVIEW_WIDTH / 794;
 
   return (
     <section className="bg-blue-100">
-    <div className="flex flex-col lg:flex-row gap-5 min-h-screen p-4 max-w-[1400px] mx-auto">
-      <div className="lg:w-72 xl:w-80 shrink-0">
-        <div className="card sticky top-20 max-h-[calc(100vh-5.5rem)] flex flex-col">
-          <div className="flex items-start justify-between mb-2 shrink-0">
-            <div>
-              <h2 className="font-bold text-gray-800">Fill Details</h2>
-              <p className="text-xs text-gray-400 mt-0.5">
-                T{templateId} — {TEMPLATE_NAMES[templateId]}
-              </p>
-            </div>
-            <Link
-              href="/front-pages"
-              className="text-xs text-blue-500 hover:underline shrink-0 mt-0.5"
-            >
-              ← Templates
-            </Link>
-          </div>
-
-          {/* Template switcher */}
-          <div className="flex gap-1.5 mb-3 shrink-0">
-            {[1, 2, 3, 4].map((id) => (
-              <Link
-                key={id}
-                href={`/generate-fp?template=${id}`}
-                className={`flex-1 text-center py-1.5 rounded-lg text-xs font-bold transition-colors ${
-                  templateId === id
-                    ? "navbar-bg text-white shadow-sm"
-                    : "border border-gray-200 text-gray-500 hover:bg-gray-50"
-                }`}
-              >
-                T{id}
-              </Link>
-            ))}
-          </div>
-
-          {/* Fields */}
-          <div className="overflow-y-auto flex-1 space-y-3 pr-0.5">
-            {sidebarFields().map(({ key, label, ph }) => (
-              <div key={key}>
-                <label className="block text-xs font-medium text-gray-600 mb-1">
-                  {label}
-                </label>
-                {key === "date" ? (
-                  <input
-                    type="date"
-                    value={(() => {
-                      try {
-                        const d = new Date(form[key]);
-                        return isNaN(d) ? "" : d.toISOString().split("T")[0];
-                      } catch {
-                        return "";
-                      }
-                    })()}
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        upd(
-                          key,
-                          new Date(e.target.value).toLocaleDateString("en-PK", {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          }),
-                        );
-                      } else {
-                        upd(key, "");
-                      }
-                    }}
-                    className={inputCls}
-                  />
-                ) : (
-                  <input
-                    type="text"
-                    value={form[key] || ""}
-                    onChange={(e) => upd(key, e.target.value)}
-                    placeholder={ph}
-                    className={inputCls}
-                  />
-                )}
+      <div className="flex flex-col lg:flex-row gap-5 min-h-screen p-4 max-w-[1400px] mx-auto">
+        <div className="lg:w-72 xl:w-80 shrink-0">
+          <div className="card sticky top-20 max-h-[calc(100vh-5.5rem)] flex flex-col">
+            <div className="flex items-start justify-between mb-2 shrink-0">
+              <div>
+                <h2 className="font-bold text-gray-800">Fill Details</h2>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  T{templateId} — {TEMPLATE_NAMES[templateId]}
+                </p>
               </div>
-            ))}
-          </div>
+              <Link
+                href="/front-pages"
+                className="text-xs text-blue-500 hover:underline shrink-0 mt-0.5"
+              >
+                ← Templates
+              </Link>
+            </div>
 
-          {/* Buttons */}
-          <div className="mt-4 space-y-2 pt-3 border-t border-gray-100 shrink-0">
+            {/* Template switcher */}
+            <div className="flex gap-1.5 mb-3 shrink-0">
+              {Object.keys(FIELD_MAP).map((id) => (
+                <Link
+                  key={id}
+                  href={`/generate-fp?template=${id}`}
+                  className={`flex-1 text-center py-1.5 rounded-lg text-xs font-bold transition-colors ${
+                    templateId === id
+                      ? "navbar-bg text-white shadow-sm"
+                      : "border border-gray-200 text-gray-500 hover:bg-gray-50"
+                  }`}
+                >
+                  T{id}
+                </Link>
+              ))}
+            </div>
+
+            {/* Fields */}
+            <div className="overflow-y-auto flex-1 space-y-3 pr-0.5">
+              {sidebarFields().map(({ key, label, ph }) => (
+                <div key={key}>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    {label}
+                  </label>
+                  {key === "date" ? (
+                    <input
+                      type="date"
+                      value={(() => {
+                        try {
+                          const d = new Date(form[key]);
+                          return isNaN(d) ? "" : d.toISOString().split("T")[0];
+                        } catch {
+                          return "";
+                        }
+                      })()}
+                      onChange={(e) => {
+                        if (e.target.value) {
+                          upd(
+                            key,
+                            new Date(e.target.value).toLocaleDateString(
+                              "en-PK",
+                              {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              },
+                            ),
+                          );
+                        } else {
+                          upd(key, "");
+                        }
+                      }}
+                      className={inputCls}
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      value={form[key] || ""}
+                      onChange={(e) => upd(key, e.target.value)}
+                      placeholder={ph}
+                      className={inputCls}
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Buttons */}
+            <div className="mt-4 space-y-2 pt-3 border-t border-gray-100 shrink-0">
+              <button
+                onClick={handlePrint}
+                className="w-full py-2.5 navbar-bg text-white font-bold rounded-xl hover:opacity-90 transition-opacity text-sm flex items-center justify-center gap-2"
+              >
+                <IoPrint size={20} /> Print / Save as PDF
+              </button>
+              <button
+                onClick={() => setForm(defaultForm())}
+                className="w-full py-2 border border-gray-200 text-gray-500 rounded-xl text-sm hover:bg-gray-50 transition-colors"
+              >
+                Clear All
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-bold text-gray-800">
+              Live Preview
+              <span className="ml-2 text-xs font-normal text-gray-800">
+                Click any blank line to type directly on the page
+              </span>
+            </h2>
             <button
               onClick={handlePrint}
-              className="w-full py-2.5 navbar-bg text-white font-bold rounded-xl hover:opacity-90 transition-opacity text-sm flex items-center justify-center gap-2"
+              className="px-4 py-2 navbar-bg text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
             >
-             <IoPrint size={20}/> Print / Save as PDF
-            </button>
-            <button
-              onClick={() => setForm(defaultForm())}
-              className="w-full py-2 border border-gray-200 text-gray-500 rounded-xl text-sm hover:bg-gray-50 transition-colors"
-            >
-              Clear All
+              <FaDownload size={20} /> Download PDF
             </button>
           </div>
-        </div>
-      </div>
 
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between mb-3">
-          <h2 className="font-bold text-gray-800">
-            Live Preview
-            <span className="ml-2 text-xs font-normal text-gray-800">
-              Click any blank line to type directly on the page
-            </span>
-          </h2>
-          <button
-            onClick={handlePrint}
-            className="px-4 py-2 navbar-bg text-white text-sm font-semibold rounded-lg hover:opacity-90 transition-opacity flex items-center gap-2"
-          >
-            <FaDownload size={20}/> Download PDF
-          </button>
-        </div>
-
-        <div className="bg-gray-300 rounded-2xl p-5 flex justify-center overflow-auto">
-          <div
-            ref={printRef}
-            style={{
-              width: `${794 * scale}px`,
-              height: `${1123 * scale}px`,
-              overflow: "hidden",
-              boxShadow: "0 8px 40px rgba(0,0,0,0.28)",
-              flexShrink: 0,
-            }}
-          >
-              <div
+          <div className="bg-gray-300 rounded-2xl p-5 flex justify-center overflow-auto">
+            <div
+              ref={printRef}
               style={{
-                transform: `scale(${scale})`,
-                transformOrigin: "top left",
-                width: "794px",
-                height: "1123px",
+                width: `${794 * scale}px`,
+                height: `${1123 * scale}px`,
+                overflow: "hidden",
+                boxShadow: "0 8px 40px rgba(0,0,0,0.28)",
+                flexShrink: 0,
               }}
             >
-              <A4Page
-                templateId={templateId}
-                form={form}
-                onChange={upd}
-                forPrint={false}
-              />
+              <div
+                style={{
+                  transform: `scale(${scale})`,
+                  transformOrigin: "top left",
+                  width: "794px",
+                  height: "1123px",
+                }}
+              >
+                <A4Page
+                  templateId={templateId}
+                  form={form}
+                  onChange={upd}
+                  forPrint={false}
+                />
+              </div>
             </div>
           </div>
-        </div>
 
-        <p className="text-center text-xs text-gray-800 mt-3">
-          💡 In the print dialog → <strong>Save as PDF</strong> → Margins:{" "}
-          <strong>None</strong> → Scale: <strong>100%</strong>
-        </p>
+          <p className="text-center text-xs text-gray-800 mt-3">
+            In the print dialog → <strong>Save as PDF</strong> → Margins:{" "}
+            <strong>None</strong> → Scale: <strong>100%</strong>
+          </p>
+        </div>
       </div>
-    </div>
     </section>
   );
 }
