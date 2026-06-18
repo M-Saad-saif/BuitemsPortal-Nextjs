@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/AuthContext";
 import Image from "next/image";
 
 import { FaCalculator, FaSchool } from "react-icons/fa";
-import { FaTableCells } from "react-icons/fa6";
+import { FaTableCells,FaListCheck } from "react-icons/fa6";
 import { ImCalculator } from "react-icons/im";
 import { IoIosPaper } from "react-icons/io";
 import { CiLink } from "react-icons/ci";
@@ -57,6 +57,7 @@ export default function Navbar() {
   ];
 
   const toolLinks = [
+    { href: "/todo-list", label: "To-Do List", icon: FaListCheck },
     { href: "/gpa-calculator", label: "GPA Calculator", icon: FaCalculator },
     { href: "/cgpa-calculator", label: "CGPA Calculator", icon: FaCalculator },
     {
