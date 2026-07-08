@@ -1,24 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { useAuth } from "@/lib/AuthContext";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Spinner from "@/components/UI/Spinner";
 import toast from "react-hot-toast";
 
-import { IoMdLogIn } from "react-icons/io";
+import { RiLockPasswordLine } from "react-icons/ri";
 
-export default function LoginPage() {
-  const { login } = useAuth();
+export default function ResetPasswordPage() {
+  const { token } = useParams();
   const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPass, setShowPass] = useState(false);
   const [form, setForm] = useState({
-    email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -30,26 +30,38 @@ export default function LoginPage() {
     e.preventDefault();
     setError("");
 
-    if (!form.email.trim()) {
-      toast.error("Email is required");
-      return;
-    }
     if (!form.password.trim()) {
       toast.error("Password is required");
       return;
     }
+    if (form.password.length < 4) {
+      toast.error("Password must be at least 4 characters");
+      return;
+    }
+    if (form.password !== form.confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const result = await login(form.email, form.password);
-      router.push("/portal");
-      if (result.success) {
-        toast.success("login successfully");
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, password: form.password }),
+      });
+      const data = await res.json();
+
+      if (data.success) {
+        toast.success("Password reset successfully. Please login.");
+        router.push("/login");
       } else {
-        toast.error("user not found");
+        setError(data.error || "Something went wrong");
+        toast.error(data.error || "Something went wrong");
       }
     } catch (err) {
-      setError(err.message || "Invalid email or password");
+      setError(err.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -66,35 +78,16 @@ export default function LoginPage() {
             height={160}
             className="w-32 md:w-40"
           />
-          <h2 className="text-2xl font-bold mb-2">Welcome Back!</h2>
-          <p className="text-sm opacity-90">
-            Login to access your BUITEMS Portal
-          </p>
+          <h2 className="text-2xl font-bold mb-2">Almost There!</h2>
+          <p className="text-sm opacity-90">Choose a new password below</p>
         </div>
 
-        {/* Right side - Login Form - At bottom for mobile, right for desktop */}
         <div className="w-full md:flex-1 p-8">
           <h2 className="text-3xl mb-6 flex items-center gap-2 justify-center font-bold text-[#1546c2]">
-            Login <IoMdLogIn />
+            New Password <RiLockPasswordLine />
           </h2>
 
           <form onSubmit={handleSubmit} noValidate className="space-y-4">
-            {/* Email */}
-            <div className="relative w-full my-1">
-              <input
-                type="email"
-                name="email"
-                placeholder=" "
-                value={form.email}
-                onChange={handleChange}
-                className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
-              />
-              <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
-                Email <span className="text-red-500">*</span>
-              </span>
-            </div>
-
-            {/* Password with show/hide */}
             <div className="relative w-full my-1">
               <input
                 type={showPass ? "text" : "password"}
@@ -105,7 +98,7 @@ export default function LoginPage() {
                 className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
               />
               <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
-                Password <span className="text-red-500">*</span>
+                New Password <span className="text-red-500">*</span>
               </span>
               <button
                 type="button"
@@ -117,14 +110,19 @@ export default function LoginPage() {
               </button>
             </div>
 
-            {/* Forgot Password Link */}
-            <div className="text-right -mt-2">
-              <Link
-                href="/forgot-password"
-                className="text-xs text-[#3169f4] font-medium hover:text-[#2157e0] hover:underline"
-              >
-                Forgot Password?
-              </Link>
+            {/* Confirm Password */}
+            <div className="relative w-full my-1">
+              <input
+                type={showPass ? "text" : "password"}
+                name="confirmPassword"
+                placeholder=" "
+                value={form.confirmPassword}
+                onChange={handleChange}
+                className="w-full p-3 border-b-2 border-gray-200 outline-none transition-colors duration-300 focus:border-b-[#2157e0] hover:border-b-[#2157e0] bg-transparent text-base peer"
+              />
+              <span className="absolute left-0 -top-2 text-gray-400 text-sm transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-3 peer-placeholder-shown:text-gray-400 peer-focus:-top-2 peer-focus:text-sm peer-focus:text-[#2157e0]">
+                Confirm Password <span className="text-red-500">*</span>
+              </span>
             </div>
 
             {/* Error Message */}
@@ -145,20 +143,19 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full p-4 mt-6 bg-[#3169f4] text-white border-none rounded-full font-bold text-base cursor-pointer transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#2157e0] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:transform-none"
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? "Resetting..." : "Reset Password"}
             </button>
           </form>
 
           <hr className="my-6 border-t border-gray-200" />
 
-          {/* Sign Up Link */}
           <p className="text-xs text-center -mb-4">
-            Don't have an account?{" "}
+            Remembered your password?{" "}
             <Link
-              href="/signup"
+              href="/login"
               className="text-[#3169f4] font-medium hover:text-[#2157e0] hover:underline"
             >
-              Sign Up
+              Login
             </Link>
           </p>
         </div>
