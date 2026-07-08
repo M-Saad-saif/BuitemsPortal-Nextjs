@@ -37,7 +37,7 @@ export async function POST(request) {
     user.resetPasswordExpiry = Date.now() + 10 * 60 * 1000;
     await user.save();
 
-    const url = "http://localhost:3000" || process.env.NEXT_PUBLIC_APP_URL;
+    const url =  process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const resetUrl = `${url}/reset-password/${rawToken}`;
 
     try {
