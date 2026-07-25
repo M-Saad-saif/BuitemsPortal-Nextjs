@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect, useCallback } from "react";
 
 const useDocumentEvent = (event, handler) => {
@@ -181,7 +182,7 @@ export default function NotFoundPage() {
         <h1>Not Found</h1>
         <p>Sorry, there&apos;s nothing to see here but cacti :(</p>
         <p>
-          You can <a href="/">go back home</a>{" "}
+          You can <Link href="/">go back home</Link>{" "}
           or contact the <a href="https://saadsaif.vercel.app" target="_blank">developer</a>
         </p>
       </div>
