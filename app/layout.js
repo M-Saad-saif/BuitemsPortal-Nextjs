@@ -49,10 +49,11 @@ export const metadata = {
     siteName: "BUITEMS Student Portal",
     images: [
       {
-        url: "https://buitems-portal.vercel.app/images/buitems-logo.png",
+        url: "/images/buitems-logo.png",
         width: 1200,
         height: 630,
         alt: "BUITEMS Student Portal - Academic Tools Dashboard",
+        type: "image/png",
       },
     ],
   },

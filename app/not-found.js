@@ -79,7 +79,8 @@ export default function UserNotFound() {
                     Need Assistance?
                   </h3>
                   <p className="text-sm text-gray-600">
-                    Contact support if you believe this is an error.
+                    Contact <Link href="https://saadsaif.vercel.app" target="_blank" className="text-blue-600 underline">developer</Link> if you believe
+                    this is an error.
                   </p>
                 </div>
               </div>
@@ -96,8 +97,6 @@ export default function UserNotFound() {
               </div>
             </div>
           </div>
-
-      
         </div>
       </div>
 
