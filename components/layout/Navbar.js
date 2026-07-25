@@ -80,7 +80,7 @@ export default function Navbar() {
   return (
     <>
       <nav
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        className={`site-navbar fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
             ? "bg-[#0a2a4a] shadow-2xl backdrop-blur-sm bg-opacity-95"
             : "bg-[#0f3b66]"
