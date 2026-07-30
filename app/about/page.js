@@ -59,141 +59,128 @@ const TECH_STACK = [
 
 export default function AboutPage() {
   return (
-    <section className="bg-blue-100">
-      <div className="max-w-6xl mx-auto px-4 py-12 ">
-        <div className="text-center mb-12">
-          <div className="w-20 h-20 rounded-2xl navbar-bg flex items-center justify-center text-4xl mx-auto mb-5 shadow-xl">
-            <Image
-              src="/images/buitems-logo.png"
-              alt="logo"
-              width={100}
-              height={100}
-            />
-          </div>
-          <ToolHeader
-            heading="About BUITEMS Portal"
-            desc="  A student-focused platform providing essential academic tools — built
-          by a BUITEMS student, for BUITEMS students."
-            className="text-[35px]"
-          />
-        </div>
+    <div className="min-h-screen pb-1 bg-[#dbeafe]">
+      <ToolHeader
+        heading="About BUITEMS Portal"
+        desc="A student-focused platform providing essential academic tools — built by a BUITEMS student, for BUITEMS students."
+      />
 
-        {/* Mission */}
-        <div className="card mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100">
-          <h2 className="font-bold text-xl text-gray-800 mb-3 flex items-center gap-2">
-            GOAL
-          </h2>
-          <p className="text-gray-600 leading-relaxed">
-            To simplify the academic life of students by providing free, fast,
-            and reliable tools in one place — eliminating the need to use
-            multiple websites or apps for common tasks like calculating GPA,
-            generating assignment cover pages, or tracking semester records.
-          </p>
-        </div>
-
-        <AboutTechCard />
-
-        {/* Tech Stack */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-            Tech Stack
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {TECH_STACK.map(({ name, desc, color }) => (
-              <div
-                key={name}
-                className="card p-3 text-center hover:shadow-md transition-shadow"
-              >
-                <span
-                  className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 ${color}`}
-                >
-                  {name}
-                </span>
-                <p className="text-xs text-gray-500">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="card mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-5 flex items-center gap-2 ">
-            <LuCodeXml size={30} /> About the Developer
-          </h2>
-          <div className="flex items-start gap-5">
-            <div className=" rounded-2xl navbar-bg flex items-center justify-center text-2xl font-bold text-white shrink-0">
-              <Image
-                src="/images/myImage.png"
-                alt="SS"
-                width={100}
-                height={100}
-                className="rounded-2xl"
-              />
+      <main className=" mx-auto px-4 mt-[-180px] space-y-6">
+        <section className=" rounded-2xl shadow-2xl shadow-blue-900/10 p-6 sm:p-8 relative">
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="card mb-8 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 p-6 rounded-2xl shadow-sm">
+              <h2 className="font-bold text-xl text-gray-800 mb-3 flex items-center gap-2">
+                GOAL
+              </h2>
+              <p className="text-gray-600 leading-relaxed">
+                To simplify the academic life of students by providing free,
+                fast, and reliable tools in one place — eliminating the need to
+                use multiple websites or apps for common tasks like calculating
+                GPA, generating assignment cover pages, or tracking semester
+                records.
+              </p>
             </div>
-            <div>
-              <h3 className="text-xl font-bold text-gray-800">
-                Muhammad Saad Saif
-              </h3>
-              <p className="text-blue-600 font-medium text-sm mb-3">
-                Computer Science Student | BUITEMS · Full Stack Developer | 4th
-                Semester
-              </p>
-              <p className="text-gray-600 leading-relaxed text-sm mb-4">
-                Built this platform to solve real problems faced by students.
-                This project covers the full stack: authentication, REST APIs,
-                database design, cloud storage, and a feature-rich frontend.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="https://github.com/M-Saad-saif"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 navbar-bg text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  <FaGithub />
-                  GitHub Profile
-                </a>
-                <a
-                  href="https://saadsaif.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-4 py-2 navbar-bg text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
-                >
-                  <LuCodeXml size={25} /> Portfolio
-                </a>
+
+            <AboutTechCard />
+
+            {/* Tech Stack */}
+            <div className="mb-10">
+              <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                Tech Stack
+              </h2>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {TECH_STACK.map(({ name, desc, color }) => (
+                  <div
+                    key={name}
+                    className="card p-3 text-center hover:shadow-md transition-shadow bg-white rounded-xl shadow-sm"
+                  >
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-2 ${color}`}
+                    >
+                      {name}
+                    </span>
+                    <p className="text-xs text-gray-500">{desc}</p>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Contribute */}
-        <div className="card bg-amber-50 border border-amber-200 text-center">
-          <h2 className="font-bold text-gray-800 mb-2 flex items-center gap-2 justify-center">
-            <GiStarFormation size={25} color="#fbbf24" /> Open Source
-          </h2>
-          <p className="text-gray-600 text-sm mb-4">
-            This project is open source. Found a bug or have a feature idea?
-            Contributions are welcome on GitHub!
-          </p>
+            {/* About Developer */}
+            <div className="card mb-8 bg-white rounded-2xl shadow-sm p-6">
+              <h2 className="text-2xl font-bold text-gray-800 mb-5 flex items-center gap-2">
+                <LuCodeXml size={30} /> About the Developer
+              </h2>
+              <div className="flex items-start gap-5 flex-wrap md:flex-nowrap">
+                <div className="rounded-2xl bg-blue-600 flex items-center justify-center text-2xl font-bold text-white shrink-0">
+                  <Image
+                    src="/images/myImage.png"
+                    alt="SS"
+                    width={100}
+                    height={100}
+                    className="rounded-2xl"
+                  />
+                </div>
+                <div>
+                  <h3 className="text-xl font-bold text-gray-800">
+                    Muhammad Saad Saif
+                  </h3>
+                  <p className="text-blue-600 font-medium text-sm mb-3">
+                    Computer Science Student | BUITEMS · Full Stack Developer |
+                    4th Semester
+                  </p>
+                  <p className="text-gray-600 leading-relaxed text-sm mb-4">
+                    Built this platform to solve real problems faced by
+                    students. This project covers the full stack:
+                    authentication, REST APIs, database design, cloud storage,
+                    and a feature-rich frontend.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <a
+                      href="https://github.com/M-Saad-saif"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <FaGithub />
+                      GitHub Profile
+                    </a>
+                    <a
+                      href="https://saadsaif.vercel.app"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                    >
+                      <LuCodeXml size={25} /> Portfolio
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          <div className="flex justify-center gap-2">
-            <Link href="/portal">
-              <Button
-                href="Get Started - It's Free"
-                className="justify-self-center"
-              />
-            </Link>
-            <Link
-              href="https://github.com/M-Saad-saif/BuitemsPortal-Nextjs"
-              target="_blank"
-            >
-              <Button
-                href="Source Code - Contribution"
-                className="justify-self-center"
-              />
-            </Link>
+            {/* Contribute */}
+            <div className="card bg-amber-50 border border-amber-200 text-center p-6 rounded-2xl">
+              <h2 className="font-bold text-gray-800 mb-2 flex items-center gap-2 justify-center">
+                <GiStarFormation size={25} color="#fbbf24" /> Open Source
+              </h2>
+              <p className="text-gray-600 text-sm mb-4">
+                This project is open source. Found a bug or have a feature idea?
+                Contributions are welcome on GitHub!
+              </p>
+
+              <div className="flex justify-center gap-3 flex-wrap w-[100%]">
+                <Link
+                  href="https://github.com/M-Saad-saif/BuitemsPortal-Nextjs"
+                  target="_blank"
+                >
+                  <Button className="justify-self-center">
+                    Source Code - Contribution
+                  </Button>
+                </Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
+        </section>
+      </main>
+    </div>
   );
 }
