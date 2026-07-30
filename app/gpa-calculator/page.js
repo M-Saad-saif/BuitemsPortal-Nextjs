@@ -28,6 +28,26 @@ const GRADE_COLORS = {
   F: "grade-f",
 };
 
+const MARKS_SCALE = [
+  { min: 85, grade: "A" },
+  { min: 80, grade: "A-" },
+  { min: 75, grade: "B+" },
+  { min: 70, grade: "B" },
+  { min: 65, grade: "B-" },
+  { min: 61, grade: "C+" },
+  { min: 58, grade: "C" },
+  { min: 55, grade: "C-" },
+  { min: 50, grade: "D" },
+  { min: 0, grade: "F" },
+];
+
+function getGradeFromPercentage(pct) {
+  for (const row of MARKS_SCALE) {
+    if (pct >= row.min) return row.grade;
+  }
+  return "F";
+}
+
 const emptySubject = () => ({ name: "", creditHours: "3", grade: "A" });
 
 export default function GPACalculatorPage() {
