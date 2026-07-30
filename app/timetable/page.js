@@ -31,6 +31,7 @@ const SLOT_COLORS = [
 
 const subjectColorMap = {};
 let colorIdx = 0;
+
 function getSubjectColor(subject) {
   if (!subject) return "";
   if (!subjectColorMap[subject]) {
@@ -156,25 +157,33 @@ export default function TimetablePage() {
   };
 
   return (
-    <section className="bg-blue-100">
-      <div className="max-w-7xl mx-auto px-4 py-10">
-        <div className=" flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-          <ToolHeader
-            heading="Timetable"
-            desc="Your weekly class schedule — click any cell to edit"
-          />
+    <div className="min-h-screen pb-1 bg-[#dbeafe]">
+      <ToolHeader
+        heading="Timetable Builder"
+        desc="Your weekly class schedule click any cell to edit details. Add your class time slots and generate a professional timetable instantly. Download as PDF."
+      />
 
+      <main className="max-w-6xl mx-auto px-4 -mt-32 space-y-6">
+        <section className="bg-white rounded-2xl shadow-2xl shadow-blue-900/10 p-6 sm:p-8 relative">
           <div className="flex flex-wrap gap-2 justify-self-center">
             <button
               onClick={() => setView("grid")}
-              className={`px-4 py-2 rounded-lg text-sm font-medium bg-blue-200 transition-colors ${view === "grid" ? "text-black bg-blue-300" : "border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                view === "grid" 
+                  ? "text-black bg-blue-300" 
+                  : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
             >
               Grid View
             </button>
 
             <button
               onClick={() => setView("list")}
-              className={`px-4 py-2 rounded-lg text-sm font-medium bg-blue-200 transition-colors ${view === "list" ? " text-black" : "border border-gray-200 text-gray-600 hover:bg-gray-50"}`}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                view === "list" 
+                  ? "text-black bg-blue-300" 
+                  : "border border-gray-200 text-gray-600 hover:bg-gray-50"
+              }`}
             >
               List View
             </button>
@@ -184,7 +193,7 @@ export default function TimetablePage() {
                 setShowAddSlot(true);
                 setSlotError("");
               }}
-              className= " navbar-bg px-4 py-2 rounded-lg text-sm font-medium border border-blue-300 text-white transition-colors"
+              className="px-4 py-2 rounded-lg text-sm font-medium border border-blue-300 text-white bg-blue-600 hover:bg-blue-700 transition-colors"
             >
               + Add Time Slot
             </button>
@@ -224,310 +233,311 @@ export default function TimetablePage() {
               </button>
             )}
           </div>
-        </div>
 
-        {timeSlots.length === 0 && (
-          <div className="card text-center py-16">
-            <div className="text-4xl mb-3 justify-self-center">
-              <AiOutlineFieldTime size={50} />
-            </div>
-            <h3 className="font-semibold text-gray-700 mb-2">
-              No Time Slots Yet
-            </h3>
-            <p className="text-gray-500 text-sm mb-5">
-              Add your class time slots to get started building your timetable.
-            </p>
-            <button
-              onClick={() => setShowAddSlot(true)}
-              className="px-6 py-2.5 navbar-bg text-white font-medium rounded-xl hover:opacity-90 transition-opacity"
-            >
-              + Add First Time Slot
-            </button>
-          </div>
-        )}
-
-        {view === "grid" && timeSlots.length > 0 && (
-          <div ref={tableRef} className="card p-0 overflow-x-auto">
-            <table className="w-full min-w-[700px] text-sm">
-              <thead>
-                <tr className="navbar-bg text-white">
-                  <th className="px-4 py-3 text-left w-36 font-semibold text-xs uppercase tracking-wide">
-                    Time
-                  </th>
-                  {DAYS.map((d) => (
-                    <th
-                      key={d}
-                      className="px-3 py-3 text-center font-semibold text-xs uppercase tracking-wide"
-                    >
-                      {d}
-                    </th>
-                  ))}
-                  <th className="px-2 py-3 w-8 no-pdf" />
-                </tr>
-              </thead>
-              <tbody>
-                {timeSlots.map((slot, si) => (
-                  <tr
-                    key={slot}
-                    className={si % 2 === 0 ? "bg-white" : "bg-gray-50/50"}
-                  >
-                    <td className="px-4 py-2 border-r border-gray-100">
-                      <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
-                        {slot}
-                      </span>
-                    </td>
-                    {DAYS.map((day) => {
-                      const cell = getCell(day, slot);
-                      return (
-                        <td
-                          key={day}
-                          className="px-2 py-2 border-l border-gray-100"
-                        >
-                          <button
-                            onClick={() => openEdit(day, slot)}
-                            className={`w-full min-h-[48px] px-2 py-1.5 rounded-lg text-left transition-all hover:shadow-sm hover:scale-[1.02] ${
-                              cell?.subject
-                                ? `border ${getSubjectColor(cell.subject)}`
-                                : "border border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50/30"
-                            }`}
-                          >
-                            {cell?.subject ? (
-                              <>
-                                <div className="font-semibold text-xs leading-tight flex items-center gap-2">
-                                  <FaBook size={15} /> {cell.subject}
-                                </div>
-                                {cell.room && (
-                                  <div className="text-xs opacity-70 mt-0.5 flex items-center gap-2 ">
-                                    <FaLocationDot size={15} color="#a50000" />{" "}
-                                    {cell.room}
-                                  </div>
-                                )}
-                                {cell.teacher && (
-                                  <div className="text-xs opacity-70 flex items-center gap-2">
-                                    <MdPerson size={20} /> {cell.teacher}
-                                  </div>
-                                )}
-                              </>
-                            ) : (
-                              <span className="text-xs text-gray-300">
-                                + add
-                              </span>
-                            )}
-                          </button>
-                        </td>
-                      );
-                    })}
-                    <td className="px-2 py-2 text-center">
-                      <button
-                        onClick={() => handleRemoveSlot(slot)}
-                        title="Remove this time slot"
-                        className="w-6 h-6 rounded-full flex items-center justify-center text-gray-300 hover:bg-red-50 hover:text-red-400 transition-colors mx-auto text-xs"
-                      >
-                        ✕
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {view === "list" && timeSlots.length > 0 && (
-          <div
-            ref={tableRef}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
-          >
-            {DAYS.map((day) => {
-              const dayCells = timeSlots
-                .filter((s) => getCell(day, s)?.subject)
-                .map((s) => ({ slot: s, ...getCell(day, s) }));
-              return (
-                <div key={day} className="card">
-                  <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
-                    {day}
-                    <span className="text-xs font-normal text-gray-400 ml-auto">
-                      {dayCells.length} classes
-                    </span>
-                  </h3>
-                  {dayCells.length === 0 ? (
-                    <p className="text-sm text-gray-400 italic">
-                      No classes scheduled
-                    </p>
-                  ) : (
-                    <div className="space-y-2">
-                      {dayCells.map((c) => (
-                        <div
-                          key={c.slot}
-                          className={`p-2.5 rounded-lg border text-xs ${getSubjectColor(c.subject)}`}
-                        >
-                          <div className="font-semibold flex items-center gap-2">
-                            <FaBook size={15} /> {c.subject}
-                          </div>
-
-                          <div className="mt-1 opacity-75 flex items-center gap-2"><IoMdClock  size={20} color="black"/> {c.slot}</div>
-                          {c.room && (
-                            <div className="opacity-75 flex items-center gap-2">
-                              <FaLocationDot size={15} color="#a50000" />{" "}
-                              {c.room}
-                            </div>
-                          )}
-
-                          {c.teacher && (
-                            <div className="opacity-75 flex items-center gap-2">
-                              <MdPerson size={20} /> {c.teacher}
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* ====================== Add Time Slot Modal ===========================*/}
-        {showAddSlot && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
-              <h3 className="font-bold text-gray-800 mb-1">Add Time Slot</h3>
-              <p className="text-sm text-gray-500 mb-5">
-                Enter the start and end time for this slot.
+          {timeSlots.length === 0 && (
+            <div className="card text-center py-16">
+              <div className="text-4xl mb-3 justify-self-center">
+                <AiOutlineFieldTime size={50} />
+              </div>
+              <h3 className="font-semibold text-gray-700 mb-2">
+                No Time Slots Yet
+              </h3>
+              <p className="text-gray-500 text-sm mb-5">
+                Add your class time slots to get started building your timetable.
               </p>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
-                    Start Time
-                  </label>
-                  <input
-                    type="time"
-                    value={newSlotFrom}
-                    onChange={(e) => setNewSlotFrom(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-600 mb-1">
-                    End Time
-                  </label>
-                  <input
-                    type="time"
-                    value={newSlotTo}
-                    onChange={(e) => setNewSlotTo(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                  />
-                </div>
-
-                {newSlotFrom && newSlotTo && (
-                  <div className="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 text-sm text-blue-700 font-mono text-center">
-                    {newSlotFrom} - {newSlotTo}
-                  </div>
-                )}
-
-                {slotError && (
-                  <p className="text-xs text-red-500">{slotError}</p>
-                )}
-
-              </div>
-              <div className="flex gap-3 mt-5">
-                <button
-                  onClick={handleAddSlot}
-                  className="flex-1 py-2.5 navbar-bg text-white font-semibold rounded-lg hover:opacity-90 transition-opacity text-sm"
-                >
-                  Add Slot
-                </button>
-                <button
-                  onClick={() => {
-                    setShowAddSlot(false);
-                    setSlotError("");
-                  }}
-                  className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-                >
-                  Cancel
-                </button>
-              </div>
+              <button
+                onClick={() => setShowAddSlot(true)}
+                className="px-6 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-opacity"
+              >
+                + Add First Time Slot
+              </button>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ================ Edit Cell Modal ================  */}
-        {editing && (
-          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
-              <h3 className="font-bold text-gray-800 mb-1">{editing.day}</h3>
-              <p className="text-sm text-gray-500 mb-5 flex items-center gap-2"><IoMdClock size={18} color="black"/> {editing.slot}</p>
-              <div className="space-y-3">
-                {[
-                  {
-                    label: "Subject Name",
-                    field: "subject",
-                    placeholder: "e.g. Data Structures",
-                  },
-                  {
-                    label: "Room ",
-                    field: "room",
-                    placeholder: "e.g. Ssg-15",
-                  },
-                  {
-                    label: "Teacher",
-                    field: "teacher",
-                    placeholder: "Teacher mnae",
-                  },
-                ].map(({ label, field, placeholder }) => (
-                  <div key={field}>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">
-                      {label}
-                    </label>
-                    <input
-                      type="text"
-                      value={editForm[field]}
-                      onChange={(e) =>
-                        setEditForm((prev) => ({
-                          ...prev,
-                          [field]: e.target.value,
-                        }))
-                      }
-                      placeholder={placeholder}
-                      className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-                    />
+          {view === "grid" && timeSlots.length > 0 && (
+            <div ref={tableRef} className="card p-0 overflow-x-auto">
+              <table className="w-full min-w-[700px] text-sm">
+                <thead>
+                  <tr className="bg-blue-600 text-white">
+                    <th className="px-4 py-3 text-left w-36 font-semibold text-xs uppercase tracking-wide">
+                      Time
+                    </th>
+                    {DAYS.map((d) => (
+                      <th
+                        key={d}
+                        className="px-3 py-3 text-center font-semibold text-xs uppercase tracking-wide"
+                      >
+                        {d}
+                      </th>
+                    ))}
+                    <th className="px-2 py-3 w-8 no-pdf" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {timeSlots.map((slot, si) => (
+                    <tr
+                      key={slot}
+                      className={si % 2 === 0 ? "bg-white" : "bg-gray-50/50"}
+                    >
+                      <td className="px-4 py-2 border-r border-gray-100">
+                        <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
+                          {slot}
+                        </span>
+                      </td>
+                      {DAYS.map((day) => {
+                        const cell = getCell(day, slot);
+                        return (
+                          <td
+                            key={day}
+                            className="px-2 py-2 border-l border-gray-100"
+                          >
+                            <button
+                              onClick={() => openEdit(day, slot)}
+                              className={`w-full min-h-[48px] px-2 py-1.5 rounded-lg text-left transition-all hover:shadow-sm hover:scale-[1.02] ${
+                                cell?.subject
+                                  ? `border ${getSubjectColor(cell.subject)}`
+                                  : "border border-dashed border-gray-200 hover:border-blue-300 hover:bg-blue-50/30"
+                              }`}
+                            >
+                              {cell?.subject ? (
+                                <>
+                                  <div className="font-semibold text-xs leading-tight flex items-center gap-2">
+                                    <FaBook size={15} /> {cell.subject}
+                                  </div>
+                                  {cell.room && (
+                                    <div className="text-xs opacity-70 mt-0.5 flex items-center gap-2">
+                                      <FaLocationDot size={15} color="#a50000" />{" "}
+                                      {cell.room}
+                                    </div>
+                                  )}
+                                  {cell.teacher && (
+                                    <div className="text-xs opacity-70 flex items-center gap-2">
+                                      <MdPerson size={20} /> {cell.teacher}
+                                    </div>
+                                  )}
+                                </>
+                              ) : (
+                                <span className="text-xs text-gray-300">
+                                  + add
+                                </span>
+                              )}
+                            </button>
+                          </td>
+                        );
+                      })}
+                      <td className="px-2 py-2 text-center">
+                        <button
+                          onClick={() => handleRemoveSlot(slot)}
+                          title="Remove this time slot"
+                          className="w-6 h-6 rounded-full flex items-center justify-center text-gray-300 hover:bg-red-50 hover:text-red-400 transition-colors mx-auto text-xs"
+                        >
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
+          {view === "list" && timeSlots.length > 0 && (
+            <div
+              ref={tableRef}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+            >
+              {DAYS.map((day) => {
+                const dayCells = timeSlots
+                  .filter((s) => getCell(day, s)?.subject)
+                  .map((s) => ({ slot: s, ...getCell(day, s) }));
+                return (
+                  <div key={day} className="card">
+                    <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" />
+                      {day}
+                      <span className="text-xs font-normal text-gray-400 ml-auto">
+                        {dayCells.length} classes
+                      </span>
+                    </h3>
+                    {dayCells.length === 0 ? (
+                      <p className="text-sm text-gray-400 italic">
+                        No classes scheduled
+                      </p>
+                    ) : (
+                      <div className="space-y-2">
+                        {dayCells.map((c) => (
+                          <div
+                            key={c.slot}
+                            className={`p-2.5 rounded-lg border text-xs ${getSubjectColor(c.subject)}`}
+                          >
+                            <div className="font-semibold flex items-center gap-2">
+                              <FaBook size={15} /> {c.subject}
+                            </div>
+                            <div className="mt-1 opacity-75 flex items-center gap-2">
+                              <IoMdClock size={20} color="black" /> {c.slot}
+                            </div>
+                            {c.room && (
+                              <div className="opacity-75 flex items-center gap-2">
+                                <FaLocationDot size={15} color="#a50000" />{" "}
+                                {c.room}
+                              </div>
+                            )}
+                            {c.teacher && (
+                              <div className="opacity-75 flex items-center gap-2">
+                                <MdPerson size={20} /> {c.teacher}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                ))}
+                );
+              })}
+            </div>
+          )}
+        </section>
+      </main>
+
+      {/* ====================== Add Time Slot Modal ===========================*/}
+      {showAddSlot && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+            <h3 className="font-bold text-gray-800 mb-1">Add Time Slot</h3>
+            <p className="text-sm text-gray-500 mb-5">
+              Enter the start and end time for this slot.
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">
+                  Start Time
+                </label>
+                <input
+                  type="time"
+                  value={newSlotFrom}
+                  onChange={(e) => setNewSlotFrom(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                />
               </div>
-              <div className="flex gap-3 mt-5">
-                <button
-                  onClick={saveCell}
-                  className="flex-1 py-2.5 navbar-bg text-white font-semibold rounded-lg hover:opacity-90 transition-opacity text-sm"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setEditing(null)}
-                  className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm"
-                >
-                  Cancel
-                </button>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">
+                  End Time
+                </label>
+                <input
+                  type="time"
+                  value={newSlotTo}
+                  onChange={(e) => setNewSlotTo(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                />
               </div>
-              {editForm.subject && (
-                <button
-                  onClick={() => {
-                    const key = `${editing.day}-${editing.slot}`;
-                    const u = { ...timetable };
-                    delete u[key];
-                    setTimetable(u);
-                    setEditing(null);
-                  }}
-                  className="w-full mt-2 py-2 text-red-500 text-sm hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  Remove Class
-                </button>
+
+              {newSlotFrom && newSlotTo && (
+                <div className="bg-blue-50 border border-blue-100 rounded-lg px-3 py-2 text-sm text-blue-700 font-mono text-center">
+                  {newSlotFrom} - {newSlotTo}
+                </div>
+              )}
+
+              {slotError && (
+                <p className="text-xs text-red-500">{slotError}</p>
               )}
             </div>
+            <div className="flex gap-3 mt-5">
+              <button
+                onClick={handleAddSlot}
+                className="flex-1 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-opacity text-sm"
+              >
+                Add Slot
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddSlot(false);
+                  setSlotError("");
+                }}
+                className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-        )}
-      </div>
-    </section>
+        </div>
+      )}
+
+      {/* ================ Edit Cell Modal ================  */}
+      {editing && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
+            <h3 className="font-bold text-gray-800 mb-1">{editing.day}</h3>
+            <p className="text-sm text-gray-500 mb-5 flex items-center gap-2">
+              <IoMdClock size={18} color="black" /> {editing.slot}
+            </p>
+            <div className="space-y-3">
+              {[
+                {
+                  label: "Subject Name",
+                  field: "subject",
+                  placeholder: "e.g. Data Structures",
+                },
+                {
+                  label: "Room",
+                  field: "room",
+                  placeholder: "e.g. Ssg-15",
+                },
+                {
+                  label: "Teacher",
+                  field: "teacher",
+                  placeholder: "Teacher name",
+                },
+              ].map(({ label, field, placeholder }) => (
+                <div key={field}>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    {label}
+                  </label>
+                  <input
+                    type="text"
+                    value={editForm[field]}
+                    onChange={(e) =>
+                      setEditForm((prev) => ({
+                        ...prev,
+                        [field]: e.target.value,
+                      }))
+                    }
+                    placeholder={placeholder}
+                    className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3 mt-5">
+              <button
+                onClick={saveCell}
+                className="flex-1 py-2.5 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-opacity text-sm"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => setEditing(null)}
+                className="flex-1 py-2.5 border border-gray-200 text-gray-600 rounded-lg hover:bg-gray-50 transition-colors text-sm"
+              >
+                Cancel
+              </button>
+            </div>
+            {editForm.subject && (
+              <button
+                onClick={() => {
+                  const key = `${editing.day}-${editing.slot}`;
+                  const u = { ...timetable };
+                  delete u[key];
+                  setTimetable(u);
+                  setEditing(null);
+                }}
+                className="w-full mt-2 py-2 text-red-500 text-sm hover:bg-red-50 rounded-lg transition-colors"
+              >
+                Remove Class
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

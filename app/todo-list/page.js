@@ -135,342 +135,344 @@ export default function TodoListPage() {
 
   // ---------- Render ----------
   return (
-    <section className="bg-blue-100">
-      <div className="mx-auto px-4 py-10 max-w-3xl">
-        <div className="justify-self-center w-full">
-          <ToolHeader
-            heading="To-Do List"
-            desc="Plan your day, tasks are auto-saved to your browser (localStorage)"
-          />
+    <div className="min-h-screen pb-1 bg-[#dbeafe]">
+      <ToolHeader
+        heading="Todo List"
+        desc="Plan your day, tasks are auto-saved to your browser (localStorage)"
+      />
 
-          {/* ===== Stat strip ===== */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <StatTile
-              icon={<MdOutlineTaskAlt />}
-              label="Total"
-              value={stats.total}
-              accent="text-blue-600"
-            />
-            <StatTile
-              icon={<FaCheck />}
-              label="Completed"
-              value={stats.done}
-              accent="text-emerald-600"
-            />
-            <StatTile
-              icon={<MdOutlinePending />}
-              label="Pending"
-              value={stats.pending}
-              accent="text-amber-600"
-            />
-            <StatTile
-              icon={<FaFlag />}
-              label="High Priority"
-              value={stats.high}
-              accent="text-rose-600"
-            />
-          </div>
-
-          {/* ===== Add Task Card ===== */}
-          <div className="card mb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                <HiOutlineSparkles />
-              </span>
-              <div>
-                <h2 className="font-semibold text-gray-800 leading-tight">
-                  Add a New Task
-                </h2>
-                <p className="text-xs text-gray-500">
-                  Set a priority and a due date to stay on top of things.
-                </p>
-              </div>
+      <main className="max-w-4xl mx-auto px-4 -mt-32 space-y-6  ">
+        <section className="bg-white rounded-2xl shadow-2xl shadow-blue-900/10 p-6 sm:p-8 relative">
+          <div className="mx-auto px-4 py-1 max-w-3xl">
+            {/* ===== Stat strip ===== */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+              <StatTile
+                icon={<MdOutlineTaskAlt />}
+                label="Total"
+                value={stats.total}
+                accent="text-blue-600"
+              />
+              <StatTile
+                icon={<FaCheck />}
+                label="Completed"
+                value={stats.done}
+                accent="text-emerald-600"
+              />
+              <StatTile
+                icon={<MdOutlinePending />}
+                label="Pending"
+                value={stats.pending}
+                accent="text-amber-600"
+              />
+              <StatTile
+                icon={<FaFlag />}
+                label="High Priority"
+                value={stats.high}
+                accent="text-rose-600"
+              />
             </div>
 
-            <div className="grid grid-cols-12 gap-2">
-              <div className="col-span-12 sm:col-span-6">
-                <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
-                  Task
-                </label>
-                <input
-                  type="text"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && addTask()}
-                  placeholder="What needs to be done?"
-                  className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                />
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
-                  Priority
-                </label>
-                <select
-                  value={priority}
-                  onChange={(e) => setPriority(e.target.value)}
-                  className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                >
-                  <option value="high">High</option>
-                  <option value="medium">Medium</option>
-                  <option value="low">Low</option>
-                </select>
-              </div>
-
-              <div className="col-span-6 sm:col-span-3">
-                <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
-                  Due date
-                </label>
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
-                />
-              </div>
-            </div>
-
-            <button
-              onClick={addTask}
-              disabled={!input.trim()}
-              className="mt-4 w-full py-2.5 navbar-bg text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm"
-            >
-              + Add Task
-            </button>
-          </div>
-
-          {/* ===== Progress ===== */}
-          {stats.total > 0 && (
-            <div className="card mb-6 fade-in">
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
-                <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
-                  <FaListCheck className="text-blue-500" />
-                  Progress
-                </div>
-                <span className="text-xs text-gray-500">
-                  {stats.done} of {stats.total} completed
+            {/* ===== Add Task Card ===== */}
+            <div className="card mb-6">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                  <HiOutlineSparkles />
                 </span>
-              </div>
-              <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
-                <div
-                  className="h-2.5 bg-blue-500 rounded-full transition-all duration-500 ease-out"
-                  style={{ width: `${stats.percent}%` }}
-                />
-              </div>
-              <p className="text-right text-xs font-medium text-gray-600 mt-1.5">
-                {stats.percent}%
-              </p>
-            </div>
-          )}
-
-          {/* ===== Filter + Bulk ===== */}
-          {stats.total > 0 && (
-            <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-              <div className="inline-flex p-1 bg-white border border-gray-200 rounded-xl shadow-sm">
-                {[
-                  { key: "all", label: "All", count: stats.total },
-                  { key: "active", label: "Active", count: stats.pending },
-                  { key: "completed", label: "Completed", count: stats.done },
-                ].map((f) => (
-                  <button
-                    key={f.key}
-                    onClick={() => setFilter(f.key)}
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                      filter === f.key
-                        ? "navbar-bg text-white shadow"
-                        : "text-gray-600 hover:bg-gray-50"
-                    }`}
-                  >
-                    {f.label}
-                    <span
-                      className={`px-1.5 py-0.5 rounded-full text-[10px] ${
-                        filter === f.key
-                          ? "bg-white/20"
-                          : "bg-gray-100 text-gray-500"
-                      }`}
-                    >
-                      {f.count}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="flex gap-2">
-                {stats.done > 0 && (
-                  <button
-                    onClick={clearCompleted}
-                    className="px-3 py-2 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
-                  >
-                    Clear Completed
-                  </button>
-                )}
-                <button
-                  onClick={clearAll}
-                  className="px-3 py-2 rounded-lg text-xs font-medium bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 transition"
-                >
-                  Clear All
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* ===== Tasks List ===== */}
-          <div className="card">
-            {!hydrated ? (
-              <p className="text-center text-gray-400 py-10 text-sm">
-                Loading your tasks…
-              </p>
-            ) : filteredTasks.length === 0 ? (
-              <div className="text-center py-14">
-                <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
-                  <FaListCheck size={28} />
+                <div>
+                  <h2 className="font-semibold text-gray-800 leading-tight">
+                    Add a New Task
+                  </h2>
+                  <p className="text-xs text-gray-500">
+                    Set a priority and a due date to stay on top of things.
+                  </p>
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-1">
-                  {filter === "completed"
-                    ? "No completed tasks yet"
-                    : filter === "active"
-                      ? "Nothing pending"
-                      : "Your list is empty"}
-                </h3>
-                <p className="text-gray-500 text-sm">
-                  {filter === "all"
-                    ? "Add your first task above to get started."
-                    : "Switch filter to view other tasks."}
+              </div>
+
+              <div className="grid grid-cols-12 gap-2">
+                <div className="col-span-12 sm:col-span-6">
+                  <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
+                    Task
+                  </label>
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && addTask()}
+                    placeholder="What needs to be done?"
+                    className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                  />
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
+                    Priority
+                  </label>
+                  <select
+                    value={priority}
+                    onChange={(e) => setPriority(e.target.value)}
+                    className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                  >
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                  </select>
+                </div>
+
+                <div className="col-span-6 sm:col-span-3">
+                  <label className="text-[11px] font-medium text-gray-500 uppercase tracking-wide">
+                    Due date
+                  </label>
+                  <input
+                    type="date"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    className="w-full mt-1 px-3 py-2.5 border border-gray-200 rounded-lg text-sm bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
+                  />
+                </div>
+              </div>
+
+              <button
+                onClick={addTask}
+                disabled={!input.trim()}
+                className="mt-4 w-full py-2.5 navbar-bg text-white rounded-lg text-sm font-medium hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm"
+              >
+                + Add Task
+              </button>
+            </div>
+
+            {/* ===== Progress ===== */}
+            {stats.total > 0 && (
+              <div className="card mb-6 fade-in">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-gray-700">
+                    <FaListCheck className="text-blue-500" />
+                    Progress
+                  </div>
+                  <span className="text-xs text-gray-500">
+                    {stats.done} of {stats.total} completed
+                  </span>
+                </div>
+                <div className="w-full bg-gray-100 rounded-full h-2.5 overflow-hidden">
+                  <div
+                    className="h-2.5 bg-blue-500 rounded-full transition-all duration-500 ease-out"
+                    style={{ width: `${stats.percent}%` }}
+                  />
+                </div>
+                <p className="text-right text-xs font-medium text-gray-600 mt-1.5">
+                  {stats.percent}%
                 </p>
               </div>
-            ) : (
-              <ul className="divide-y divide-gray-100">
-                {filteredTasks.map((task) => {
-                  const styles = PRIORITY_STYLES[task.priority];
-                  return (
-                    <li
-                      key={task.id}
-                      className={`group relative flex items-start gap-3 p-3 -mx-2 rounded-lg transition-all ${
-                        task.completed ? "opacity-60" : "hover:bg-gray-50"
+            )}
+
+            {/* ===== Filter + Bulk ===== */}
+            {stats.total > 0 && (
+              <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div className="inline-flex p-1 bg-white border border-gray-200 rounded-xl shadow-sm">
+                  {[
+                    { key: "all", label: "All", count: stats.total },
+                    { key: "active", label: "Active", count: stats.pending },
+                    { key: "completed", label: "Completed", count: stats.done },
+                  ].map((f) => (
+                    <button
+                      key={f.key}
+                      onClick={() => setFilter(f.key)}
+                      className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                        filter === f.key
+                          ? "navbar-bg text-white shadow"
+                          : "text-gray-600 hover:bg-gray-50"
                       }`}
                     >
-                      {/* Priority side bar */}
+                      {f.label}
                       <span
-                        className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${styles.dot}`}
-                      />
-
-                      {/* Checkbox */}
-                      <button
-                        onClick={() => toggleTask(task.id)}
-                        className={`mt-0.5 ml-2 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
-                          task.completed
-                            ? "bg-blue-500 border-blue-500 text-white"
-                            : "border-gray-300 hover:border-blue-400 hover:scale-110"
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] ${
+                          filter === f.key
+                            ? "bg-white/20"
+                            : "bg-gray-100 text-gray-500"
                         }`}
                       >
-                        {task.completed && <FaCheck size={10} />}
-                      </button>
+                        {f.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
 
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        {editingId === task.id ? (
-                          <input
-                            type="text"
-                            value={editText}
-                            onChange={(e) => setEditText(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") saveEdit(task.id);
-                              if (e.key === "Escape") setEditingId(null);
-                            }}
-                            autoFocus
-                            className="w-full px-2 py-1 border border-blue-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                          />
-                        ) : (
-                          <p
-                            className={`text-sm font-medium break-words ${
-                              task.completed
-                                ? "line-through text-gray-500"
-                                : "text-gray-800"
-                            }`}
-                          >
-                            {task.text}
-                          </p>
-                        )}
+                <div className="flex gap-2">
+                  {stats.done > 0 && (
+                    <button
+                      onClick={clearCompleted}
+                      className="px-3 py-2 rounded-lg text-xs font-medium bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition"
+                    >
+                      Clear Completed
+                    </button>
+                  )}
+                  <button
+                    onClick={clearAll}
+                    className="px-3 py-2 rounded-lg text-xs font-medium bg-white border border-rose-200 text-rose-600 hover:bg-rose-50 transition"
+                  >
+                    Clear All
+                  </button>
+                </div>
+              </div>
+            )}
 
-                        <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
-                          <span
-                            className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full border font-medium uppercase tracking-wide ${styles.chip}`}
-                          >
-                            <span
-                              className={`w-1.5 h-1.5 rounded-full ${styles.dot}`}
+            {/* ===== Tasks List ===== */}
+            <div className="card">
+              {!hydrated ? (
+                <p className="text-center text-gray-400 py-10 text-sm">
+                  Loading your tasks…
+                </p>
+              ) : filteredTasks.length === 0 ? (
+                <div className="text-center py-14">
+                  <div className="mx-auto mb-4 w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center text-blue-500">
+                    <FaListCheck size={28} />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-1">
+                    {filter === "completed"
+                      ? "No completed tasks yet"
+                      : filter === "active"
+                        ? "Nothing pending"
+                        : "Your list is empty"}
+                  </h3>
+                  <p className="text-gray-500 text-sm">
+                    {filter === "all"
+                      ? "Add your first task above to get started."
+                      : "Switch filter to view other tasks."}
+                  </p>
+                </div>
+              ) : (
+                <ul className="divide-y divide-gray-100">
+                  {filteredTasks.map((task) => {
+                    const styles = PRIORITY_STYLES[task.priority];
+                    return (
+                      <li
+                        key={task.id}
+                        className={`group relative flex items-start gap-3 p-3 -mx-2 rounded-lg transition-all ${
+                          task.completed ? "opacity-60" : "hover:bg-gray-50"
+                        }`}
+                      >
+                        {/* Priority side bar */}
+                        <span
+                          className={`absolute left-0 top-3 bottom-3 w-1 rounded-full ${styles.dot}`}
+                        />
+
+                        {/* Checkbox */}
+                        <button
+                          onClick={() => toggleTask(task.id)}
+                          className={`mt-0.5 ml-2 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-all ${
+                            task.completed
+                              ? "bg-blue-500 border-blue-500 text-white"
+                              : "border-gray-300 hover:border-blue-400 hover:scale-110"
+                          }`}
+                        >
+                          {task.completed && <FaCheck size={10} />}
+                        </button>
+
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          {editingId === task.id ? (
+                            <input
+                              type="text"
+                              value={editText}
+                              onChange={(e) => setEditText(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") saveEdit(task.id);
+                                if (e.key === "Escape") setEditingId(null);
+                              }}
+                              autoFocus
+                              className="w-full px-2 py-1 border border-blue-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
                             />
-                            {task.priority}
-                          </span>
-                          {task.dueDate && (
-                            <span className="inline-flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
-                              <FaRegCalendar size={9} />
-                              {task.dueDate}
+                          ) : (
+                            <p
+                              className={`text-sm font-medium break-words ${
+                                task.completed
+                                  ? "line-through text-gray-500"
+                                  : "text-gray-800"
+                              }`}
+                            >
+                              {task.text}
+                            </p>
+                          )}
+
+                          <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                            <span
+                              className={`inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full border font-medium uppercase tracking-wide ${styles.chip}`}
+                            >
+                              <span
+                                className={`w-1.5 h-1.5 rounded-full ${styles.dot}`}
+                              />
+                              {task.priority}
                             </span>
+                            {task.dueDate && (
+                              <span className="inline-flex items-center gap-1 text-[11px] text-gray-500 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-full">
+                                <FaRegCalendar size={9} />
+                                {task.dueDate}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+                          {editingId === task.id ? (
+                            <>
+                              <IconBtn
+                                title="Save"
+                                onClick={() => saveEdit(task.id)}
+                                className="text-emerald-500 hover:bg-emerald-50"
+                              >
+                                <FaCheck size={12} />
+                              </IconBtn>
+                              <IconBtn
+                                title="Cancel"
+                                onClick={() => setEditingId(null)}
+                                className="text-gray-400 hover:bg-gray-100"
+                              >
+                                <IoMdClose size={14} />
+                              </IconBtn>
+                            </>
+                          ) : (
+                            <>
+                              <IconBtn
+                                title="Edit"
+                                disabled={task.completed}
+                                onClick={() => startEdit(task)}
+                                className="text-gray-400 hover:bg-blue-50 hover:text-blue-500"
+                              >
+                                <FaPen size={11} />
+                              </IconBtn>
+                              <IconBtn
+                                title="Delete"
+                                onClick={() => removeTask(task.id)}
+                                className="text-gray-400 hover:bg-red-50 hover:text-red-500"
+                              >
+                                <FaTrash size={11} />
+                              </IconBtn>
+                            </>
                           )}
                         </div>
-                      </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </div>
 
-                      {/* Actions */}
-                      <div className="flex items-center gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
-                        {editingId === task.id ? (
-                          <>
-                            <IconBtn
-                              title="Save"
-                              onClick={() => saveEdit(task.id)}
-                              className="text-emerald-500 hover:bg-emerald-50"
-                            >
-                              <FaCheck size={12} />
-                            </IconBtn>
-                            <IconBtn
-                              title="Cancel"
-                              onClick={() => setEditingId(null)}
-                              className="text-gray-400 hover:bg-gray-100"
-                            >
-                              <IoMdClose size={14} />
-                            </IconBtn>
-                          </>
-                        ) : (
-                          <>
-                            <IconBtn
-                              title="Edit"
-                              disabled={task.completed}
-                              onClick={() => startEdit(task)}
-                              className="text-gray-400 hover:bg-blue-50 hover:text-blue-500"
-                            >
-                              <FaPen size={11} />
-                            </IconBtn>
-                            <IconBtn
-                              title="Delete"
-                              onClick={() => removeTask(task.id)}
-                              className="text-gray-400 hover:bg-red-50 hover:text-red-500"
-                            >
-                              <FaTrash size={11} />
-                            </IconBtn>
-                          </>
-                        )}
-                      </div>
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
+            {/* ===== Tip ===== */}
+            <div className="card mt-6 border-l-4 border-blue-400">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                <strong className="text-gray-800">Note:</strong> Your tasks are
+                saved locally in your browser using{" "}
+                <code className="px-1.5 py-0.5 bg-gray-100 text-blue-600 rounded text-xs font-mono">
+                  localStorage
+                </code>
+                . They persist after refresh, but clearing site data or using a
+                different browser/device will reset the list.
+              </p>
+            </div>
           </div>
-
-          {/* ===== Tip ===== */}
-          <div className="card mt-6 border-l-4 border-blue-400">
-            <p className="text-sm text-gray-600 leading-relaxed">
-              <strong className="text-gray-800">Note:</strong> Your tasks are
-              saved locally in your browser using{" "}
-              <code className="px-1.5 py-0.5 bg-gray-100 text-blue-600 rounded text-xs font-mono">
-                localStorage
-              </code>
-              . They persist after refresh, but clearing site data or using a
-              different browser/device will reset the list.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
+      </main>
+    </div>
   );
 }
 
