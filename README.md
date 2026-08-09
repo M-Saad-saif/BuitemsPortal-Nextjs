@@ -1,66 +1,131 @@
-# BUITEMS Student Portal — Next.js
+# 🎓 BUITEMS Student Portal — Next.js
 
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-6.0-green)](https://www.mongodb.com/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38B2AC)](https://tailwindcss.com/)
+[![Next.js](https://img.shields.io/badge/Next.js-14.2-black?logo=next.js)](https://nextjs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-8.4-green?logo=mongodb)](https://www.mongodb.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 
-## ✨ Live Demo
+**A single-codebase, all-in-one academic toolkit and student portal for Balochistan University of Information Technology, Engineering and Management Sciences (BUITEMS).**
 
-[🔗 Visit Live Portal](https://buitems-portal.vercel.app) 
+🔗 **Live Demo:** [buitems-portal.vercel.app](https://buitems-portal.vercel.app)
+
+---
+
+## 📖 Table of Contents
+
+- [Overview](#-overview)
+- [Key Features](#-key-features)
+- [Tech Stack](#️-tech-stack)
+- [Project Structure](#-project-structure)
+- [Grading Scale](#-grading-scale)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [API Reference](#-api-reference)
+- [Deployment](#-deployment)
+- [Roadmap Ideas](#-roadmap-ideas)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Acknowledgments](#-acknowledgments)
 
 ---
 
 ## 🎯 Overview
 
-**BuitemsPortal-Nextjs** is a unified student portal for Balochistan University of Information Technology, Engineering and Management Sciences (BUITEMS). Originally a MERN stack application (React + Express), this version consolidates everything into a **single Next.js 14 App Router** codebase, eliminating the need for separate frontend/backend deployments.
+BuitemsPortal-Nextjs is a unified, single-deployment academic toolkit built for BUITEMS students. Instead of shipping a separate frontend and backend, the entire app — UI, authentication, database access, file uploads, PDF generation, and an AI chatbot — lives inside one **Next.js 14 App Router** project and deploys as one Vercel app.
 
-### Key Capabilities
-- 🔐 **JWT Authentication** with secure token-based session management
-- 📊 **Academic Calculators** — GPA, CGPA, and admission aggregate tools
-- 📄 **Front Page Generator** — 4 professional templates with PDF export
-- 🗓️ **Interactive Timetable** — Customizable weekly class schedule
-- 🤖 **AI Study Assistant** — Claude-powered academic Q&A chatbot
-- 👤 **Student Portal** — Profile management, semester records, GPA analysis
-- 🏛️ **Faculty & Department Directory** — Complete BUITEMS academic structure
+It combines two things students actually use every semester:
+
+1. **Public academic tools** anyone can use without an account — GPA/CGPA calculators, an aggregate calculator, assignment front-page generator, faculty directory, timetable builder, and a to‑do list.
+2. **A authenticated Student Portal** — a personal dashboard where a student's semester records, GPA history, and profile are saved to MongoDB and can be revisited any time, plus an AI study assistant chat tab.
 
 ---
 
-## 🔄 Architecture Evolution
+## ✨ Key Features
 
-| Original MERN Stack | Next.js 14 Version |
-|---------------------|-------------------|
-| `create-react-app` frontend | **Next.js 14 App Router** |
-| Separate Express server (`backend/`) | `app/api/` Route Handlers |
-| `React Router` navigation | `next/link` + `next/navigation` |
-| `backend/DB.js` | `lib/db.js` (cached Mongoose connection) |
-| `backend/middleware/fetchuser.js` | `lib/jwt.js` helper in each route |
-| `backend/utils/cloudinary.js` | `lib/cloudinary.js` |
-| CSS Modules / inline styles | **Tailwind CSS** |
-| Two separate deployments | **Single Vercel deployment** |
+### 🔐 Authentication & Account Security
+- Signup / Login with **JWT** (7-day expiry) issued via `jsonwebtoken` and passwords hashed with **bcryptjs**
+- Session persisted client-side and exposed app-wide through a custom `AuthContext`
+- **Forgot / Reset Password flow**: a one-time reset token is generated with `crypto.randomBytes`, stored as a **SHA-256 hash** with a **10-minute expiry**, and emailed to the user via **Nodemailer** over SMTP — the raw token is never stored in the database
+- Route-level protection: unauthenticated users are redirected away from `/portal`
+
+### 👤 Student Portal (authenticated dashboard)
+A tabbed dashboard (`app/portal`) with four sections:
+| Tab | What it does |
+|---|---|
+| **Profile** | View/edit name, roll number, department, batch, program, phone, and profile picture |
+| **Semester Records** | Add and delete semester entries (subjects, credit hours, grades) — each save recalculates CGPA server-side |
+| **GPA Analysis** | Visual breakdown/trend of GPA across all saved semesters |
+| **AI Assistant** | In-portal chat tab wired to the AI study assistant |
+
+- Profile pictures are uploaded and stored on **Cloudinary**, with the public ID tracked for clean replacement/deletion
+- CGPA and total credit hours are **auto-computed on the User model** via a Mongoose `pre("save")` hook every time a semester is added or removed — no separate calculation endpoint needed
+
+### 📊 Academic Calculators
+- **GPA Calculator** — add unlimited subjects with name, credit hours, and letter grade; instantly computes semester GPA on the 4.0 scale with a full quality-points breakdown table and a grading-scale reference card
+- **CGPA Calculator** — combine multiple semesters (GPA + credit hours each) into a cumulative GPA
+- **Aggregate Calculator** — BUITEMS-style admission aggregate using the weighted formula **Matric 10% + Intermediate 40% + Entry Test (NTS) 50%**, with per-field validation
+
+### 📄 Assignment Front Page Generator
+- Choose from **4 professionally designed cover-page templates** (Academic, Modern White, Professional Layout, Wave Design)
+- Fill in assignment details (name, CMS ID, course, topic, department, semester, submission info) with a **live preview**
+- Export the finished cover page as a **PDF** using `jspdf` + `html2canvas` — no backend rendering required
+
+### 🗓️ Interactive Timetable
+- Editable **Monday–Friday weekly grid** with configurable time slots
+- Add subject, instructor, and location per slot with color-coded blocks
+- Fully responsive for both desktop grid view and mobile
+
+### ✅ To-Do List
+- Personal task manager with **priority levels** (high / medium / low), due dates, and completion tracking
+- Persists locally via `localStorage` (`buitems_todo_list_v1`) — no login required
+
+### 🏛️ Faculty & Department Directory
+- Structured listing of BUITEMS faculties (Basic Sciences, Engineering & Architecture, Management Sciences, etc.) with direct links to each official department page
+
+### 🤖 AI Study Assistant
+- Chat-based academic help assistant available both as a standalone tab and inside the portal
+- Powered by **Groq's `llama-3.3-70b-versatile`** model via the `groq-sdk`, with a system prompt tuned for concise, student-friendly explanations across CS, engineering, math, and science topics
+- Gracefully degrades with a clear message if `GROQ_API_KEY` isn't configured
+
+### 🔎 SEO & Discoverability
+- Dynamic `sitemap.js` and `robots.js` for search-engine indexing
+- Custom `not-found.js` page
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Core
-- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
-- **Language**: JavaScript/TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: MongoDB with Mongoose ODM
+**Framework & Language**
+- [Next.js 14](https://nextjs.org/) (App Router, Route Handlers)
+- React 18
+- TypeScript config alongside JavaScript (`tsconfig.json`, `next-env.d.ts`)
 
-### Authentication & Security
-- **JWT** — JSON Web Tokens
-- **bcryptjs** — Password hashing
+**Styling**
+- Tailwind CSS 3.4 + PostCSS/Autoprefixer
+- `react-icons` and `lucide-react` for iconography
+- `react-hot-toast` for notifications, `react-loader-spinner` for loading states
 
-### Storage & Media
-- **Cloudinary** — Profile image uploads
+**Database & Backend**
+- MongoDB with **Mongoose 8** ODM, cached connection pattern for serverless (`lib/db.js`)
+- API routes implemented as Next.js **Route Handlers** under `app/api/`
 
-### AI Integration
-- **Anthropic Claude API** — AI Study Assistant
+**Authentication & Security**
+- `jsonwebtoken` for JWT issuing/verification
+- `bcryptjs` for password hashing
+- `crypto` (Node built-in) for password-reset tokens
+- `js-cookie` / `cookie` for token/session handling on the client
 
-### Development Tools
-- **ESLint** — Code linting
-- **PostCSS** — CSS processing
+**Media & Documents**
+- `cloudinary` for profile picture storage
+- `jspdf` + `html2canvas` for client-side PDF export (front pages)
+
+**Email**
+- `nodemailer` for transactional password-reset emails over SMTP
+
+**AI**
+- `groq-sdk` for the AI Study Assistant (Llama 3.3 70B)
+
+**Tooling**
+- ESLint (`eslint-config-next`)
 
 ---
 
@@ -69,92 +134,76 @@
 ```
 BuitemsPortal-Nextjs/
 ├── app/
-│   ├── about/
-│   ├── aggregate-calculator/
+│   ├── about/                     # About page
+│   ├── aggregate-calculator/      # Matric + Inter + Entry Test aggregate tool
 │   ├── api/
-│   │   ├── ai-chat/
-│   │   │   └── route.js
-│   │   ├── auth/
-│   │   │   ├── add-semester/
-│   │   │   ├── createuser/
-│   │   │   ├── delete-semester/
-│   │   │   ├── login/
-│   │   │   └── profile/
-│   │   └── upload/
-│   ├── cgpa-calculator/
-│   ├── todo-list/
-│   ├── fac-and-dept/
-│   ├── front-pages/
-│   ├── generate-fp/
-│   ├── gpa-calculator/
-│   ├── login/
-│   ├── timetable/
-│   ├── portal/
-│   ├── signup/
-│   ├── not-found.js
-│   ├── layout.js
-│   ├── page.js
-│   ├── sitemap.js
-│   └── robots.js
+│   │   ├── ai-chat/               # Groq-powered AI assistant endpoint
+│   │   └── auth/
+│   │       ├── createuser/        # Signup
+│   │       ├── login/             # Login, issues JWT
+│   │       ├── profile/           # Get/update profile
+│   │       ├── add-semester/      # Add semester record (recomputes CGPA)
+│   │       ├── delete-semester/   # Delete semester record
+│   │       ├── forgot-password/   # Generates + emails reset token
+│   │       └── reset-password/    # Verifies token, sets new password
+│   │   └── upload/                # Cloudinary profile picture upload
+│   ├── cgpa-calculator/           # Multi-semester CGPA tool
+│   ├── fac-and-dept/              # Faculty & department directory
+│   ├── forgot-password/           # Request password reset UI
+│   ├── reset-password/[token]/    # Set new password UI
+│   ├── front-pages/               # Template gallery for cover pages
+│   ├── generate-fp/               # Cover page editor + PDF export
+│   ├── gpa-calculator/            # Semester GPA calculator
+│   ├── login/ · signup/           # Auth pages
+│   ├── portal/                    # Authenticated student dashboard
+│   ├── timetable/                 # Weekly class schedule builder
+│   ├── todo-list/                 # Personal task manager
+│   ├── layout.js · page.js        # Root layout & landing page
+│   ├── sitemap.js · robots.js     # SEO
+│   └── not-found.js               # 404 page
+│
 ├── components/
-│   ├── UI/
-│   ├── layout/
-│   └── portal/
+│   ├── UI/                        # Buttons, spinner, small shared UI
+│   ├── layout/                    # Navbar, Footer, ToolHeader, ToolsCard
+│   └── portal/                    # ProfileHeader, ProfileTab, SemesterRecordsTab,
+│                                   # GPAAnalysisTab, AIChatTab, dialogs
+│
 ├── lib/
-│   ├── AuthContext.js
-│   ├── cloudinary.js
-│   ├── constants/
-│   │   └── grades.js
-│   ├── db.js
-│   └── jwt.js
+│   ├── AuthContext.js              # Client-side auth/session context
+│   ├── db.js                       # Cached Mongoose connection
+│   ├── jwt.js                      # Sign/verify JWT, extract token from request
+│   ├── cloudinary.js                # Cloudinary SDK config
+│   ├── mailer.js                    # Nodemailer transport + reset-password email
+│   └── constants/grades.js          # Grade → GPA point map & color helpers
+│
 ├── models/
-│   └── UserModel.js
-├── public/
-├── styles/
-├── tailwind.config.js
-└── tsconfig.json
+│   └── UserModel.js                 # User schema (profile, semesters, auto CGPA calc)
+│
+├── public/                          # Static assets & template preview images
+├── styles/globals.css               # Global styles
+├── next.config.js · tailwind.config.js · postcss.config.js · tsconfig.json
+└── package.json
 ```
 
 ---
 
-## ✨ Key Features
+## 🎓 Grading Scale
 
-### 🔐 Authentication System
-- JWT-based authentication with secure token storage
-- Login, Signup, and protected routes
-- Profile management with Cloudinary image upload
-- Persistent session using `AuthContext`
+| Grade | GPA Points |
+|:---:|:---:|
+| A | 4.0 |
+| A- | 3.7 |
+| B+ | 3.3 |
+| B | 3.0 |
+| B- | 2.7 |
+| C+ | 2.3 |
+| C | 2.0 |
+| C- | 1.7 |
+| D+ | 1.3 |
+| D | 1.0 |
+| F | 0.0 |
 
-### 📚 Academic Calculators
-- **GPA Calculator** — 4.0 scale with subject-wise breakdown
-- **CGPA Calculator** — Multi-semester cumulative tracking
-- **Aggregate Calculator** — Matric + FSc + Entry Test formula
-
-### 📄 Front Page Generator
-- 4 professionally designed templates
-- Real-time preview
-- Instant PDF export with proper formatting
-
-### 🗓️ Interactive Timetable
-- Grid and list view options
-- Editable course slots (time, subject, instructor)
-- Responsive design for mobile/desktop
-
-### 🤖 AI Study Assistant
-- Claude-powered chatbot
-- Academic Q&A for BUITEMS courses
-- Context-aware responses
-
-### 🏛️ Faculty & Departments
-- Complete listing of all 7 faculties
-- 20+ departments with program details
-- Organized by faculty structure
-
-### 👤 Student Portal
-- Profile dashboard with image upload
-- Semester-wise academic records
-- GPA trend analysis
-- Integrated AI chat tab
+**Aggregate formula** (used by the Aggregate Calculator): `Matric × 10% + Intermediate × 40% + Entry Test × 50%`
 
 ---
 
@@ -162,136 +211,159 @@ BuitemsPortal-Nextjs/
 
 ### Prerequisites
 - Node.js 18+ and npm
-- MongoDB Atlas account (or local MongoDB)
-- Cloudinary account (for image uploads)
-- Anthropic API key (optional, for AI chat)
+- A MongoDB database (MongoDB Atlas or local)
+- A Cloudinary account (for profile picture uploads)
+- An SMTP account (e.g. Gmail App Password) for password-reset emails
+- A Groq API key (optional — enables the AI Study Assistant)
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/M-Saad-saif/BuitemsPortal-Nextjs.git
-   cd BuitemsPortal-Nextjs
-Install dependencies
+```bash
+# 1. Clone the repository
+git clone https://github.com/M-Saad-saif/BuitemsPortal-Nextjs.git
+cd BuitemsPortal-Nextjs
 
-bash
+# 2. Install dependencies
 npm install
-Set up environment variables
 
-bash
-cp .env.local.example .env.local
-# Edit .env.local with your credentials
-Run development server
+# 3. Set up environment variables
+cp .env.local.example .env.local   # then fill in the values (see below)
 
-bash
+# 4. Run the development server
 npm run dev
-Open http://localhost:3000
+```
 
-Build for production
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-bash
+### Production build
+
+```bash
 npm run build
 npm start
-🔌 API Reference
-All API routes are available under /api/. Authentication uses header: auth-token: <jwt_token>
+```
 
-Method	Endpoint	Auth	Description
-POST	/api/auth/createuser	—	Register new user
-POST	/api/auth/login	—	Login, returns JWT
-GET	/api/auth/profile	✅	Get current user profile
-PUT	/api/auth/profile	✅	Update profile (name, image, etc.)
-POST	/api/auth/add-semester	✅	Add semester record (courses, GPA)
-DELETE	/api/auth/delete-semester	✅	Delete semester record
-POST	/api/upload	✅	Upload profile picture to Cloudinary
-POST	/api/ai-chat	—	Send message to AI assistant
-Example Request (Login)
-bash
-curl -X POST https://your-domain.com/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"student@buitms.edu.pk","password":"yourpassword"}'
-🌐 Deployment
-Deploy to Vercel (Recommended)
-Push code to GitHub
+---
 
-Import project in Vercel
+## 🔐 Environment Variables
 
-Go to vercel.com/new
+Create a `.env.local` file in the project root:
 
-Select your repository
-
-Framework preset: Next.js (auto-detected)
-
-Add environment variables
-
-MONGO_URI — Your MongoDB connection string
-
-JWT_SECRET — Secret for signing tokens
-
-CLOUDINARY_CLOUD_NAME
-
-CLOUDINARY_API_KEY
-
-CLOUDINARY_API_SECRET
-
-ANTHROPIC_API_KEY (optional)
-
-Deploy
-
-bash
-vercel --prod
-Manual Deployment
-bash
-npm run build
-npm start
-🔐 Environment Variables
-Create a .env.local file with:
-
-env
+```env
 # MongoDB
-MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/buitems-portal
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/buitems-portal
 
 # JWT Authentication
 JWT_SECRET=your-super-secret-jwt-key
 
-# Cloudinary (for profile images)
+# Cloudinary (profile picture uploads)
 CLOUDINARY_CLOUD_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 
-# AI Assistant (optional)
-ANTHROPIC_API_KEY=sk-ant-your-key
-🤝 Contributing
-Contributions are welcome! Please follow these steps:
+# SMTP (password reset emails)
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your-email@gmail.com
+SMTP_PASS=your-app-password
 
-Fork the repository
+# App URL (used to build the password reset link)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-Create a feature branch (git checkout -b feature/amazing-feature)
+# AI Study Assistant (optional)
+GROQ_API_KEY=gsk_your_groq_key
+```
 
-Commit changes (git commit -m 'Add amazing feature')
+> Without `GROQ_API_KEY`, the AI Assistant tab still works but responds with a friendly "not configured" message instead of a real reply.
 
-Push to branch (git push origin feature/amazing-feature)
+---
 
-Open a Pull Request
+## 🔌 API Reference
 
-Development Guidelines
-Follow existing code style (ESLint configured)
+All routes live under `/api/`. Protected routes expect the JWT in an `auth-token` header (or `Authorization: Bearer <token>`).
 
-Use Tailwind CSS for styling
+| Method | Endpoint | Auth | Description |
+|---|---|:---:|---|
+| `POST` | `/api/auth/createuser` | — | Register a new user |
+| `POST` | `/api/auth/login` | — | Log in, returns a JWT |
+| `GET` | `/api/auth/profile` | ✅ | Get the current user's profile |
+| `PUT` | `/api/auth/profile` | ✅ | Update profile fields |
+| `POST` | `/api/auth/add-semester` | ✅ | Add a semester record (subjects, credits, GPA) — recomputes CGPA |
+| `DELETE` | `/api/auth/delete-semester` | ✅ | Remove a semester record |
+| `POST` | `/api/auth/forgot-password` | — | Generate a hashed, 10-minute reset token and email a reset link |
+| `POST` | `/api/auth/reset-password` | — | Verify the reset token and set a new password |
+| `POST` | `/api/upload` | ✅ | Upload a profile picture to Cloudinary |
+| `POST` | `/api/ai-chat` | — | Send a message to the Groq-powered AI study assistant |
 
-Keep API routes consistent with existing patterns
+**Example — Login:**
+```bash
+curl -X POST https://your-domain.com/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"student@buitms.edu.pk","password":"yourpassword"}'
+```
 
-Test authentication flows before submitting
+**Example — AI Chat:**
+```bash
+curl -X POST https://your-domain.com/api/ai-chat \
+  -H "Content-Type: application/json" \
+  -d '{"message":"Explain pipeline hazards in simple terms"}'
+```
 
-📄 License
-This project is licensed under the MIT License — see the LICENSE file for details.
+---
 
-🙏 Acknowledgments
-BUITEMS — For academic structure and inspiration
+## 🌐 Deployment
 
-Anthropic — For Claude AI API
+### Deploy to Vercel (recommended)
 
-Cloudinary — For image hosting
+1. Push your code to GitHub
+2. Import the repository at [vercel.com/new](https://vercel.com/new)
+3. Framework preset: **Next.js** (auto-detected)
+4. Add all environment variables listed above in the Vercel project settings
+5. Deploy
 
-Vercel — For seamless deployment platform
+```bash
+vercel --prod
+```
 
-Project Link: https://github.com/M-Saad-saif/BuitemsPortal-Nextjs
+### Manual deployment
+
+```bash
+npm run build
+npm start
+```
+
+---
+
+## 🗺️ Roadmap Ideas
+
+- [ ] Server-persisted timetable and to-do data (currently local-only for to-do)
+- [ ] Semester-wise GPA trend charts on the GPA Analysis tab
+- [ ] Export semester records / transcript as PDF
+- [ ] Push/email notifications for timetable reminders
+- [ ] Dark mode
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome!
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m "Add amazing feature"`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+**Guidelines:** follow the existing ESLint/Tailwind conventions, keep new API routes consistent with the patterns in `app/api/`, and test authentication flows (signup, login, forgot/reset password) before submitting.
+
+---
+
+## 🙏 Acknowledgments
+
+- **BUITEMS** — for the academic structure and inspiration behind the tools
+- **Groq** — for fast LLM inference powering the AI Study Assistant
+- **Cloudinary** — for image hosting
+- **Vercel** — for seamless deployment
+
+---
+
+**Project Link:** [github.com/M-Saad-saif/BuitemsPortal-Nextjs](https://github.com/M-Saad-saif/BuitemsPortal-Nextjs)
