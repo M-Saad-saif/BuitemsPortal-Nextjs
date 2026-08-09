@@ -214,7 +214,7 @@ export default function Navbar() {
                       </div>
                     )}
                     <span className="font-semibold">
-                      {capitalizeFirst(user.name?.split(" ")[0])}
+                      {capitalizeFirst(user.name)}
                     </span>
                   </Link>
                   <button

@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/AuthContext";
 import toast from "react-hot-toast";
-
 import ProfileHeader from "@/components/portal/ProfileHeader";
 import ProfileTab from "@/components/portal/ProfileTab";
 import SemesterRecordsTab from "@/components/portal/SemesterRecordsTab";
@@ -13,7 +12,6 @@ import AIChatTab from "@/components/portal/AIChatTab";
 import AddSemesterDialog from "@/components/portal/AddSemesterDialog";
 import EditProfileDialog from "@/components/portal/EditProfileDialog";
 import Spinner from "@/components/UI/Spinner";
-
 import { IoPersonSharp } from "react-icons/io5";
 import { SiBookstack } from "react-icons/si";
 import { LuTrendingUpDown } from "react-icons/lu";
@@ -39,13 +37,12 @@ const TABS = [
 export default function PortalPage() {
   const { user, loading, refreshUser, isLoggingOut } = useAuth();
   const router = useRouter();
-
   const [activeTab, setActiveTab] = useState("profile");
   const [showAdd, setShowAdd] = useState(false);
+  const [semesterToEdit, setSemesterToEdit] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
   const [localUser, setLocalUser] = useState(null);
   const [profilePicVersion, setProfilePicVersion] = useState(0);
-
   const initialised = useRef(false);
 
   useEffect(() => {
@@ -61,32 +58,40 @@ export default function PortalPage() {
   }, [user]);
 
   const handlePicChange = (freshUrl) => {
-    setLocalUser((prev) => (prev ? { ...prev, profilePic: freshUrl } : prev));
+    setLocalUser((previous) =>
+      previous ? { ...previous, profilePic: freshUrl } : previous,
+    );
     setProfilePicVersion(Date.now());
   };
 
   const handleSave = (updatedUser) => {
     setLocalUser(updatedUser);
     setShowAdd(false);
+    setSemesterToEdit(null);
     setShowEdit(false);
     refreshUser();
   };
 
-  const handleDeleteSemester = async (semId) => {
+  const handleDeleteSemester = async (semesterId) => {
     if (!confirm("Delete this semester record?")) return;
-    const token = localStorage.getItem("auth-token");
-    const res = await fetch("/api/auth/delete-semester", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json", "auth-token": token },
-      body: JSON.stringify({ semesterId: semId }),
-    });
-    const data = await res.json();
-    if (data.success) {
-      toast.success("Semester deleted");
-      setLocalUser(data.user);
-      refreshUser();
-    } else {
-      toast.error(data.error || "Delete failed");
+    try {
+      const token = localStorage.getItem("auth-token");
+      const res = await fetch("/api/auth/delete-semester", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json", "auth-token": token },
+        body: JSON.stringify({ semesterId }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Semester deleted");
+        setLocalUser(data.user);
+        refreshUser();
+      } else {
+        toast.error(data.error || "Delete failed");
+      }
+    } catch (error) {
+      console.error("delete semester error:", error);
+      toast.error("Delete failed");
     }
   };
 
@@ -111,7 +116,6 @@ export default function PortalPage() {
           onPicChange={handlePicChange}
         />
 
-        {/* Tabs */}
         <div className="flex flex-wrap gap-2 mb-6">
           {TABS.map((tab) => (
             <button
@@ -129,13 +133,13 @@ export default function PortalPage() {
           ))}
         </div>
 
-        {/* Tab Content */}
         <div className="fade-in">
           {activeTab === "profile" && <ProfileTab user={localUser} />}
           {activeTab === "semesters" && (
             <SemesterRecordsTab
               user={localUser}
               onAdd={() => setShowAdd(true)}
+              onEdit={(semester) => setSemesterToEdit(semester)}
               onDelete={handleDeleteSemester}
             />
           )}
@@ -149,6 +153,15 @@ export default function PortalPage() {
             onSave={handleSave}
           />
         )}
+
+        {semesterToEdit && (
+          <AddSemesterDialog
+            initialSemester={semesterToEdit}
+            onClose={() => setSemesterToEdit(null)}
+            onSave={handleSave}
+          />
+        )}
+
         {showEdit && (
           <EditProfileDialog
             user={localUser}
