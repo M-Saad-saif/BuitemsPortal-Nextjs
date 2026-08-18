@@ -126,7 +126,7 @@ export default function AboutPage() {
                   </h3>
                   <p className="text-blue-600 font-medium text-sm mb-3">
                     Computer Science Student | BUITEMS · Full Stack Developer |
-                    4th Semester
+                    5th Semester
                   </p>
                   <p className="text-gray-600 leading-relaxed text-sm mb-4">
                     Built this platform to solve real problems faced by

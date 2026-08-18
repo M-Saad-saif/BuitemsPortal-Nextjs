@@ -56,7 +56,7 @@ export default function Footer() {
               <span className="text-white font-medium">Muhammad Saad Saif</span>
             </p>
             <p className="text-sm text-blue-200">
-              Computer Science Student | 4th Semester
+              Computer Science Student | 5th Semester
             </p>
             <ul className="mt-4 flex flex-wrap gap-4 text-sm">
               {[
