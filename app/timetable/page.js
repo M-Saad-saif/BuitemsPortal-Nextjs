@@ -10,6 +10,19 @@ import { FaLocationDot, FaBook } from "react-icons/fa6";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
+function to12HourFormat(time24) {
+  const [hours, minutes] = time24.split(":");
+  const h = parseInt(hours, 10);
+  const ampm = h >= 12 ? "PM" : "AM";
+  const h12 = h % 12 || 12;
+  return `${h12}:${minutes} ${ampm}`;
+}
+
+function formatSlotTo12Hour(slot) {
+  const [from, to] = slot.split(" - ").map((t) => t.trim());
+  return `${to12HourFormat(from)} - ${to12HourFormat(to)}`;
+}
+
 const SAMPLE_SLOTS = [
   "08:00 - 09:00",
   "09:00 - 10:00",
@@ -50,6 +63,7 @@ export default function TimetablePage() {
     subject: "",
     room: "",
     teacher: "",
+    timeSlot: "",
   });
   const [showAddSlot, setShowAddSlot] = useState(false);
   const [newSlotFrom, setNewSlotFrom] = useState("");
@@ -63,7 +77,7 @@ export default function TimetablePage() {
 
   const openEdit = (day, slot) => {
     const cell = getCell(day, slot);
-    setEditForm(cell ? { ...cell } : { subject: "", room: "", teacher: "" });
+    setEditForm(cell ? { ...cell } : { subject: "", room: "", teacher: "", timeSlot: "" });
     setEditing({ day, slot });
   };
 
@@ -281,7 +295,7 @@ export default function TimetablePage() {
                     >
                       <td className="px-4 py-2 border-r border-gray-100">
                         <span className="text-xs font-mono text-gray-500 whitespace-nowrap">
-                          {slot}
+                          {formatSlotTo12Hour(slot)}
                         </span>
                       </td>
                       {DAYS.map((day) => {
@@ -315,10 +329,15 @@ export default function TimetablePage() {
                                       <MdPerson size={20} /> {cell.teacher}
                                     </div>
                                   )}
+                                  {cell.timeSlot && (
+                                    <div className="text-xs opacity-70 mt-0.5 flex items-center gap-2 text-blue-600">
+                                      <IoMdClock size={15} /> {formatSlotTo12Hour(cell.timeSlot)}
+                                    </div>
+                                  )}
                                 </>
                               ) : (
-                                <span className="text-xs text-gray-300">
-                                  + add
+                                <span className="text-xs text-gray-400 italic">
+                                  (Break)
                                 </span>
                               )}
                             </button>
@@ -374,7 +393,7 @@ export default function TimetablePage() {
                               <FaBook size={15} /> {c.subject}
                             </div>
                             <div className="mt-1 opacity-75 flex items-center gap-2">
-                              <IoMdClock size={20} color="black" /> {c.slot}
+                              <IoMdClock size={20} color="black" /> {c.timeSlot ? formatSlotTo12Hour(c.timeSlot) : formatSlotTo12Hour(c.slot)}
                             </div>
                             {c.room && (
                               <div className="opacity-75 flex items-center gap-2">
@@ -385,6 +404,11 @@ export default function TimetablePage() {
                             {c.teacher && (
                               <div className="opacity-75 flex items-center gap-2">
                                 <MdPerson size={20} /> {c.teacher}
+                              </div>
+                            )}
+                            {c.timeSlot && (
+                              <div className="opacity-75 flex items-center gap-2 text-blue-600 mt-1">
+                                <IoMdClock size={15} /> Custom: {formatSlotTo12Hour(c.timeSlot)}
                               </div>
                             )}
                           </div>
@@ -487,6 +511,11 @@ export default function TimetablePage() {
                   field: "teacher",
                   placeholder: "Teacher name",
                 },
+                {
+                  label: "Time Slot (Optional)",
+                  field: "timeSlot",
+                  placeholder: "Override time slot (e.g. 09:00 - 10:00)",
+                },
               ].map(({ label, field, placeholder }) => (
                 <div key={field}>
                   <label className="block text-xs font-medium text-gray-600 mb-1">
@@ -504,6 +533,11 @@ export default function TimetablePage() {
                     placeholder={placeholder}
                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                   />
+                  {field === "timeSlot" && (
+                    <p className="text-xs text-gray-400 mt-1">
+                      Optional: Override the default time slot for this class
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
