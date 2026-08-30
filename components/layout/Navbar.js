@@ -12,6 +12,7 @@ import { ImCalculator } from "react-icons/im";
 import { IoIosPaper } from "react-icons/io";
 import { CiLink } from "react-icons/ci";
 import { PiStudentBold } from "react-icons/pi";
+import { FaFilePdf } from "react-icons/fa";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
@@ -67,6 +68,7 @@ export default function Navbar() {
     },
     { href: "/front-pages", label: "Front Pages", icon: IoIosPaper },
     { href: "/timetable", label: "Timetable", icon: FaTableCells },
+    { href: "/timetable-extractor", label: "Timetable Extractor", icon: FaFilePdf },
     { href: "/fac-and-dept", label: "Faculties & Departments", icon: FaSchool },
   ];
 

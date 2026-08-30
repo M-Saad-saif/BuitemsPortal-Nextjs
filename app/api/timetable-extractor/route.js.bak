@@ -1,0 +1,227 @@
+import { NextResponse } from "next/server";
+
+export const dynamic = "force-dynamic";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+function normalizeClassName(className) {
+  return className
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "")
+    .replace(/-/g, "");
+}
+
+function normalizeText(text) {
+  return text
+    .replace(/\s+/g, " ")
+    .trim()
+    .toUpperCase();
+}
+
+function extractTimeSlots(text) {
+  const timePatterns = [
+    /(\d{1,2}:\d{2}\s*[AP]M\s*[-–]\s*\d{1,2}:\d{2}\s*[AP]M)/gi,
+    /(\d{1,2}:\d{2}\s*[-–]\s*\d{1,2}:\d{2})/gi,
+    /(\d{1,2}\s*[AP]M\s*[-–]\s*\d{1,2}\s*[AP]M)/gi,
+  ];
+
+  const slots = [];
+  for (const pattern of timePatterns) {
+    const matches = text.match(pattern);
+    if (matches) {
+      slots.push(...matches.map(m => m.trim()));
+    }
+  }
+  return [...new Set(slots)];
+}
+
+function parseTimetableEntries(text, targetClass) {
+  const normalizedTarget = normalizeClassName(targetClass);
+  const entries = [];
+  
+  // Clean text: handle hyphen variations (e.g. U+2010 to standard hyphen)
+  const cleanedText = text.replace(/\u2010/g, '-');
+  const lines = cleanedText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+  let currentPageEntries = [];
+  let currentRoom = 'Unknown';
+
+  // In this PDF format, the day is listed at the BOTTOM of the page
+  const dayFooterRegex = /^Room\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)/i;
+  
+  // Regex to detect rooms (Class, SSG, Labs, etc.) based on standard BUITEMS naming
+  const roomRegex = /^(?:\*)?(Class\s+R\d+|SSG\s+\d+|SSA\s+\d+|HBL\s+LAB.*|CISCO\s+LAB|SOFTWARE\s+LAB|MICRO\s+PRO\s+LAB|DIGITAL\s+SYSTEM\s+LAB|BASIC\s+ELECTRONICS|LIIA|ELECTRICAL\s+MACHINE\s+LAB|FYP\s+LAB|COMMUNICATION\s+SYSTEM\s+LAB|POWER\s+SYSTEM\s+LAB|SSC\s+COMP\s+LAB.*|CYBER\s+SECURITY|CLOUD\s+COMPUTING|ADVANCE\s+TELECOM\s+LAB|PHYSICS\s+LAB|IQBAL\s+HALL)/i;
+
+  const courseRegex = new RegExp(`\\b(${normalizedTarget}-[A-Z0-9&]+(?:-[A-Za-z0-9]+)*)(?:\\s*\\(([^)]+)\\))?`, 'gi');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    
+    // Check if line indicates the end of the page (where day is listed)
+    const dayMatch = line.match(dayFooterRegex);
+    if (dayMatch) {
+      const dayName = dayMatch[1].charAt(0).toUpperCase() + dayMatch[1].slice(1).toLowerCase();
+      // Apply the day to all classes we've collected on this page
+      for (const entry of currentPageEntries) {
+        entry.day = dayName;
+        entries.push(entry);
+      }
+      currentPageEntries = [];
+      continue;
+    }
+    
+    // Check if line indicates a new room
+    const roomMatch = line.match(roomRegex);
+    if (roomMatch) {
+      currentRoom = roomMatch[1].trim();
+    }
+
+    let match;
+    courseRegex.lastIndex = 0;
+    while ((match = courseRegex.exec(line)) !== null) {
+      const course = match[1];
+      let time = match[2] ? match[2].trim() : 'TBA';
+      
+      let instructor = '—';
+      let foundInstructor = false;
+      
+      // Look for instructor on the same line after the course code
+      const restOfLine = line.substring(match.index + match[0].length).trim();
+      if (restOfLine && !restOfLine.match(/^[A-Z0-9]{2,}-[A-Z0-9&]+/)) {
+        // Take text until the next course code pattern
+        instructor = restOfLine.split(/\s+[A-Z0-9]{2,}-/)[0].trim();
+        foundInstructor = true;
+      }
+
+      // If not on same line, look on the next line
+      if (!foundInstructor && i + 1 < lines.length) {
+        const nextLine = lines[i+1];
+        if (!nextLine.match(dayFooterRegex) && !roomRegex.test(nextLine)) {
+          // Get text before any new course code
+          const nextLineMatch = nextLine.match(/^([^A-Z0-9]*[a-zA-Z][^A-Z0-9]*.*?)(?=\b[A-Z0-9]{2,}-[A-Z0-9&]+|$)/);
+          if (nextLineMatch && nextLineMatch[1].trim()) {
+            instructor = nextLineMatch[1].trim();
+            // Optional: clean up title formatting
+            instructor = instructor.replace(/^(Dr\.|Mr\.|Ms\.|Mx\.)?\s*/, '$1 ').trim();
+          }
+        }
+      }
+
+      currentPageEntries.push({ 
+        day: 'Unknown', 
+        time: time, 
+        course: course, 
+        instructor: instructor || '—', 
+        room: currentRoom, 
+        section: targetClass.toUpperCase() 
+      });
+    }
+  }
+
+  // Handle any leftover entries on the last page just in case
+  if (currentPageEntries.length > 0) {
+      for (const entry of currentPageEntries) {
+        entries.push(entry);
+      }
+  }
+
+  return entries;
+}
+
+function deduplicateEntries(entries) {
+  const seen = new Set();
+  return entries.filter(entry => {
+    const key = `${entry.day}-${entry.time}-${entry.course}-${entry.room}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+export async function POST(request) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get("pdf");
+    const className = formData.get("className");
+
+    if (!file) {
+      return NextResponse.json(
+        { success: false, error: "No PDF file provided" },
+        { status: 400 }
+      );
+    }
+
+    if (!className) {
+      return NextResponse.json(
+        { success: false, error: "No class/section name provided" },
+        { status: 400 }
+      );
+    }
+
+    if (file.type !== "application/pdf") {
+      return NextResponse.json(
+        { success: false, error: "Invalid file type. Please upload a PDF file." },
+        { status: 400 }
+      );
+    }
+
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    if (buffer.length > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        { success: false, error: "File size exceeds 10MB limit" },
+        { status: 400 }
+      );
+    }
+
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: buffer });
+    const result = await parser.getText();
+    const text = result.text;
+    await parser.destroy();
+
+    if (!text || text.trim().length < 50) {
+      return NextResponse.json(
+        { success: false, error: "This PDF appears to be scanned/image-based. Please upload a text-based timetable PDF." },
+        { status: 400 }
+      );
+    }
+
+    let entries = parseTimetableEntries(text, className);
+
+    if (entries.length === 0) {
+      return NextResponse.json(
+        { success: false, error: `Class ${className.toUpperCase()} was not found in this timetable PDF.` },
+        { status: 404 }
+      );
+    }
+
+    entries = deduplicateEntries(entries);
+
+    entries.sort((a, b) => {
+      const dayOrder = { Monday: 0, Tuesday: 1, Wednesday: 2, Thursday: 3, Friday: 4, Saturday: 5, Sunday: 6 };
+      const dayA = dayOrder[a.day] ?? 7;
+      const dayB = dayOrder[b.day] ?? 7;
+      if (dayA !== dayB) return dayA - dayB;
+      return a.time.localeCompare(b.time);
+    });
+
+    return NextResponse.json({
+      success: true,
+      className: className.toUpperCase(),
+      entries,
+      totalEntries: entries.length,
+    });
+
+  } catch (error) {
+    console.error("Timetable extraction error:", error);
+    return NextResponse.json(
+      { success: false, error: "Failed to process PDF. Please try again." },
+      { status: 500 }
+    );
+  }
+}

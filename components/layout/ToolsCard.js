@@ -8,6 +8,7 @@ import { ImCalculator } from "react-icons/im";
 import { IoIosPaper } from "react-icons/io";
 import { CiLink } from "react-icons/ci";
 import { PiStudentBold } from "react-icons/pi";
+import { FaFilePdf, FaCalendarAlt } from "react-icons/fa";
 
 const features = [
   {
@@ -58,6 +59,13 @@ const features = [
     title: "Faculties & Departments",
     desc: "Explore all faculties and departments offered at BUITEMS.",
     color: "from-rose-500 to-rose-600",
+  },
+  {
+    href: "timetable-extractor",
+    icon: FaFilePdf,
+    title: "Timetable Extractor",
+    desc: "Upload the complete timetable PDF and extract your class schedule instantly.",
+    color: "from-teal-500 to-teal-600",
   },
   {
     href: "portal",
