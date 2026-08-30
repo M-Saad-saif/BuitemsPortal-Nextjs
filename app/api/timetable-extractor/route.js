@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
+import { CanvasFactory } from "pdf-parse/worker";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 
@@ -267,7 +268,7 @@ export async function POST(request) {
     let text = "";
     try {
       const { PDFParse } = await import("pdf-parse");
-      const parser = new PDFParse({ data: buffer });
+      const parser = new PDFParse({ data: buffer, CanvasFactory });
       await parser.load();
       const doc = parser.doc;
 
