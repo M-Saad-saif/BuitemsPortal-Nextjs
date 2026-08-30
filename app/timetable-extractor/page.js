@@ -254,9 +254,14 @@ export default function TimetableExtractorPage() {
 
         pdfDoc.setFontSize(16);
         pdfDoc.setTextColor(0, 0, 0);
-        pdfDoc.text(`Timetable \u2014 ${results.className}`, pageW / 2, margin + 15, {
-          align: "center",
-        });
+        pdfDoc.text(
+          `Timetable \u2014 ${results.className}`,
+          pageW / 2,
+          margin + 15,
+          {
+            align: "center",
+          },
+        );
 
         pdfDoc.setFontSize(10);
         pdfDoc.setTextColor(100, 100, 100);
@@ -271,7 +276,14 @@ export default function TimetableExtractorPage() {
       addHeader(pdf);
 
       if (finalH <= maxH) {
-        pdf.addImage(imgData, "JPEG", offsetX, margin + headerHeight, finalW, finalH);
+        pdf.addImage(
+          imgData,
+          "JPEG",
+          offsetX,
+          margin + headerHeight,
+          finalW,
+          finalH,
+        );
       } else {
         const sourceSliceHeightPx = (maxH / finalH) * imgH;
         let currentYPx = 0;
@@ -288,11 +300,28 @@ export default function TimetableExtractorPage() {
           sliceCanvas.width = imgW;
           sliceCanvas.height = sliceHeight;
           const ctx = sliceCanvas.getContext("2d");
-          ctx.drawImage(canvas, 0, currentYPx, imgW, sliceHeight, 0, 0, imgW, sliceHeight);
+          ctx.drawImage(
+            canvas,
+            0,
+            currentYPx,
+            imgW,
+            sliceHeight,
+            0,
+            0,
+            imgW,
+            sliceHeight,
+          );
 
           const sliceData = sliceCanvas.toDataURL("image/jpeg", 1.0);
           const sliceFinalH = (sliceHeight / imgH) * finalH;
-          pdf.addImage(sliceData, "JPEG", offsetX, margin + headerHeight, finalW, sliceFinalH);
+          pdf.addImage(
+            sliceData,
+            "JPEG",
+            offsetX,
+            margin + headerHeight,
+            finalW,
+            sliceFinalH,
+          );
 
           currentYPx += sliceHeight;
           isFirstPage = false;
@@ -526,6 +555,9 @@ export default function TimetableExtractorPage() {
             </div>
           </section>
         </main>
+        <p className="text-red-700 text-[10px] text-center mt-1 ">
+          If you found anything wrong ... Contact
+        </p>
       </div>
     );
   }
