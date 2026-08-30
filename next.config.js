@@ -8,7 +8,7 @@ const nextConfig = {
   },
 
   experimental: {
-    serverComponentsExternalPackages: ["pdf-parse", "pdfjs-dist"],
+    serverComponentsExternalPackages: ["pdfjs-dist"],
   },
 };
 

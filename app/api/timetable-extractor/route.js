@@ -265,15 +265,24 @@ export async function POST(request) {
       );
     }
 
+    let entries = [];
     let text = "";
+    let pdfjs;
     try {
-      const { PDFParse } = await import("pdf-parse");
-      const parser = new PDFParse({ data: buffer });
-      const result = await parser.getText();
-      text = result.text;
-      await parser.destroy();
-    } catch (parseError) {
-      console.warn("pdf-parse failed:", parseError.message);
+      pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+      pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+
+      const doc = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
+      const textParts = [];
+      for (let i = 1; i <= doc.numPages; i++) {
+        const page = await doc.getPage(i);
+        const content = await page.getTextContent();
+        textParts.push(content.items.map(item => item.str).join(" "));
+      }
+      text = textParts.join("\n");
+      await doc.destroy();
+    } catch (pdfjsError) {
+      console.warn("pdfjs-dist load failed:", pdfjsError.message);
     }
 
     if (!text || text.trim().length < 50) {
@@ -283,13 +292,10 @@ export async function POST(request) {
       );
     }
 
-    let entries = [];
     try {
-      const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-      pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
       entries = await extractTableDataPdfJs(buffer, className, pdfjs);
-    } catch (pdfjsError) {
-      console.warn("pdfjs-dist extraction failed, falling back to text-based extraction:", pdfjsError.message);
+    } catch (extractError) {
+      console.warn("pdfjs-dist structured extraction failed, falling back to text-based extraction:", extractError.message);
       entries = parseTimetableEntries(text, className);
     }
 
