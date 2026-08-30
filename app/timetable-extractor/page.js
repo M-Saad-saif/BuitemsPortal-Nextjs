@@ -25,6 +25,7 @@ import {
   Building2,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
+import { ColorPicker } from "pdfjs-dist";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const DAYS_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -269,6 +270,12 @@ export default function TimetableExtractorPage() {
           `Generated on ${new Date().toLocaleDateString()}`,
           pageW / 2,
           margin + 22,
+          { align: "center" },
+        );
+        pdfDoc.text(
+          `Built By M. Saad Saif CS-5`,
+          pageW / 2,
+          margin + 28,
           { align: "center" },
         );
       };
