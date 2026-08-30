@@ -150,6 +150,84 @@ function deduplicateEntries(entries) {
   });
 }
 
+function parseTimetableEntries(text, targetClass) {
+  const normalizedTarget = normalizeClassName(targetClass);
+  const entries = [];
+  const cleanedText = text.replace(/\u2010/g, '-');
+  const lines = cleanedText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+  let currentPageEntries = [];
+  let currentRoom = 'Unknown';
+
+  const dayFooterRegex = /^Room\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday)/i;
+  const roomRegex = /^(?:\*)?(Class\s+R\d+|SSG\s+\d+|SSA\s+\d+|HBL\s+LAB.*|CISCO\s+LAB|SOFTWARE\s+LAB|MICRO\s+PRO\s+LAB|DIGITAL\s+SYSTEM\s+LAB|BASIC\s+ELECTRONICS|LIIA|ELECTRICAL\s+MACHINE\s+LAB|FYP\s+LAB|COMMUNICATION\s+SYSTEM\s+LAB|POWER\s+SYSTEM\s+LAB|SSC\s+COMP\s+LAB.*|CYBER\s+SECURITY|CLOUD\s+COMPUTING|ADVANCE\s+TELECOM\s+LAB|PHYSICS\s+LAB|IQBAL\s+HALL)/i;
+
+  const courseRegex = new RegExp(`\\b(${normalizedTarget}-[A-Z0-9&]+(?:-[A-Za-z0-9]+)*)(?:\\s*\\(([^)]+)\\))?`, 'gi');
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const dayMatch = line.match(dayFooterRegex);
+    if (dayMatch) {
+      const dayName = dayMatch[1].charAt(0).toUpperCase() + dayMatch[1].slice(1).toLowerCase();
+      for (const entry of currentPageEntries) {
+        entry.day = dayName;
+        entries.push(entry);
+      }
+      currentPageEntries = [];
+      continue;
+    }
+
+    const roomMatch = line.match(roomRegex);
+    if (roomMatch) {
+      currentRoom = roomMatch[1].trim();
+    }
+
+    let match;
+    courseRegex.lastIndex = 0;
+    while ((match = courseRegex.exec(line)) !== null) {
+      const course = match[1];
+      let time = match[2] ? match[2].trim() : 'TBA';
+
+      let instructor = '—';
+      let foundInstructor = false;
+
+      const restOfLine = line.substring(match.index + match[0].length).trim();
+      if (restOfLine && !restOfLine.match(/^[A-Z0-9]{2,}-[A-Z0-9&]+/)) {
+        instructor = restOfLine.split(/\s+[A-Z0-9]{2,}-/)[0].trim();
+        foundInstructor = true;
+      }
+
+      if (!foundInstructor && i + 1 < lines.length) {
+        const nextLine = lines[i+1];
+        if (!nextLine.match(dayFooterRegex) && !roomRegex.test(nextLine)) {
+          const nextLineMatch = nextLine.match(/^([^A-Z0-9]*[a-zA-Z][^A-Z0-9]*.*?)(?=\b[A-Z0-9]{2,}-[A-Z0-9&]+|$)/);
+          if (nextLineMatch && nextLineMatch[1].trim()) {
+            instructor = nextLineMatch[1].trim();
+            instructor = instructor.replace(/^(Dr\.|Mr\.|Ms\.|Mx\.)?\s*/, '$1 ').trim();
+          }
+        }
+      }
+
+      currentPageEntries.push({
+        day: 'Unknown',
+        time: time,
+        course: course,
+        instructor: instructor || '—',
+        room: currentRoom,
+        section: targetClass.toUpperCase()
+      });
+    }
+  }
+
+  if (currentPageEntries.length > 0) {
+    for (const entry of currentPageEntries) {
+      entries.push(entry);
+    }
+  }
+
+  return entries;
+}
+
 export async function POST(request) {
   try {
     const formData = await request.formData();
@@ -187,11 +265,16 @@ export async function POST(request) {
       );
     }
 
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: buffer });
-    const result = await parser.getText();
-    const text = result.text;
-    await parser.destroy();
+    let text = "";
+    try {
+      const { PDFParse } = await import("pdf-parse");
+      const parser = new PDFParse({ data: buffer });
+      const result = await parser.getText();
+      text = result.text;
+      await parser.destroy();
+    } catch (parseError) {
+      console.warn("pdf-parse failed:", parseError.message);
+    }
 
     if (!text || text.trim().length < 50) {
       return NextResponse.json(
@@ -200,8 +283,15 @@ export async function POST(request) {
       );
     }
 
-    const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-    let entries = await extractTableDataPdfJs(buffer, className, pdfjs);
+    let entries = [];
+    try {
+      const pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
+      pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+      entries = await extractTableDataPdfJs(buffer, className, pdfjs);
+    } catch (pdfjsError) {
+      console.warn("pdfjs-dist extraction failed, falling back to text-based extraction:", pdfjsError.message);
+      entries = parseTimetableEntries(text, className);
+    }
 
     if (entries.length === 0) {
       return NextResponse.json(
