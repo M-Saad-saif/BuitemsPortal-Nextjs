@@ -6,9 +6,8 @@ const nextConfig = {
       { protocol: "https", hostname: "via.placeholder.com" },
     ],
   },
-
   experimental: {
-    serverComponentsExternalPackages: ["pdfjs-dist"],
+    serverComponentsExternalPackages: ["pdf-parse", "pdfjs-dist"],
   },
 };
 

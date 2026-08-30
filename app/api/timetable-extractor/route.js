@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 export const dynamic = "force-dynamic";
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
@@ -38,9 +37,8 @@ function extractTimeSlots(text) {
   return [...new Set(slots)];
 }
 
-async function extractTableDataPdfJs(buffer, targetClass, pdfjs) {
+async function extractTableDataPdfJs(buffer, targetClass, doc) {
   const normalizedTarget = normalizeClassName(targetClass);
-  const doc = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
   const numPages = doc.numPages;
   const entries = [];
   
@@ -267,12 +265,12 @@ export async function POST(request) {
 
     let entries = [];
     let text = "";
-    let pdfjs;
     try {
-      pdfjs = await import("pdfjs-dist/legacy/build/pdf.mjs");
-      pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+      const { PDFParse } = await import("pdf-parse");
+      const parser = new PDFParse({ data: buffer });
+      await parser.load();
+      const doc = parser.doc;
 
-      const doc = await pdfjs.getDocument({ data: new Uint8Array(buffer) }).promise;
       const textParts = [];
       for (let i = 1; i <= doc.numPages; i++) {
         const page = await doc.getPage(i);
@@ -280,9 +278,13 @@ export async function POST(request) {
         textParts.push(content.items.map(item => item.str).join(" "));
       }
       text = textParts.join("\n");
-      await doc.destroy();
-    } catch (pdfjsError) {
-      console.warn("pdfjs-dist load failed:", pdfjsError.message);
+
+      // Pass doc to extractTableDataPdfJs
+      entries = await extractTableDataPdfJs(buffer, className, doc);
+      
+      await parser.destroy();
+    } catch (pdfError) {
+      console.warn("pdf parsing failed:", pdfError.message);
     }
 
     if (!text || text.trim().length < 50) {
@@ -292,10 +294,8 @@ export async function POST(request) {
       );
     }
 
-    try {
-      entries = await extractTableDataPdfJs(buffer, className, pdfjs);
-    } catch (extractError) {
-      console.warn("pdfjs-dist structured extraction failed, falling back to text-based extraction:", extractError.message);
+    // Fallback to text-based extraction if structured extraction failed
+    if (entries.length === 0) {
       entries = parseTimetableEntries(text, className);
     }
 
