@@ -25,7 +25,6 @@ import {
   Building2,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { ColorPicker } from "pdfjs-dist";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 const DAYS_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri"];
@@ -249,14 +248,14 @@ export default function TimetableExtractorPage() {
       const addHeader = (pdfDoc) => {
         pdfDoc.setFontSize(20);
         pdfDoc.setTextColor(26, 60, 110);
-        pdfDoc.text("BUITEMS Portal", pageW / 2, margin + 5, {
+        pdfDoc.text("BUITEMS TimeTable Extracor", pageW / 2, margin + 5, {
           align: "center",
         });
 
         pdfDoc.setFontSize(16);
         pdfDoc.setTextColor(0, 0, 0);
         pdfDoc.text(
-          `Timetable \u2014 ${results.className}`,
+          `Timetable - ${results.className}`,
           pageW / 2,
           margin + 15,
           {
@@ -272,12 +271,9 @@ export default function TimetableExtractorPage() {
           margin + 22,
           { align: "center" },
         );
-        pdfDoc.text(
-          `Built By M. Saad Saif CS-5`,
-          pageW / 2,
-          margin + 28,
-          { align: "center" },
-        );
+        pdfDoc.text(`Built By "Muhammad Saad Saif" CS-5`, pageW / 2, margin + 28, {
+          align: "center",
+        });
       };
 
       addHeader(pdf);
@@ -339,7 +335,6 @@ export default function TimetableExtractorPage() {
 
       toast.success("Timetable downloaded successfully!");
     } catch (err) {
-      console.error("PDF generation failed:", err);
       toast.error("Could not generate PDF. Please try again.");
     }
   };
@@ -353,10 +348,8 @@ export default function TimetableExtractorPage() {
         />
 
         <main className="max-w-6xl mx-auto px-4 -mt-32 space-y-6 relative z-10">
-          {/* Main Card */}
-          <section className="bg-white rounded-3xl shadow-2xl shadow-blue-900/20 p-8 sm:p-10 border border-blue-100/50">
-            <div className="grid lg:grid-cols-5 gap-8">
-              {/* Left - Input Area */}
+          <section className="bg-white rounded-3xl shadow-2xl shadow-blue-900/20 p-6 sm:p-8 md:p-10 border border-blue-100/50">
+            <div className="grid lg:grid-cols-5 gap-6 md:gap-8">
               <div className="lg:col-span-5 space-y-6">
                 <div>
                   <div className="flex items-center gap-2 mb-2">
@@ -410,7 +403,7 @@ export default function TimetableExtractorPage() {
                     <span className="text-xs text-red-500">*</span>
                   </div>
                   <div
-                    className={`relative border-3 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
+                    className={`relative border-3 border-dashed rounded-2xl p-6 sm:p-8 text-center transition-all duration-300 ${
                       dragActive
                         ? "border-teal-400 bg-teal-50/50 scale-[1.01]"
                         : pdfFile
@@ -432,12 +425,12 @@ export default function TimetableExtractorPage() {
                     />
                     {pdfFile ? (
                       <div className="space-y-3">
-                        <div className="flex items-center justify-center gap-4 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 p-4 bg-white rounded-xl border border-gray-100 shadow-sm">
                           <div className="p-3 bg-red-50 rounded-xl">
                             <FileText className="text-red-500" size={32} />
                           </div>
-                          <div className="text-left flex-1">
-                            <p className="font-medium text-gray-800 truncate max-w-[200px]">
+                          <div className="text-left flex-1 min-w-0">
+                            <p className="font-medium text-gray-800 truncate max-w-[200px] sm:max-w-xs">
                               {pdfFile.name}
                             </p>
                             <p className="text-sm text-gray-500">
@@ -464,8 +457,8 @@ export default function TimetableExtractorPage() {
                       </div>
                     ) : (
                       <div className="space-y-4">
-                        <div className="w-20 h-20 mx-auto  bg-[#1e4d8c] rounded-2xl flex items-center justify-center">
-                          <Upload className="text-[white]" size={36} />
+                        <div className="w-20 h-20 mx-auto bg-[#1e4d8c] rounded-2xl flex items-center justify-center">
+                          <Upload className="text-white" size={36} />
                         </div>
                         <div>
                           <p className="font-medium text-gray-700">
@@ -475,12 +468,12 @@ export default function TimetableExtractorPage() {
                             or click to browse files
                           </p>
                         </div>
-                        <div className="flex justify-center gap-4 text-xs text-gray-400">
-                          <span> PDF only</span>
-                          <span>.</span>
-                          <span> Max 10MB</span>
-                          <span>.</span>
-                          <span> Complete timetable</span>
+                        <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-400">
+                          <span>PDF only</span>
+                          <span>•</span>
+                          <span>Max 10MB</span>
+                          <span>•</span>
+                          <span>Complete timetable</span>
                         </div>
                       </div>
                     )}
@@ -515,7 +508,7 @@ export default function TimetableExtractorPage() {
                   {loading ? (
                     <>
                       <Spinner width={28} className="text-white" />
-                      <span className="animate-pulse">
+                      <span className="animate-pulse text-sm sm:text-base">
                         {LOADING_STEPS[loadingStep]}
                       </span>
                     </>
@@ -531,7 +524,7 @@ export default function TimetableExtractorPage() {
           </section>
 
           <section className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl shadow-blue-900/10 p-6 sm:p-8 text-center border border-blue-100/30">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
               <div className="p-6 bg-gradient-to-br from-blue-50 to-blue-100/30 rounded-2xl">
                 <div className="w-14 h-14 bg-[#1e4d8c] rounded-2xl flex items-center justify-center mx-auto mb-3 shadow-lg shadow-[#1e4d8c]/25">
                   <FileText className="text-white" size={28} />
@@ -562,7 +555,7 @@ export default function TimetableExtractorPage() {
             </div>
           </section>
         </main>
-        <p className="text-red-700 text-[10px] text-center mt-1 ">
+        <p className="text-red-700 text-[10px] text-center mt-1">
           If you found anything wrong ... Contact
         </p>
       </div>
@@ -615,27 +608,26 @@ export default function TimetableExtractorPage() {
       />
 
       <main className="max-w-6xl mx-auto px-4 -mt-32 space-y-6 relative z-10">
-        {/* Results Card */}
-        <section className="bg-white rounded-3xl shadow-2xl shadow-blue-900/20 p-6 sm:p-8 border border-blue-100/50">
+        <section className="bg-white rounded-3xl shadow-2xl shadow-blue-900/20 p-4 sm:p-6 md:p-8 border border-blue-100/50">
           {/* Header with stats and actions */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
-            <div className="flex items-center gap-4">
-              <div className="p-3 bg-teal-100 rounded-2xl">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100">
+            <div className="flex items-center gap-4 w-full sm:w-auto">
+              <div className="p-3 bg-teal-100 rounded-2xl flex-shrink-0">
                 <CheckCircle2 className="text-teal-600" size={24} />
               </div>
-              <div>
+              <div className="min-w-0">
                 <p className="text-sm text-gray-500">Extracted Schedule</p>
-                <p className="font-bold text-gray-800 text-lg">
+                <p className="font-bold text-gray-800 text-base sm:text-lg truncate">
                   {results.className}.{" "}
                   <span className="text-teal-600">{totalClasses} classes</span>
                 </p>
               </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <div className="flex bg-gray-100 rounded-xl p-1">
                 <button
                   onClick={() => setView("table")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                     view === "table"
                       ? "bg-white text-teal-600 shadow-sm"
                       : "text-gray-500 hover:text-gray-700"
@@ -643,9 +635,10 @@ export default function TimetableExtractorPage() {
                 >
                   <Table2 className="inline mr-1" size={14} /> Table
                 </button>
+                {/* Weekly button - Hidden on mobile */}
                 <button
                   onClick={() => setView("weekly")}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  className={`hidden sm:inline-flex px-3 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                     view === "weekly"
                       ? "bg-white text-teal-600 shadow-sm"
                       : "text-gray-500 hover:text-gray-700"
@@ -656,41 +649,46 @@ export default function TimetableExtractorPage() {
               </div>
               <button
                 onClick={handleDownloadPdf}
-                className="px-4 py-2 rounded-xl text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
+                className="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium bg-emerald-600 hover:bg-emerald-500 text-white transition-all flex items-center gap-2 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40"
               >
                 <Download size={16} /> PDF
               </button>
-
               <button
                 onClick={handleReset}
-                className="px-4 py-2 rounded-xl text-sm font-medium border-2 border-gray-200 text-gray-600 hover:bg-gray-50 transition-all flex items-center gap-2"
+                className="px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium border-2 border-gray-200 text-gray-600 hover:bg-gray-50 transition-all flex items-center gap-2"
               >
                 <RotateCcw size={16} /> New
               </button>
             </div>
           </div>
 
-          {/* Stats bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-            <div className="p-3 bg-blue-50 rounded-xl text-center">
-              <p className="text-xs text-gray-500">Total Classes</p>
-              <p className="font-bold text-blue-600 text-lg">{totalClasses}</p>
+          {/* Stats bar - responsive grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-6">
+            <div className="p-2 sm:p-3 bg-blue-50 rounded-xl text-center">
+              <p className="text-[10px] sm:text-xs text-gray-500">
+                Total Classes
+              </p>
+              <p className="font-bold text-blue-600 text-base sm:text-lg">
+                {totalClasses}
+              </p>
             </div>
-            <div className="p-3 bg-teal-50 rounded-xl text-center">
-              <p className="text-xs text-gray-500">Days</p>
-              <p className="font-bold text-teal-600 text-lg">
+            <div className="p-2 sm:p-3 bg-teal-50 rounded-xl text-center">
+              <p className="text-[10px] sm:text-xs text-gray-500">Days</p>
+              <p className="font-bold text-teal-600 text-base sm:text-lg">
                 {Object.keys(groupedByDay).length}
               </p>
             </div>
-            <div className="p-3 bg-purple-50 rounded-xl text-center">
-              <p className="text-xs text-gray-500">Time Slots</p>
-              <p className="font-bold text-purple-600 text-lg">
+            <div className="p-2 sm:p-3 bg-purple-50 rounded-xl text-center">
+              <p className="text-[10px] sm:text-xs text-gray-500">Time Slots</p>
+              <p className="font-bold text-purple-600 text-base sm:text-lg">
                 {timeSlots.length}
               </p>
             </div>
-            <div className="p-3 bg-amber-50 rounded-xl text-center">
-              <p className="text-xs text-gray-500">Instructors</p>
-              <p className="font-bold text-amber-600 text-lg">
+            <div className="p-2 sm:p-3 bg-amber-50 rounded-xl text-center">
+              <p className="text-[10px] sm:text-xs text-gray-500">
+                Instructors
+              </p>
+              <p className="font-bold text-amber-600 text-base sm:text-lg">
                 {
                   new Set(
                     results.entries
@@ -702,95 +700,151 @@ export default function TimetableExtractorPage() {
             </div>
           </div>
 
-          {/* Table View */}
+          {/* Table View - Mobile Responsive Cards */}
           {view === "table" && (
             <div
               ref={tableRef}
-              className="overflow-x-auto rounded-2xl border border-gray-100"
+              className="rounded-2xl border border-gray-100 overflow-hidden"
             >
-              <table className="w-full min-w-[700px] text-sm border-separate border-spacing-0">
-                <thead>
-                  <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
-                    <th className="px-4 py-4 text-left w-32 font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60 first:rounded-tl-xl">
-                      Day
-                    </th>
-                    <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
-                      <Clock3 className="inline mr-1" size={12} /> Time
-                    </th>
-                    <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
-                      <GraduationCap className="inline mr-1" size={12} /> Course
-                    </th>
-                    <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
-                      <User className="inline mr-1" size={12} /> Instructor
-                    </th>
-                    <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-teal-500/60 last:rounded-tr-xl">
-                      <Building2 className="inline mr-1" size={12} /> Room
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {DAYS.map((day, dayIndex) => {
-                    const dayEntries = groupedByDay[day] || [];
-                    if (dayEntries.length === 0) return null;
-                    return dayEntries.map((entry, idx) => (
-                      <tr
-                        key={`${day}-${idx}`}
-                        className={`${dayIndex % 2 === 0 ? "bg-white" : "bg-gray-50/50"} hover:bg-teal-50/50 transition-colors`}
-                      >
-                        <td className="px-4 py-3 border-r border-b border-gray-200 font-semibold text-gray-700 align-middle">
-                          {idx === 0 && (
-                            <div className="flex items-center gap-2">
-                              <span className="w-2 h-2 rounded-full bg-teal-400"></span>
-                              {day}
-                            </div>
-                          )}
-                        </td>
-                        <td className="px-4 py-3 border-r border-b border-gray-200">
-                          <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded-full text-gray-600 whitespace-nowrap">
-                            {formatTimeSlot(entry.time)}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 border-r border-b border-gray-200">
-                          <span className="font-medium text-gray-800">
-                            {entry.course}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 border-r border-b border-gray-200">
-                          <span className="text-gray-600">
-                            {entry.instructor}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 border-b border-gray-200">
-                          <span className="text-gray-600 bg-gray-100 px-2 py-1 rounded-lg text-xs">
-                            {entry.room}
-                          </span>
+              {/* Desktop Table - Hidden on mobile */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full min-w-[700px] text-sm border-separate border-spacing-0">
+                  <thead>
+                    <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
+                      <th className="px-4 py-4 text-left w-32 font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60 first:rounded-tl-xl">
+                        Day
+                      </th>
+                      <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
+                        <Clock3 className="inline mr-1" size={12} /> Time
+                      </th>
+                      <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
+                        <GraduationCap className="inline mr-1" size={12} />{" "}
+                        Course
+                      </th>
+                      <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-r border-teal-500/60">
+                        <User className="inline mr-1" size={12} /> Instructor
+                      </th>
+                      <th className="px-4 py-4 text-left font-semibold text-xs uppercase tracking-wider border-b border-teal-500/60 last:rounded-tr-xl">
+                        <Building2 className="inline mr-1" size={12} /> Room
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {DAYS.map((day, dayIndex) => {
+                      const dayEntries = groupedByDay[day] || [];
+                      if (dayEntries.length === 0) return null;
+                      return dayEntries.map((entry, idx) => (
+                        <tr
+                          key={`${day}-${idx}`}
+                          className={`${dayIndex % 2 === 0 ? "bg-white" : "bg-gray-50/50"} hover:bg-teal-50/50 transition-colors`}
+                        >
+                          <td className="px-4 py-3 border-r border-b border-gray-200 font-semibold text-gray-700 align-middle">
+                            {idx === 0 && (
+                              <div className="flex items-center gap-2">
+                                <span className="w-2 h-2 rounded-full bg-teal-400"></span>
+                                {day}
+                              </div>
+                            )}
+                          </td>
+                          <td className="px-4 py-3 border-r border-b border-gray-200">
+                            <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded-full text-gray-600 whitespace-nowrap">
+                              {formatTimeSlot(entry.time)}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 border-r border-b border-gray-200">
+                            <span className="font-medium text-gray-800">
+                              {entry.course}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 border-r border-b border-gray-200">
+                            <span className="text-gray-600">
+                              {entry.instructor}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 border-b border-gray-200">
+                            <span className="text-gray-600 bg-gray-100 px-2 py-1 rounded-lg text-xs">
+                              {entry.room}
+                            </span>
+                          </td>
+                        </tr>
+                      ));
+                    })}
+                    {Object.keys(groupedByDay).length === 0 && (
+                      <tr>
+                        <td
+                          colSpan={5}
+                          className="px-4 py-16 text-center text-gray-400"
+                        >
+                          <CalendarDays className="w-12 h-12 mx-auto text-gray-300 mb-2" />
+                          No timetable entries found
                         </td>
                       </tr>
-                    ));
-                  })}
-                  {Object.keys(groupedByDay).length === 0 && (
-                    <tr>
-                      <td
-                        colSpan={5}
-                        className="px-4 py-16 text-center text-gray-400"
-                      >
-                        <CalendarDays className="w-12 h-12 mx-auto text-gray-300 mb-2" />
-                        No timetable entries found
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Mobile Card View - Hidden on desktop */}
+              <div className="md:hidden space-y-3 p-3">
+                {DAYS.map((day) => {
+                  const dayEntries = groupedByDay[day] || [];
+                  if (dayEntries.length === 0) return null;
+                  return (
+                    <div
+                      key={day}
+                      className="border rounded-xl overflow-hidden"
+                    >
+                      <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-4 py-2 font-semibold text-sm">
+                        {day}
+                      </div>
+                      {dayEntries.map((entry, idx) => (
+                        <div
+                          key={idx}
+                          className="p-3 border-b border-gray-100 last:border-b-0 bg-white"
+                        >
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="font-semibold text-gray-800 text-sm">
+                              {entry.course}
+                            </span>
+                            <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+                              {formatTimeSlot(entry.time)}
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600">
+                            {entry.instructor && entry.instructor !== "â€”" && (
+                              <span className="flex items-center gap-1">
+                                <User size={12} /> {entry.instructor}
+                              </span>
+                            )}
+                            {entry.room && entry.room !== "â€”" && (
+                              <span className="flex items-center gap-1">
+                                <Building2 size={12} /> {entry.room}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                })}
+                {Object.keys(groupedByDay).length === 0 && (
+                  <div className="text-center py-12 text-gray-400">
+                    <CalendarDays className="w-12 h-12 mx-auto text-gray-300 mb-2" />
+                    No timetable entries found
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
-          {/* Weekly View */}
+          {/* Weekly View - Mobile Responsive */}
           {view === "weekly" && (
             <div
               ref={weeklyRef}
-              className="overflow-x-auto rounded-2xl border border-gray-100"
+              className="rounded-2xl border border-gray-100 overflow-hidden"
             >
-              <div className="overflow-x-auto">
+              {/* Desktop Weekly Table */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full min-w-[800px] text-sm border-separate border-spacing-0">
                   <thead>
                     <tr className="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
@@ -868,6 +922,57 @@ export default function TimetableExtractorPage() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Mobile Weekly View - Compact Cards */}
+              <div className="sm:hidden p-3 space-y-4">
+                {DAYS.map((day) => {
+                  const dayEntries = groupedByDay[day] || [];
+                  if (dayEntries.length === 0) return null;
+                  return (
+                    <div
+                      key={day}
+                      className="border rounded-xl overflow-hidden"
+                    >
+                      <div className="bg-gradient-to-r from-teal-600 to-teal-700 text-white px-4 py-2 font-semibold text-sm">
+                        {day}
+                      </div>
+                      <div className="divide-y divide-gray-100">
+                        {dayEntries.map((entry, idx) => (
+                          <div key={idx} className="p-3 bg-white">
+                            <div className="flex justify-between items-start mb-1">
+                              <span className="font-semibold text-gray-800 text-sm">
+                                {entry.course}
+                              </span>
+                              <span className="text-xs font-mono bg-gray-100 px-2 py-1 rounded-full text-gray-600">
+                                {formatTimeSlot(entry.time)}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-600">
+                              {entry.instructor &&
+                                entry.instructor !== "â€”" && (
+                                  <span className="flex items-center gap-1">
+                                    <User size={12} /> {entry.instructor}
+                                  </span>
+                                )}
+                              {entry.room && entry.room !== "â€”" && (
+                                <span className="flex items-center gap-1">
+                                  <Building2 size={12} /> {entry.room}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+                {Object.keys(groupedByDay).length === 0 && (
+                  <div className="text-center py-12 text-gray-400">
+                    <CalendarDays className="w-12 h-12 mx-auto text-gray-300 mb-2" />
+                    No timetable entries found
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -885,10 +990,10 @@ export default function TimetableExtractorPage() {
           )}
 
           {/* Footer */}
-          <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between text-xs text-gray-400">
-            <span> {totalClasses} classes found</span>
-            <span> Updated {new Date().toLocaleDateString()}</span>
-            {hasWeekend && <span> Includes weekend classes</span>}
+          <div className="mt-6 pt-4 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-400 gap-2">
+            <span>{totalClasses} classes found</span>
+            <span>Updated {new Date().toLocaleDateString()}</span>
+            {hasWeekend && <span>Includes weekend classes</span>}
           </div>
         </section>
       </main>
