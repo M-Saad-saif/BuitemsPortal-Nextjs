@@ -10,14 +10,7 @@ import { CiLink } from "react-icons/ci";
 import { PiStudentBold } from "react-icons/pi";
 import { FaFilePdf, FaCalendarAlt } from "react-icons/fa";
 
-const features = [
-  {
-    href: "todo-list",
-    icon: FaListCheck,
-    title: "To-Do List",
-    desc: "Plan tasks, track progress, and stay productive. Auto‑saves to your browser.",
-    color: "from-pink-500 to-pink-600",
-  },
+const coreFeatures = [
   {
     href: "gpa-calculator",
     icon: FaCalculator,
@@ -33,6 +26,37 @@ const features = [
     color: "from-indigo-500 to-indigo-600",
   },
   {
+    href: "timetable-extractor",
+    icon: FaFilePdf,
+    title: "Timetable Extractor",
+    desc: "Upload the complete timetable PDF and extract your class schedule instantly.",
+    color: "from-teal-500 to-teal-600",
+  },
+  {
+    href: "todo-list",
+    icon: FaListCheck,
+    title: "To-Do List",
+    desc: "Plan tasks, track progress, and stay productive. Auto‑saves to your browser.",
+    color: "from-pink-500 to-pink-600",
+  },
+  {
+    href: "timetable",
+    icon: FaTableCells,
+    title: "Timetable",
+    desc: "View and manage your class timetable for the semester.",
+    color: "from-amber-500 to-amber-600",
+  },
+  {
+    href: "portal",
+    icon: PiStudentBold,
+    title: "Student Portal",
+    desc: "Your personal academic portal — store records, track CGPA, manage your profile.",
+    color: "from-cyan-500 to-cyan-600",
+  },
+];
+
+const moreTools = [
+  {
     href: "aggregate-calculator",
     icon: ImCalculator,
     title: "Aggregate Calculator",
@@ -47,32 +71,11 @@ const features = [
     color: "from-emerald-500 to-emerald-600",
   },
   {
-    href: "timetable",
-    icon: FaTableCells,
-    title: "Timetable",
-    desc: "View and manage your class timetable for the semester.",
-    color: "from-amber-500 to-amber-600",
-  },
-  {
     href: "fac-and-dept",
     icon: FaSchool,
     title: "Faculties & Departments",
     desc: "Explore all faculties and departments offered at BUITEMS.",
     color: "from-rose-500 to-rose-600",
-  },
-  {
-    href: "timetable-extractor",
-    icon: FaFilePdf,
-    title: "Timetable Extractor",
-    desc: "Upload the complete timetable PDF and extract your class schedule instantly.",
-    color: "from-teal-500 to-teal-600",
-  },
-  {
-    href: "portal",
-    icon: PiStudentBold,
-    title: "Student Portal",
-    desc: "Your personal academic portal — store records, track CGPA, manage your profile.",
-    color: "from-cyan-500 to-cyan-600",
   },
 ];
 
@@ -89,38 +92,82 @@ const ToolsCard = () => {
           <p className="text-gray-600 mt-3">Everything you need in one place</p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-6">
-          {features.map(({ href, icon: Icon, title, desc, color }) => (
-            <Link
-              key={href}
-              href={href}
-              className="group relative bg-white rounded-2xl p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden justify-items-center"
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-[#1546c2]/0 to-[#1546c2]/0 group-hover:from-[#1546c2]/5 group-hover:to-[#005eff]/5 transition-all duration-300"></div>
+        {/* Core Features Section */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+           ---- Core Features ----
+          </h3>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6">
+            {coreFeatures.map(({ href, icon: Icon, title, desc, color }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group relative bg-white rounded-2xl p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden justify-items-center"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1546c2]/0 to-[#1546c2]/0 group-hover:from-[#1546c2]/5 group-hover:to-[#005eff]/5 transition-all duration-300"></div>
 
-              <div className="absolute top-0 left-0 w-0 h-1 bg-gradient-to-r from-[#1546c2] to-[#005eff] group-hover:w-full transition-all duration-300"></div>
+                <div className="absolute top-0 left-0 w-0 h-1 bg-gradient-to-r from-[#1546c2] to-[#005eff] group-hover:w-full transition-all duration-300"></div>
 
-              <div className="relative mb-3 sm:mb-5">
-                <div
-                  className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}
-                >
-                  <Icon className="text-white" size={24} />
+                <div className="relative mb-3 sm:mb-5">
+                  <div
+                    className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}
+                  >
+                    <Icon className="text-white" size={24} />
+                  </div>
+                  <div
+                    className={`absolute -inset-1 bg-gradient-to-br ${color} rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300`}
+                  ></div>
                 </div>
-                <div
-                  className={`absolute -inset-1 bg-gradient-to-br ${color} rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300`}
-                ></div>
-              </div>
 
-              {/* Content */}
-              <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-2 group-hover:text-[#1546c2] transition-colors text-center">
-                {title}
-              </h3>
-              <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 text-justify line-clamp-3 sm:line-clamp-none">
-                {desc}
-              </p>
-              <Button href={href} />
-            </Link>
-          ))}
+                <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-2 group-hover:text-[#1546c2] transition-colors text-center">
+                  {title}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 text-justify line-clamp-3 sm:line-clamp-none">
+                  {desc}
+                </p>
+                <Button href={href} />
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        {/* More Tools Section */}
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+           ---- More Tools ----
+          </h3>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-6">
+            {moreTools.map(({ href, icon: Icon, title, desc, color }) => (
+              <Link
+                key={href}
+                href={href}
+                className="group relative bg-white rounded-2xl p-4 sm:p-6 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border border-gray-200 overflow-hidden justify-items-center"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-[#1546c2]/0 to-[#1546c2]/0 group-hover:from-[#1546c2]/5 group-hover:to-[#005eff]/5 transition-all duration-300"></div>
+
+                <div className="absolute top-0 left-0 w-0 h-1 bg-gradient-to-r from-[#1546c2] to-[#005eff] group-hover:w-full transition-all duration-300"></div>
+
+                <div className="relative mb-3 sm:mb-5">
+                  <div
+                    className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center text-xl sm:text-2xl shadow-lg group-hover:scale-110 group-hover:shadow-xl transition-all duration-300`}
+                  >
+                    <Icon className="text-white" size={24} />
+                  </div>
+                  <div
+                    className={`absolute -inset-1 bg-gradient-to-br ${color} rounded-xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-300`}
+                  ></div>
+                </div>
+
+                <h3 className="text-base sm:text-xl font-bold text-gray-800 mb-2 group-hover:text-[#1546c2] transition-colors text-center">
+                  {title}
+                </h3>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 text-justify line-clamp-3 sm:line-clamp-none">
+                  {desc}
+                </p>
+                <Button href={href} />
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
