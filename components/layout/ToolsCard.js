@@ -40,13 +40,6 @@ const coreFeatures = [
     color: "from-pink-500 to-pink-600",
   },
   {
-    href: "timetable",
-    icon: FaTableCells,
-    title: "Timetable",
-    desc: "View and manage your class timetable for the semester.",
-    color: "from-amber-500 to-amber-600",
-  },
-  {
     href: "portal",
     icon: PiStudentBold,
     title: "Student Portal",
